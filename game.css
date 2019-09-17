@@ -1,0 +1,48 @@
+body{
+	font: 14px Helvetica;
+}
+.frame{
+	border-width: 16px;
+	border-style:solid;
+	border-color: gray;
+	width: 97%;
+	height: 92%;
+	position: fixed;
+	background-color: #b3ecff;
+}
+.nation{
+	width: 55px;
+	height: 16px;
+	background-color: #e0e0e0;
+	top:8px;
+	left:24px;
+	position:fixed;
+}
+.menuItem{
+	cursor:default;
+	 -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+.menuItem:hover{
+	background-color:#ededed;
+}
+.popupwindow{
+	position: absolute;
+	z-index: 9;
+	background-color: #f1f1f1;
+	border: 1px solid #d3d3d3;
+	width: 400px;
+	height: 300px;
+	top:20%;
+	left: 30%;
+	text-align: left;
+	padding: 20px;
+}
+
+#main{}
+
+#mydiv {}
