@@ -28,6 +28,46 @@
 	top: 173px;
 	border: solid black 1px;
 }
+.district4{
+	background-color:#55a896;
+	position: absolute;
+	z-index:0;
+	width: 65px;
+	height: 50px;
+	left: 304px;
+	top: 226px;
+	border: solid black 1px;
+}
+.district5{
+	background-color:#6348f3;
+	position: absolute;
+	z-index:0;
+	width: 80px;
+	height: 50px;
+	left: 352px;
+	top: 173px;
+	border: solid black 1px;
+}
+.district6{
+	background-color:#9eb62c;
+	position: absolute;
+	z-index:0;
+	width: 40px;
+	height: 55px;
+	left: 342px;
+	top: 115px;
+	border: solid black 1px;
+}
+.district7{
+	background-color:#f7e02f;
+	position: absolute;
+	z-index:0;
+	width: 102px;
+	height: 98px;
+	left: 372px;
+	top: 227px;
+	border: solid black 1px;
+}
 .districts:hover{
 	outline: 2px solid yellow;
 }

@@ -6,10 +6,14 @@ var startingpoliticalpower = 100;
 var districtclicked = 0;
 
 //slot 1: upper class, slot 2: middle class, slot 3: lower-class
-var pops = [25,45,15];
+var pops = [25,45,15,24,38,36,77];
 var dist = [[2,10,13],
 			[4,14,27],
-			[0,2,13]];
+			[0,2,13],
+			[1,13,10],
+			[9,9,20],
+			[6,21,9],
+			[12,29,36]];
 //arrays that contain the pops and districts			
 var globalPopulation = new Array();
 var globalDistrictContainer = new Array();
@@ -19,16 +23,17 @@ var demographics = [0.15,0.25,0.30,0.20,0.10];
 //POLITICAL STUFF
 var partyAffiliation = ["Democrat","Republican"];
 var partyWeightsForUpperClass = [0.3,0.7];
-var partyWeightsForMiddleClass = [0.52,0.48];
-var partyWeightsForLowerClass = [0.7,0.3];
+var partyWeightsForMiddleClass = [0.51,0.49];
+var partyWeightsForLowerClass = [0.65,0.35];
 
 //ECONOMIC STUFF
 var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
 var basePopDemand =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+var baseJobIndustryProportionOfProfitsToStratum = [[0.05,0.1,0.85],[0.1,0.2,0.7],[0.05,0.15,0.8],[0.05,0.15,0.8],[0.15,0.15,0.70],[0.30,0.10,0.60],[0.20,0.15,0.65],[0.10,0.35,0.55],[0.20,0.20,0.60],[0.25,0.25,0.50],[0.30,0.05,0.65],[0.10,0.35,0.55],[0.15,0.15,0.70],[0.01,0.19,0.80],[0.01,0.29,0.70],[0.15,0.35,0.60],[0.30,0.30,0.40],[0.30,0.55,0.15]]
 
 //GAME CODE
 class Pop{
-	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,myAnger,myDemands,myModifiers,myIncome,myCash,mySpendings,myHomeDist){
+	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,myAnger,myDemands,myModifiers,myIncome,myCash,mySpendings,myHomeDist,myTendencyToVote){
 		this.popID = myPopID;
 		this.socialStratum = mySocialStratum;
 		this.partyAffiliation = myPartyAffiliation;
@@ -45,6 +50,7 @@ class Pop{
 		this.income=myIncome;
 		this.spending=mySpendings;
 		this.homeDist = myHomeDist;
+		this.tendencyToVote = myTendencyToVote;
 	}
 	reportID(){
 		var id = this.popID;
@@ -108,19 +114,19 @@ function generateInitialPops(){
 		for (var k=0;k<dist[i][0];k++){			
 			var stratum = 0;
 			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 0 + "" + k;
-			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i);
+			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral());
 			globalPopulation.push(popObject);
 		}
 		for (var k=0;k<dist[i][1];k++){			
 			var stratum = 1;
 			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 1 + "" + k;
-			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i);
+			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral());
 			globalPopulation.push(popObject);
 		}	
 		for (var k=0;k<dist[i][2];k++){			
 			var stratum = 2;
 			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 2 + "" + k;
-			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i);
+			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral());
 			globalPopulation.push(popObject);
 		}						
 	}
