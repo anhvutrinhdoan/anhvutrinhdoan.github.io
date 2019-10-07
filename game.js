@@ -2,6 +2,8 @@
 
 var startingpoliticalpower = 100;
 
+
+
 //DEMOGRAPHICS
 var districtclicked = 0;
 
@@ -22,6 +24,7 @@ var demographics = [0.15,0.25,0.30,0.20,0.10];
 
 //POLITICAL STUFF
 var partyAffiliation = ["Democrat","Republican"];
+var partyColor = ["blue","red"];
 var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.51,0.49];
 var partyWeightsForLowerClass = [0.65,0.35];
@@ -225,7 +228,7 @@ function randomizeStartingCash(stratum){
 		return Math.floor(Math.random()*10);
 	}
 }
-
+//POPUP WINDOW CONTROL
 function popupwindow(n){
 	if (districtclicked == 0){
 		var makeMyPopup = document.createElement("div");
@@ -290,6 +293,7 @@ function closepopupwindow_main(){
 function closeanypopupwindow(){
 	document.querySelectorAll(".popupwindow").forEach(e => e.parentNode.removeChild(e));
 }
+//DATA AND FORMATTING
 
 function dataLoader(n){	
 	var dataLabels=[['Party','Percentage of Vote']];
@@ -367,4 +371,16 @@ function dragElement(elmnt) {
     document.onmouseup = null;
     document.onmousemove = null;
   }
+}
+
+function politicalMapMode(){
+	for(var i = 0; i<dist.length;i++){	
+		var poll = globalDistrictContainer[n].reportVotes();
+		var sum = 
+		for(var x=0;x<poll.length-1;x++){
+			percentages.push();
+		}
+		
+		document.getElementByID(i).style.backgroundColor=colorpalette;
+	}
 }
