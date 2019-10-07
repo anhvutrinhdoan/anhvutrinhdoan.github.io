@@ -21,7 +21,7 @@ body{
 	left:24px;
 	position:fixed;
 }
-#party{
+.party{
 	width: 55px;
 	height: 16px;
 	background-color: #e0e0e0;
