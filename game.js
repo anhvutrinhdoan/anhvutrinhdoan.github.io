@@ -1,5 +1,7 @@
 //DEFINES
 
+var startingpoliticalpower = 100;
+
 //DEMOGRAPHICS
 var districtclicked = 0;
 

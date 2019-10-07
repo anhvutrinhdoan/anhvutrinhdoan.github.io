@@ -2,21 +2,33 @@ body{
 	font: 14px Helvetica;
 }
 .frame{
-	border-width: 16px;
-	border-style:solid;
-	border-color: gray;
-	width: 97%;
-	height: 92%;
+	outline: 16px solid gray;
+    outline-offset: -16px;
+	width: 100%;
+	height: 100%;
 	position: fixed;
+	z-index:1;
+	left:0px;
+	top:0px;
 	background-color: #b3ecff;
+	margin:0px;
 }
 .nation{
 	width: 55px;
 	height: 16px;
 	background-color: #e0e0e0;
-	top:8px;
+	top:0px;
 	left:24px;
 	position:fixed;
+}
+#party{
+	width: 55px;
+	height: 16px;
+	background-color: #e0e0e0;
+	top:0px;
+	left:80px;
+	position:fixed;
+	text-align:center;
 }
 .menuItem{
 	cursor:default;
@@ -73,7 +85,19 @@ body{
     height:200px;
 }
 
+#resources{
+	position:absolute;
+	z-index:0;
+	height: 16px;
+	background-color: #e0e0e0;
+	top:16px;
+	width:90%;
+	left:24px;
+}
 
-#main{}
+#main{
+	position:absolute;
+	z-index:-1;
+}
 
 #mydiv {}
