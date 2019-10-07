@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Political Simulator</title>
+    <title>By Consent of the Governed</title>
 	<script src="game.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		google.charts.load('current', {'packages':['corechart']});
+	</script>
 	<link rel="stylesheet" type="text/css" href="game.css">
 	<link rel="stylesheet" type="text/css" href="districts.css">
   </head>
-  <body>
-	
+  <body onload="generateInitialPops()">	
 	<div class="frame" id="main" onclick ="closepopupwindow_main()"></div>	
 	<div class="nation menuItem">NATION</div>
 	<div class="district1 districts" onclick="popupwindow(1);"></div>

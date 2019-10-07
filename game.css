@@ -35,13 +35,21 @@ body{
 	z-index: 9;
 	background-color: #f1f1f1;
 	border: 1px solid #d3d3d3;
-	width: 400px;
+	width: 500px;
 	height: 300px;
 	top:20%;
 	left: 30%;
 	text-align: left;
 	padding: 20px;
 }
+#piechart {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+    width:250px;
+    height:200px;
+}
+
 
 #main{}
 

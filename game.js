@@ -1,18 +1,32 @@
+//DEFINES
+
+//DEMOGRAPHICS
 var districtclicked = 0;
+
+//slot 1: upper class, slot 2: middle class, slot 3: lower-class
 var pops = [25,45,15];
 var dist = [[2,10,13],
 			[4,14,27],
 			[0,2,13]];
+//arrays that contain the pops and districts			
+var globalPopulation = new Array();
+var globalDistrictContainer = new Array();
+//ages are 0-18, 19-35, 36-55, 56-66, 67+
+var demographics = [0.15,0.25,0.30,0.20,0.10];
 
+//POLITICAL STUFF
 var partyAffiliation = ["Democrat","Republican"];
 var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.52,0.48];
 var partyWeightsForLowerClass = [0.7,0.3];
 
+//ECONOMIC STUFF
 var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
 var basePopDemand =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+
+//GAME CODE
 class Pop{
-	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,myAnger,myDemands[],myModifiers[]){
+	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,myAnger,myDemands,myModifiers,myIncome,myCash,mySpendings,myHomeDist){
 		this.popID = myPopID;
 		this.socialStratum = mySocialStratum;
 		this.partyAffiliation = myPartyAffiliation;
@@ -23,8 +37,58 @@ class Pop{
 		this.individualism = myIndividualism;
 		this.politicalPower = myPoliticalPower;
 		this.anger = myAnger;
-		this.demands = myDemands[];
-		this.modifiers=myModifiers[];
+		this.demands = myDemands;
+		this.modifiers=myModifiers;
+		this.cash=myCash;
+		this.income=myIncome;
+		this.spending=mySpendings;
+		this.homeDist = myHomeDist;
+	}
+	reportID(){
+		var id = this.popID;
+		return id;
+	}
+	reportHomeDist(){
+		var home = this.homeDist;
+		return home;
+	}
+	reportPartyAllegiance(){
+		var partyAllegiance = this.partyAffiliation;
+		return partyAllegiance;
+	}
+	addCash(money){
+		this.cash += money;
+	}
+}
+
+class District{
+	constructor(myDistID,myPops){
+		this.districtID = myDistID;
+		this.popsInhabiting = myPops;
+	}
+	reportID(){
+		var id = this.districtID;
+		return id;
+	}
+	reportPops(){
+		var pops = this.popsInhabiting;
+		return pops;
+	}
+	reportVotes(){
+		var localPartyRegistry=[];
+		for(var p=0;p<partyAffiliation.length;p++){
+			//for every pop in district...
+			var counter = 0;
+			for (var d=0;d<this.popsInhabiting.length;d++){
+				//...if pop reports party affiliation 'x', look through list of parties for 'x', then add 1 to tally for that party
+				//Poll the pop. If the pop's party is the same as the x'th party in the list of all parties, add 1 to that count				
+				if(this.popsInhabiting[d][0].reportPartyAllegiance()==partyAffiliation[p]){
+					counter++;					
+				}	
+			}
+			localPartyRegistry.push(counter);			
+		}
+		return localPartyRegistry;
 	}
 }
 
@@ -36,16 +100,47 @@ class Party{
 //Look through all districts. For each district, generate a new pop object for each social stratum
 function generateInitialPops(){
 	//Iterate through every district
-	for (var i=0; i < dist.length;i++){
-		//Iterate through every stratum of the district
-		for (var n=0;n<2;n++){
-			var stratum = n;
-			var newlymadePop = new Pop(i,stratum,randomizePartyAffiliation(stratum),);
-		}		
+	for (var i=0; i < dist.length;i++){		
+		//Iterate through each pop stratum in the n'th district
+		//Iterate through every pop in that stratum
+		for (var k=0;k<dist[i][0];k++){			
+			var stratum = 0;
+			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 0 + "" + k;
+			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i);
+			globalPopulation.push(popObject);
+		}
+		for (var k=0;k<dist[i][1];k++){			
+			var stratum = 1;
+			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 1 + "" + k;
+			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i);
+			globalPopulation.push(popObject);
+		}	
+		for (var k=0;k<dist[i][2];k++){			
+			var stratum = 2;
+			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 2 + "" + k;
+			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i);
+			globalPopulation.push(popObject);
+		}						
 	}
+	populateDistricts();
+}		
+//Initialize game state with all districts assigned pops
+function populateDistricts(){
+	for (var n=0;n<dist.length;n++){
+		//find all pops with home id equal to the district number
+		var copier = [];
+		for(var x=0;x<globalPopulation.length;x++){
+			if (n==globalPopulation[x].reportHomeDist()){
+				copier.push(globalPopulation.slice(x,x+1));
+			}
+		}
+		var newDistrict = new District(n,copier);
+		globalDistrictContainer.push(newDistrict);		
+	}
+	//clear it out now that the districts are populated
+	globalPopulation = [];
 }
-
-
+	
 //Looping through a weighted random array. Given weights returns the i'th entry of the array
 
 function loopArray(anArray){
@@ -62,38 +157,66 @@ function loopArray(anArray){
 	}
 }
 
-//Randomly generate party affiliations
+//Randomly generate party affiliations for an individual pop
 function randomizePartyAffiliation(stratum){
 	if(stratum ==0){
-		var gen = Math.random();
-		if (gen < partyWeightsForUpperClass[0]){
-			return partyAffiliation[0];
-		}
-		else{
-			return partyAffiliation[1];
-		}		
+		var gen = loopArray(partyWeightsForUpperClass);		
+		return partyAffiliation[gen];
 	}
-	if(stratum==1){
-		var gen = Math.random();
-		if (gen < partyWeightsForMiddleClass[0]){
-			return partyAffiliation[0];
-		}
-		else{
-			return partyAffiliation[1];
-		}	
+	if(stratum ==1){
+		var gen = loopArray(partyWeightsForMiddleClass);		
+		return partyAffiliation[gen];
 	}
-	if(stratum==2){
-		var gen = Math.random();
-		if (gen < partyWeightsForLowerClass[0]){
-			return partyAffiliation[0];
-		}
-		else{
-			return partyAffiliation[1];
-		}
+	if(stratum ==2){
+		var gen = loopArray(partyWeightsForLowerClass);		
+		return partyAffiliation[gen];
 	}
 }
 
+//Randomly generate ages for an individual pop
+function randomizeAge(){
+  var randomAge = loopArray(demographics);
+  if (randomAge==0){
+	  var thisPopsAge = Math.floor(Math.random() * Math.floor(18));
+	  return thisPopsAge;
+  }
+  if (randomAge==1){
+	  return Math.floor(Math.random() * 16) + 19;
+  }
+  if (randomAge==2){
+	  return Math.floor(Math.random() * 19)+ 36;
+  }
+  if (randomAge==3){
+	  return Math.floor(Math.random() * 10) + 56;
+  }
+  if (randomAge==4){
+	  return Math.floor(Math.random() * 100) + 67;
+  }
+}
 
+//Randomly generate job industry for each individual pop
+function randomizeJobIndustry(){
+	var x = Math.floor(Math.random()*17);
+	return jobIndustry[x];	
+}
+
+//Random math
+function randomizeGeneral(){
+	return Math.random();
+}
+
+//Randomize cash
+function randomizeStartingCash(stratum){
+	if (stratum==0){
+		return Math.floor(Math.random()*100);
+	}
+	if (stratum==1){
+		return Math.floor(Math.random()*35);
+	}
+	if (stratum==2){
+		return Math.floor(Math.random()*10);
+	}
+}
 
 function popupwindow(n){
 	if (districtclicked == 0){
@@ -102,7 +225,11 @@ function popupwindow(n){
 		makeMyPopup.setAttribute("id",n);
 		makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
 		document.getElementById("main").appendChild(makeMyPopup);	
+		var subElement = document.createElement("div");
+		subElement.setAttribute("id","piechart");
+		document.getElementById(n).appendChild(subElement);		
 		districtclicked = n;
+		drawChart(dataLoader(n-1));
 	}	
 	else{
 		closepopupwindow(districtclicked);
@@ -111,7 +238,11 @@ function popupwindow(n){
 		makeMyPopup.setAttribute("id",n);
 		makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
 		document.getElementById("main").appendChild(makeMyPopup);	
+		var subElement = document.createElement("div");
+		subElement.setAttribute("id","piechart");
+		document.getElementById(n).appendChild(subElement);
 		districtclicked = n;
+		drawChart(dataLoader(n-1));
 	}
 }
 
@@ -123,4 +254,38 @@ function closepopupwindow_main(){
 	var removeMyElement = document.getElementById(districtclicked);
 	document.getElementById(districtclicked).parentElement.removeChild(removeMyElement);	
 	districtclicked =0;
+}
+
+function dataLoader(n){	
+	var dataLabels=[['Party','Percentage of Vote']];
+	var votePoller=globalDistrictContainer[n].reportVotes();
+	for(var z=0;z<partyAffiliation.length;z++){
+		dataLabels.push([partyAffiliation[z],votePoller[z]]);
+	}
+	return dataLabels;
+}
+
+function drawChart(pushedArray) {
+	var data = google.visualization.arrayToDataTable(pushedArray);
+	var options = {
+	  pieHole: 0.4,
+	  fontsize:6,
+	   pieSliceTextStyle: {
+            color: 'black'
+        },
+	  legend:{position:'bottom',
+		textstyle:{ color: '#000000',
+		  fontSize: 8,
+		  bold: true,
+		  italic: false }
+	  },
+	  backgroundColor:'#f1f1f1',
+	  chartArea:{
+			left:30,
+			top: 20,
+			width: '100%'
+		},	  
+	};
+	var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+	chart.draw(data, options);
 }
