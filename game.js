@@ -221,26 +221,50 @@ function randomizeStartingCash(stratum){
 function popupwindow(n){
 	if (districtclicked == 0){
 		var makeMyPopup = document.createElement("div");
+		var makeMyPopupHeader = document.createElement("div");
+		var makeCloseBox = document.createElement("div");
+		
 		makeMyPopup.className = "popupwindow";
 		makeMyPopup.setAttribute("id",n);
 		makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
 		document.getElementById("main").appendChild(makeMyPopup);	
 		var subElement = document.createElement("div");
 		subElement.setAttribute("id","piechart");
-		document.getElementById(n).appendChild(subElement);		
+		
+		makeMyPopupHeader.setAttribute("id","header");
+		makeMyPopupHeader.onclick = dragElement(document.getElementById(n));
+		makeCloseBox.setAttribute("id","xbutton");
+		makeCloseBox.onclick = closeanypopupwindow;
+		makeCloseBox.innerHTML = "X";
+		document.getElementById(n).appendChild(makeMyPopupHeader);	
+		document.getElementById(n).appendChild(subElement);	
+		document.getElementById(n).appendChild(makeCloseBox);
+		
 		districtclicked = n;
 		drawChart(dataLoader(n-1));
 	}	
 	else{
-		closepopupwindow(districtclicked);
+		closeanypopupwindow();
 		var makeMyPopup = document.createElement("div");
+		var makeMyPopupHeader = document.createElement("div");
+		var makeCloseBox = document.createElement("div");
+		
 		makeMyPopup.className = "popupwindow";
 		makeMyPopup.setAttribute("id",n);
 		makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
 		document.getElementById("main").appendChild(makeMyPopup);	
 		var subElement = document.createElement("div");
 		subElement.setAttribute("id","piechart");
-		document.getElementById(n).appendChild(subElement);
+		
+		makeMyPopupHeader.setAttribute("id","header");
+		makeMyPopupHeader.onclick = dragElement(document.getElementById(n));
+		makeCloseBox.setAttribute("id","xbutton");
+		makeCloseBox.onclick = closeanypopupwindow;
+		makeCloseBox.innerHTML = "X";
+		document.getElementById(n).appendChild(makeMyPopupHeader);	
+		document.getElementById(n).appendChild(subElement);	
+		document.getElementById(n).appendChild(makeCloseBox);
+		
 		districtclicked = n;
 		drawChart(dataLoader(n-1));
 	}
@@ -254,6 +278,9 @@ function closepopupwindow_main(){
 	var removeMyElement = document.getElementById(districtclicked);
 	document.getElementById(districtclicked).parentElement.removeChild(removeMyElement);	
 	districtclicked =0;
+}
+function closeanypopupwindow(){
+	document.querySelectorAll(".popupwindow").forEach(e => e.parentNode.removeChild(e));
 }
 
 function dataLoader(n){	
@@ -288,4 +315,48 @@ function drawChart(pushedArray) {
 	};
 	var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 	chart.draw(data, options);
+}
+
+// Make the DIV element draggable:
+
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
 }

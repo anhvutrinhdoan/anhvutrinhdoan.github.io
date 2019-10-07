@@ -40,8 +40,29 @@ body{
 	top:20%;
 	left: 30%;
 	text-align: left;
-	padding: 20px;
+	padding-top: 20px;
 }
+#header {
+	position:absolute;
+	background-color:#d4d4d4;
+	padding: 10px;
+	cursor: move;
+	z-index: 10;
+	top:0px;
+	left:0px;
+	width:460px;
+	height:2px;
+}
+#xbutton{
+	position:absolute;
+	cursor:default;
+	top:1px;
+	right:0px;
+	width:20px;
+	height:10px;
+	text-align:center;
+}
+
 #piechart {
     position: absolute;
     top: 15px;
