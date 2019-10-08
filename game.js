@@ -243,7 +243,7 @@ function popupwindow(n){
 		subElement.setAttribute("id","piechart");
 		
 		makeMyPopupHeader.setAttribute("id","header");
-		makeMyPopupHeader.onclick = dragElement(document.getElementById(n));
+		makeMyPopupHeader.onclick = dragElement(document.getElementById("dist"+n));
 		makeCloseBox.setAttribute("id","xbutton");
 		makeCloseBox.onclick = closeanypopupwindow;
 		makeCloseBox.innerHTML = "X";
@@ -268,7 +268,7 @@ function popupwindow(n){
 		subElement.setAttribute("id","piechart");
 		
 		makeMyPopupHeader.setAttribute("id","header");
-		makeMyPopupHeader.onclick = dragElement(document.getElementById(n));
+		makeMyPopupHeader.onclick = dragElement(document.getElementById("dist"+n));
 		makeCloseBox.setAttribute("id","xbutton");
 		makeCloseBox.onclick = closeanypopupwindow;
 		makeCloseBox.innerHTML = "X";
