@@ -1,7 +1,7 @@
 //DEFINES
 
 var startingpoliticalpower = 100;
-
+var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
 
 
 //DEMOGRAPHICS
@@ -24,7 +24,7 @@ var demographics = [0.15,0.25,0.30,0.20,0.10];
 
 //POLITICAL STUFF
 var partyAffiliation = ["Democrat","Republican"];
-var partyColor = ["blue","red"];
+var partyColor = ['#1e60c9','#c91e1e'];
 var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.51,0.49];
 var partyWeightsForLowerClass = [0.65,0.35];
@@ -373,14 +373,25 @@ function dragElement(elmnt) {
   }
 }
 
+//color the districts with the color of the party that has the highest proportion of voters
 function politicalMapMode(){
 	for(var i = 0; i<dist.length;i++){	
-		var poll = globalDistrictContainer[n].reportVotes();
-		var sum = 
-		for(var x=0;x<poll.length-1;x++){
-			percentages.push();
-		}
-		
-		document.getElementByID(i).style.backgroundColor=colorpalette;
+		var poll = globalDistrictContainer[i].reportVotes();
+		var addall = poll.reduce(sum);
+		var container = [];
+		for (var q=0;q<partyAffiliation.length;q++){
+			container.push(poll[q]/addall);
+		}		
+		document.getElementById(i).style.backgroundColor=partyColor[container.indexOf(Math.max(...container))];
 	}
+}
+
+function normalMapMode(){
+	for(var i = 0; i<dist.length;i++){
+		document.getElementById(i).style.backgroundColor=distsDefaultColors[i];
+	}
+}
+
+function sum(a,b){
+	return a+b;
 }
