@@ -2,7 +2,7 @@
 
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
-
+var playerCurrentParty = "noparty";
 
 //DEMOGRAPHICS
 var districtclicked = 0;
@@ -32,7 +32,24 @@ var partyWeightsForLowerClass = [0.65,0.35];
 //ECONOMIC STUFF
 var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
 var basePopDemand =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-var baseJobIndustryProportionOfProfitsToStratum = [[0.05,0.1,0.85],[0.1,0.2,0.7],[0.05,0.15,0.8],[0.05,0.15,0.8],[0.15,0.15,0.70],[0.30,0.10,0.60],[0.20,0.15,0.65],[0.10,0.35,0.55],[0.20,0.20,0.60],[0.25,0.25,0.50],[0.30,0.05,0.65],[0.10,0.35,0.55],[0.15,0.15,0.70],[0.01,0.19,0.80],[0.01,0.29,0.70],[0.15,0.35,0.60],[0.30,0.30,0.40],[0.30,0.55,0.15]]
+var baseJobIndustryProportionOfProfitsToStratum = [[0.85, 0.1, 0.05],
+							[0.7, 0.2, 0.1],
+							[0.8, 0.15, 0.05],
+							[0.8, 0.15, 0.05],
+							[0.7, 0.15, 0.15],
+							[0.6, 0.1, 0.3],
+							[0.65, 0.15, 0.2],
+							[0.55, 0.35, 0.1],
+							[0.6, 0.2, 0.2],
+							[0.5, 0.25, 0.25],
+							[0.65, 0.05, 0.3],
+							[0.55, 0.35, 0.1],
+							[0.7, 0.15, 0.15],
+							[0.8, 0.19, 0.01],
+							[0.7, 0.29, 0.01],
+							[0.6, 0.35, 0.15],
+							[0.4, 0.3, 0.3,],
+							[0.15, 0.55, 0.3]];
 
 //GAME CODE
 class Pop{
@@ -255,18 +272,33 @@ function popupwindow(n){
 	drawChart(dataLoader(n-1));
 }
 
-function closepopupwindow(x){	
-	var removeMyElement = document.getElementById(x);
-	document.getElementById(x).parentElement.removeChild(removeMyElement);	
-}
-function closepopupwindow_main(){	
-	var removeMyElement = document.getElementById(districtclicked);
-	document.getElementById(districtclicked).parentElement.removeChild(removeMyElement);	
-	districtclicked =0;
-}
 function closeanypopupwindow(){
 	document.querySelectorAll(".popupwindow").forEach(e => e.parentNode.removeChild(e));
 }
+
+function closepartywindow(){
+	var e = document.getElementById("screen_partycontrol");
+	e.parentNode.removeChild(e);
+}
+//PARTY CONTROL MENU
+
+function openPartyMenu(){
+	var makePartyMenu = document.createElement("div");
+	makePartyMenu.setAttribute("id","screen_partycontrol");
+	var makeMyPopupHeader = document.createElement("div");
+	makeMyPopupHeader.setAttribute("id","header");	
+	var makeCloseBox = document.createElement("div");
+	makeCloseBox.setAttribute("id","xbutton");		
+	makeCloseBox.innerHTML = "X";
+	document.getElementById("main").appendChild(makePartyMenu);
+	document.getElementById("screen_partycontrol").appendChild(makeMyPopupHeader);
+	makeMyPopupHeader.onclick = dragElement(document.getElementById("screen_partycontrol"));
+	makeCloseBox.onclick = closepartywindow;	
+	document.getElementById("screen_partycontrol").appendChild(makeCloseBox);
+	
+	
+}
+
 //DATA AND FORMATTING
 
 function dataLoader(n){	
@@ -368,4 +400,12 @@ function normalMapMode(){
 
 function sum(a,b){
 	return a+b;
+}
+
+//DEBUG FUNCTIONS
+
+function setDefaultParty(string){
+	playerCurrentParty = string;
+	document.getElementById("partyflag").style.backgroundImage="url('party_'+string+'.png')";
+	console.log('party_'+string+'.png');
 }

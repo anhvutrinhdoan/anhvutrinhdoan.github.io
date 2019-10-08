@@ -3,7 +3,7 @@ body{
 }
 .frame{
 	outline: 16px solid gray;
-    outline-offset: -16px;
+    	outline-offset: -16px;
 	width: 100%;
 	height: 100%;
 	position: fixed;
@@ -59,10 +59,10 @@ body{
 	background-color:#d4d4d4;
 	padding: 0px;
 	cursor: move;
-	z-index: 1;
+	z-index: 0;
 	top:0px;
 	left:0px;
-	width:460px;
+	width:100%;
 	height:10px;
 }
 #xbutton{
@@ -78,11 +78,11 @@ body{
 }
 
 #piechart {
-    position: absolute;
-    top: 15px;
-    right: 0px;
-    width:250px;
-    height:200px;
+    	position: absolute;
+    	top: 15px;
+   	right: 0px;
+    	width:250px;
+  	height:200px;
 }
 
 #resources{
@@ -93,6 +93,35 @@ body{
 	top:16px;
 	width:90%;
 	left:24px;
+}
+
+#partyflag{
+	position:absolute;
+	z-index:0;
+	background-color:gray;
+	background-image: url("party_none.png");
+	border:8px solid gray;	
+	width:100px;
+	height:75px;
+	top:31px;
+	left:18px;
+}
+#partyflag_below{
+	position:absolute;
+	z-index:-1;
+	background-color:gray;	
+	width:120px;
+	height:106px;
+	top:16px;
+	left:16px;
+}
+#screen_partycontrol{
+	position:absolute;
+	background-color:#f1f1f1;	
+	top:175px;
+	left:625px;
+	width:400px;
+	height:600px;
 }
 
 #main{
