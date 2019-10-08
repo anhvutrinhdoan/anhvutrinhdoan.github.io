@@ -219,66 +219,40 @@ function randomizeGeneral(){
 //Randomize cash
 function randomizeStartingCash(stratum){
 	if (stratum==0){
-		return Math.floor(Math.random()*100);
+		return Math.floor(Math.random()*100+50);
 	}
 	if (stratum==1){
-		return Math.floor(Math.random()*35);
+		return Math.floor(Math.random()*35+30);
 	}
 	if (stratum==2){
-		return Math.floor(Math.random()*10);
+		return Math.floor(Math.random()*10+10);
 	}
 }
 //POPUP WINDOW CONTROL
 function popupwindow(n){
-	if (districtclicked == 0){
-		var makeMyPopup = document.createElement("div");
-		var makeMyPopupHeader = document.createElement("div");
-		var makeCloseBox = document.createElement("div");
-		
-		makeMyPopup.className = "popupwindow";
-		makeMyPopup.setAttribute("id","dist"+n);
-		makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
-		document.getElementById("main").appendChild(makeMyPopup);	
-		var subElement = document.createElement("div");
-		subElement.setAttribute("id","piechart");
-		
-		makeMyPopupHeader.setAttribute("id","header");
-		makeMyPopupHeader.onclick = dragElement(document.getElementById("dist"+n));
-		makeCloseBox.setAttribute("id","xbutton");
-		makeCloseBox.onclick = closeanypopupwindow;
-		makeCloseBox.innerHTML = "X";
-		document.getElementById("dist"+n).appendChild(makeMyPopupHeader);	
-		document.getElementById("dist"+n).appendChild(subElement);	
-		document.getElementById("dist"+n).appendChild(makeCloseBox);
-		
-		districtclicked = n;
-		drawChart(dataLoader(n-1));
-	}	
-	else{
-		closeanypopupwindow();
-		var makeMyPopup = document.createElement("div");
-		var makeMyPopupHeader = document.createElement("div");
-		var makeCloseBox = document.createElement("div");
-		
-		makeMyPopup.className = "popupwindow";
-		makeMyPopup.setAttribute("id","dist"+n);
-		makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
-		document.getElementById("main").appendChild(makeMyPopup);	
-		var subElement = document.createElement("div");
-		subElement.setAttribute("id","piechart");
-		
-		makeMyPopupHeader.setAttribute("id","header");
-		makeMyPopupHeader.onclick = dragElement(document.getElementById("dist"+n));
-		makeCloseBox.setAttribute("id","xbutton");
-		makeCloseBox.onclick = closeanypopupwindow;
-		makeCloseBox.innerHTML = "X";
-		document.getElementById("dist"+n).appendChild(makeMyPopupHeader);	
-		document.getElementById("dist"+n).appendChild(subElement);	
-		document.getElementById("dist"+n).appendChild(makeCloseBox);
-		
-		districtclicked = n;
-		drawChart(dataLoader(n-1));
-	}
+	closeanypopupwindow();
+	var makeMyPopup = document.createElement("div");
+	var makeMyPopupHeader = document.createElement("div");
+	var makeCloseBox = document.createElement("div");
+	
+	makeMyPopup.className = "popupwindow";
+	makeMyPopup.setAttribute("id","dist"+n);
+	makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
+	document.getElementById("main").appendChild(makeMyPopup);	
+	var subElement = document.createElement("div");
+	subElement.setAttribute("id","piechart");
+	
+	makeMyPopupHeader.setAttribute("id","header");
+	makeMyPopupHeader.onclick = dragElement(document.getElementById("dist"+n));
+	makeCloseBox.setAttribute("id","xbutton");
+	makeCloseBox.onclick = closeanypopupwindow;
+	makeCloseBox.innerHTML = "X";
+	document.getElementById("dist"+n).appendChild(makeMyPopupHeader);	
+	document.getElementById("dist"+n).appendChild(subElement);	
+	document.getElementById("dist"+n).appendChild(makeCloseBox);
+	
+	districtclicked = n;
+	drawChart(dataLoader(n-1));
 }
 
 function closepopupwindow(x){	
