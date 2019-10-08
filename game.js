@@ -236,7 +236,7 @@ function popupwindow(n){
 		var makeCloseBox = document.createElement("div");
 		
 		makeMyPopup.className = "popupwindow";
-		makeMyPopup.setAttribute("id",n);
+		makeMyPopup.setAttribute("id","dist"+n);
 		makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
 		document.getElementById("main").appendChild(makeMyPopup);	
 		var subElement = document.createElement("div");
@@ -247,9 +247,9 @@ function popupwindow(n){
 		makeCloseBox.setAttribute("id","xbutton");
 		makeCloseBox.onclick = closeanypopupwindow;
 		makeCloseBox.innerHTML = "X";
-		document.getElementById(n).appendChild(makeMyPopupHeader);	
-		document.getElementById(n).appendChild(subElement);	
-		document.getElementById(n).appendChild(makeCloseBox);
+		document.getElementById("dist"+n).appendChild(makeMyPopupHeader);	
+		document.getElementById("dist"+n).appendChild(subElement);	
+		document.getElementById("dist"+n).appendChild(makeCloseBox);
 		
 		districtclicked = n;
 		drawChart(dataLoader(n-1));
@@ -261,7 +261,7 @@ function popupwindow(n){
 		var makeCloseBox = document.createElement("div");
 		
 		makeMyPopup.className = "popupwindow";
-		makeMyPopup.setAttribute("id",n);
+		makeMyPopup.setAttribute("id","dist"+n);
 		makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png'/>" + "Working-class pops: " + dist[n-1][2] ;
 		document.getElementById("main").appendChild(makeMyPopup);	
 		var subElement = document.createElement("div");
@@ -272,9 +272,9 @@ function popupwindow(n){
 		makeCloseBox.setAttribute("id","xbutton");
 		makeCloseBox.onclick = closeanypopupwindow;
 		makeCloseBox.innerHTML = "X";
-		document.getElementById(n).appendChild(makeMyPopupHeader);	
-		document.getElementById(n).appendChild(subElement);	
-		document.getElementById(n).appendChild(makeCloseBox);
+		document.getElementById("dist"+n).appendChild(makeMyPopupHeader);	
+		document.getElementById("dist"+n).appendChild(subElement);	
+		document.getElementById("dist"+n).appendChild(makeCloseBox);
 		
 		districtclicked = n;
 		drawChart(dataLoader(n-1));
