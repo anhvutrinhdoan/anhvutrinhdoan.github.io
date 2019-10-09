@@ -23,7 +23,7 @@ var globalDistrictContainer = new Array();
 var demographics = [0.15,0.25,0.30,0.20,0.10];
 
 //POLITICAL STUFF
-var partyAffiliation = ["Democrat","Republican"];
+var partyAffiliation = ["Democratic","Republican"];
 var partyColor = ['#1e60c9','#c91e1e'];
 var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.51,0.49];
@@ -291,12 +291,11 @@ function openPartyMenu(){
 	makeCloseBox.setAttribute("id","xbutton");		
 	makeCloseBox.innerHTML = "X";
 	document.getElementById("main").appendChild(makePartyMenu);
+	document.getElementById("screen_partycontrol").innerHTML= playerCurrentParty + " Party" + "<br><br>" + "<img src=" + "party_" + playerCurrentParty + ".png>" + "<br>";
 	document.getElementById("screen_partycontrol").appendChild(makeMyPopupHeader);
 	makeMyPopupHeader.onclick = dragElement(document.getElementById("screen_partycontrol"));
 	makeCloseBox.onclick = closepartywindow;	
-	document.getElementById("screen_partycontrol").appendChild(makeCloseBox);
-	
-	
+	document.getElementById("screen_partycontrol").appendChild(makeCloseBox);	
 }
 
 //DATA AND FORMATTING
@@ -404,8 +403,9 @@ function sum(a,b){
 
 //DEBUG FUNCTIONS
 
-function setDefaultParty(string){
-	playerCurrentParty = string;
-	document.getElementById("partyflag").style.backgroundImage="url('party_'+string+'.png')";
-	console.log('party_'+string+'.png');
+function setDefaultParty(n){
+	playerCurrentParty = partyAffiliation[n];
+	var string = "party_"+partyAffiliation[n]+".png";	
+	document.getElementById("partyflag").style.backgroundImage='url('+string+')';
+	console.log('party_'+partyAffiliation[n]+'.png');
 }
