@@ -3,6 +3,7 @@
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
 var playerCurrentParty = "noparty";
+var partyMenuSelected = false;
 
 //DEMOGRAPHICS
 var districtclicked = 0;
@@ -279,23 +280,30 @@ function closeanypopupwindow(){
 function closepartywindow(){
 	var e = document.getElementById("screen_partycontrol");
 	e.parentNode.removeChild(e);
+	partyMenuSelected=false;
 }
 //PARTY CONTROL MENU
 
 function openPartyMenu(){
-	var makePartyMenu = document.createElement("div");
-	makePartyMenu.setAttribute("id","screen_partycontrol");
-	var makeMyPopupHeader = document.createElement("div");
-	makeMyPopupHeader.setAttribute("id","header");	
-	var makeCloseBox = document.createElement("div");
-	makeCloseBox.setAttribute("id","xbutton");		
-	makeCloseBox.innerHTML = "X";
-	document.getElementById("main").appendChild(makePartyMenu);
-	document.getElementById("screen_partycontrol").innerHTML= playerCurrentParty + " Party" + "<br><br>" + "<img src=" + "party_" + playerCurrentParty + ".png>" + "<br>";
-	document.getElementById("screen_partycontrol").appendChild(makeMyPopupHeader);
-	makeMyPopupHeader.onclick = dragElement(document.getElementById("screen_partycontrol"));
-	makeCloseBox.onclick = closepartywindow;	
-	document.getElementById("screen_partycontrol").appendChild(makeCloseBox);	
+	if(partyMenuSelected==false){
+		var makePartyMenu = document.createElement("div");
+		makePartyMenu.setAttribute("id","screen_partycontrol");
+		var makeMyPopupHeader = document.createElement("div");
+		makeMyPopupHeader.setAttribute("id","header");	
+		var makeCloseBox = document.createElement("div");
+		makeCloseBox.setAttribute("id","xbutton");		
+		makeCloseBox.innerHTML = "X";
+		var makePartyMenuDesc = document.createElement("div");
+		makePartyMenuDesc.setAttribute("id","screen_partycontrol_party_desc");
+		document.getElementById("main").appendChild(makePartyMenu);
+		document.getElementById("screen_partycontrol").innerHTML= playerCurrentParty + " Party" + "<br><br>" + "<img src=" + "party_" + playerCurrentParty + ".png>" + "<br>";
+		document.getElementById("screen_partycontrol").appendChild(makeMyPopupHeader);
+		makeMyPopupHeader.onclick = dragElement(document.getElementById("screen_partycontrol"));
+		makeCloseBox.onclick = closepartywindow;	
+		document.getElementById("screen_partycontrol").appendChild(makeCloseBox);
+		document.getElementById("screen_partycontrol").appendChild(makePartyMenuDesc);	
+		partyMenuSelected = true;
+	}	
 }
 
 //DATA AND FORMATTING

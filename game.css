@@ -118,11 +118,21 @@ body{
 #screen_partycontrol{
 	position:absolute;
 	background-color:#f1f1f1;	
-	top:175px;
+	top:70px;
 	left:625px;
 	width:400px;
-	height:50%;
+	height:70%;
 	padding:20px;
+}
+
+#screen_partycontrol_party_desc{
+	position:absolute;
+	background-color:gray;
+	top:20px;
+	right:10px;
+	width:150px;
+	height:100px;
+	padding:5px;
 }
 
 #main{
