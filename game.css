@@ -21,6 +21,9 @@ body{
 	left:24px;
 	position:fixed;
 }
+.pop:hover{
+	outline: 1px solid yellow;
+}
 .party{
 	width: 55px;
 	height: 16px;
@@ -44,15 +47,24 @@ body{
 }
 .popupwindow{
 	position: absolute;
-	z-index: 2;
+	z-index: 999;
 	background-color: #f1f1f1;
 	border: 1px solid #d3d3d3;
 	width: 500px;
 	height: 300px;
-	top:20%;
-	left: 30%;
+	top:150px;
+	left: 550px;
 	text-align: left;
 	padding-top: 20px;
+	padding-left: 10px;
+}
+#popupwindow_actions{
+	position:absolute;
+	background-color:#c4c4c4;
+	width: 480px;
+	height: 100px;
+	bottom: 10px;
+	left: 10px;
 }
 #header {
 	position:absolute;
@@ -118,6 +130,7 @@ body{
 #screen_partycontrol{
 	position:absolute;
 	background-color:#f1f1f1;	
+	background-image:url("party_none.png");
 	top:70px;
 	left:625px;
 	width:400px;
@@ -133,6 +146,38 @@ body{
 	width:150px;
 	height:100px;
 	padding:5px;
+	font:9px  Helvetica;
+}
+#screen_partycontrol_party_modifiers{
+	position:absolute;
+	background-color:#dbdbdb;
+	top:20px;
+	right:180px;
+	width:100px;
+	height:100px;
+	padding:5px;
+	font:9px  Helvetica;
+}
+
+#screen_partycontrol_party_leaders{
+	position:absolute;
+	background-color:gray;
+	top:140px;
+	right:10px;
+	width:400px;
+	height:50px;
+	padding:5px;
+	font:9px  Helvetica;
+}
+#screen_partycontrol_party_platforms{
+	position:absolute;
+	background-color:#c9c9c9;
+	top:210px;
+	right:10px;
+	width:400px;
+	height:220px;
+	padding:5px;
+	font:9px  Helvetica;
 }
 
 #main{
