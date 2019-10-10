@@ -467,6 +467,7 @@ function popPyramid(pushedArray){
 			top:20,
 		},
 		backgroundColor:'#f1f1f1',
+		colors:['#fcba03','#80fc03'],
 		title:'Age distribution',
 		isStacked: true,
 		hAxis: {
