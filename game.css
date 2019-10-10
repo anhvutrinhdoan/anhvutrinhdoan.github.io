@@ -93,8 +93,18 @@ body{
     	position: absolute;
     	top: 15px;
    	right: 0px;
-    	width:250px;
+    	width:290px;
   	height:200px;
+			border:2px solid gray;
+}
+#popchart {
+    	position: absolute;
+			z-index: 1;
+    	top: 210px;
+   		right: 0px;
+    	width:290px;
+			border:2px solid gray;
+  	height:100px;
 }
 
 #resources{
@@ -112,7 +122,7 @@ body{
 	z-index:0;
 	background-color:gray;
 	background-image: url("party_none.png");
-	border:8px solid gray;	
+	border:8px solid gray;
 	width:100px;
 	height:75px;
 	top:31px;
@@ -121,7 +131,7 @@ body{
 #partyflag_below{
 	position:absolute;
 	z-index:-1;
-	background-color:gray;	
+	background-color:gray;
 	width:120px;
 	height:106px;
 	top:16px;
@@ -129,7 +139,7 @@ body{
 }
 #screen_partycontrol{
 	position:absolute;
-	background-color:#f1f1f1;	
+	background-color:#f1f1f1;
 	background-image:url("party_none.png");
 	top:70px;
 	left:625px;

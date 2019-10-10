@@ -21,6 +21,7 @@ var dist = [[2,10,13],
 var globalPopulation = new Array();
 var globalDistrictContainer = new Array();
 //ages are 0-18, 19-35, 36-55, 56-66, 67+
+var ageranges=["0-18", "19-35", "36-55", "56-66", "67+"];
 var demographics = [0.15,0.25,0.30,0.20,0.10];
 var sexRatio = [0.49,0.51]; //female 49%, male 51%
 var sexes=["female","male"];
@@ -99,6 +100,10 @@ class Pop{
 	addCash(money){
 		this.cash += money;
 	}
+	howToVote(){
+		var modifierList = modifiers;
+
+	}
 }
 
 class District{
@@ -145,6 +150,48 @@ class District{
 			localSexRegistry.push(counter);
 		}
 		return localSexRegistry;
+	}
+	reportPopPyramid(){
+		//first five slots = women, last five slots = men
+		var a = [0,0,0,0,0,0,0,0,0,0]
+		//For every pop in this district, get the pop's age and sex. If the pop's age is between certain values, add 1 to count, then gather
+		//all arrays and output one final array
+		for (var n=0;n<this.popsInhabiting.length;n++){
+			var age = this.popsInhabiting[n][0].reportAge();
+			var sex = this.popsInhabiting[n][0].reportSex();
+			if (age<18 && sex=="male"){
+				a[5]++;
+			}
+			if (age>=18 && age<36 && sex=="male"){
+				a[6]++;
+			}
+			if (age>=36 && age<56 && sex=="male"){
+				a[7]++;
+			}
+			if (age>=56 && age<66 && sex=="male"){
+				a[8]++;
+			}
+			if (age>=66 && sex=="male"){
+				a[9]++;
+			}
+			if (age<18 && sex=="female"){
+				a[0]--;
+			}
+			if (age>=18 && age<36 && sex=="female"){
+				a[1]--;
+			}
+			if (age>=36 && age<56 && sex=="female"){
+				a[2]--;
+			}
+			if (age>=56 && age<66 && sex=="female"){
+				a[3]--;
+			}
+			if (age>=66 && sex=="female"){
+				a[4]--;
+			}
+		}
+		var popPyramidArray = [['Age', 'Male', 'Female'],['0-18 years',a[5],a[0]],['19-35 years',a[6],a[1]],['36-55 years',a[7],a[2]],['56-65 years',a[8],a[3]],['66+ years',a[9],a[4]]];
+		return popPyramidArray;
 	}
 }
 
@@ -293,6 +340,8 @@ function popupwindow(n){
 	document.getElementById("main").appendChild(makeMyPopup);
 	var subElement = document.createElement("div");
 	subElement.setAttribute("id","piechart");
+	var subElement2 = document.createElement("div");
+	subElement2.setAttribute("id","popchart");
 
 	makeMyPopupHeader.setAttribute("id","header");
 	makeMyPopupHeader.onclick = dragElement(document.getElementById("dist"+n));
@@ -304,12 +353,14 @@ function popupwindow(n){
 
 	document.getElementById("dist"+n).appendChild(makeMyPopupHeader);
 	document.getElementById("dist"+n).appendChild(subElement);
+	document.getElementById("dist"+n).appendChild(subElement2);
 	document.getElementById("dist"+n).appendChild(makeCloseBox);
 	document.getElementById("dist"+n).appendChild(makeActionMenu);
 
 	districtclicked = n;
 	var datalabels = ['Party','Percentage of Vote'];
 	drawChart(dataLoader(datalabels,n-1,0));
+	popPyramid(globalDistrictContainer[n-1].reportPopPyramid());
 }
 
 function closeanypopupwindow(){
@@ -373,13 +424,6 @@ function dataLoader(labels,n,x){
 				dataLabels.push([partyAffiliation[z],votePoller[z]]);
 			}
 			break;
-			//counting male or female pops
-		case 1:
-			var sexPoller=globalDistrictContainer[n].reportSexes();
-			for(var z=0;z<sexes.length;z++){
-				dataLabels.push([sexes[z],sexPoller[z]]);
-			}
-			break;
 	}
 	return dataLabels;
 }
@@ -413,24 +457,33 @@ function drawChart(pushedArray) {
 function popPyramid(pushedArray){
 	//var data = new google.visualization.DataTable();
 
-	var dataArray = [['Age', 'Female', 'Male']];
+	var dataArray = pushedArray;
 
 	var data = google.visualization.arrayToDataTable(dataArray);
-	var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+	var chart = new google.visualization.BarChart(document.getElementById('popchart'));
 	var options = {
-	isStacked: true,
-	hAxis: {
-	  format: ';'
-	},
+		chartArea:{
+			left:90,
+			top:20,
+		},
+		backgroundColor:'#f1f1f1',
+		title:'Age distribution',
+		isStacked: true,
+		hAxis: {
+    	textPosition:'none'
+		},
 		vAxis: {
-		  direction: -1
+			  direction: -1
+		},
+		legend:{
+			position: 'none'
 		}
 	};
 	var formatter = new google.visualization.NumberFormat({
 		pattern: ';'
 	});
 	formatter.format(data, 2)
-	popPyramid.draw(data, options);
+	chart.draw(data, options);
 }
 
 // Make the DIV element draggable:
