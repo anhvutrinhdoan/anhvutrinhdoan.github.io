@@ -367,7 +367,7 @@ function popupwindow(n){
 
 	makeMyPopup.className = "popupwindow";
 	makeMyPopup.setAttribute("id","dist"+n);
-	makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png' class='pop' onclick='individualPopInfo(districtclicked-1,0)'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png' class='pop' onclick='individualPopInfo(districtclicked-1,1)'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png' class='pop'onclick='individualPopInfo(districtclicked-1,2)'/>" + "Working-class pops: " + dist[n-1][2] ;
+	makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png' class='pop0' onclick='individualPopInfo(districtclicked-1,0)'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png' class='pop1' onclick='individualPopInfo(districtclicked-1,1)'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png' class='pop2'onclick='individualPopInfo(districtclicked-1,2)'/>" + "Working-class pops: " + dist[n-1][2] ;
 	document.getElementById("main").appendChild(makeMyPopup);
 	var subElement = document.createElement("div");
 	subElement.setAttribute("id","piechart");
@@ -444,10 +444,10 @@ function individualPopInfo(n,s){
 		var makeCloseBox = document.createElement("div");
 		makeCloseBox.setAttribute("id","xbutton");
 		makeCloseBox.innerHTML = "X";
-		makeCloseBox.onclick = closepopmenu;		
-		
+		makeCloseBox.onclick = closepopmenu;
+
 		document.getElementById("main").appendChild(makePopMenu);
-		makeMyPopupHeader.setAttribute("id","header");		
+		makeMyPopupHeader.setAttribute("id","header");
 		document.getElementById("indiv_popinfo").appendChild(makeMyPopupHeader);
 		makeMyPopupHeader.onclick = dragElement(document.getElementById("indiv_popinfo"));
 		document.getElementById("indiv_popinfo").appendChild(makeCloseBox);
@@ -495,7 +495,7 @@ function drawChart(pushedArray) {
 		height:220,
 		pieSliceTextStyle:{fontSize:9,color:'black'},
 	  pieHole: 0.4,
-	   
+
 	  legend:{position:'none',
 		textstyle:{ color: '#000000',
 		  fontSize: 8,

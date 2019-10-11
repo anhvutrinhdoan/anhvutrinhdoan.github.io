@@ -21,8 +21,14 @@ body{
 	left:24px;
 	position:fixed;
 }
-.pop:hover{
-	outline: 1px solid yellow;
+.pop0:hover{
+	background-image: url(oligarchpop_hi.png);
+}
+.pop1:hover{
+		background-image: url(whitecollarpop_hi.png);
+}
+.pop2:hover{
+		background-image: url(workingclasspop_hi.png);
 }
 .party{
 	width: 55px;
