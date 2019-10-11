@@ -47,7 +47,7 @@ body{
 }
 .popupwindow{
 	position: absolute;
-	z-index: 999;
+	z-index: 3;
 	background-color: #f1f1f1;
 	border: 1px solid #d3d3d3;
 	width: 500px;
@@ -134,8 +134,10 @@ body{
 }
 #screen_partycontrol{
 	position:absolute;
+	z-index:4;
 	background-color:#f1f1f1;
 	background-image:url("party_none.png");
+	border: 1px solid #d3d3d3;
 	top:70px;
 	left:625px;
 	width:400px;
@@ -181,6 +183,18 @@ body{
 	height:220px;
 	padding:5px;
 	font:9px  Helvetica;
+}
+#indiv_popinfo{
+	position:absolute;
+	z-index:5;
+	background-color:#f1f1f1;
+	border: 1px solid #d3d3d3;
+	top:100px;
+	left:620px;
+	width:400px;
+	height:400px;
+	padding:15px;
+	font:10px Helvetica;
 }
 #main{
 	position:absolute;

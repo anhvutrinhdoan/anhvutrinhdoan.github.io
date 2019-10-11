@@ -29,6 +29,10 @@ class Pop{
 		var home = this.homeDist;
 		return home;
 	}
+	reportStratum(){
+		var stratum = this.socialStratum;
+		return stratum;
+	}
 	reportPartyAllegiance(){
 		var partyAllegiance = this.partyAffiliation;
 		return partyAllegiance;
@@ -136,6 +140,20 @@ class District{
 		var popPyramidArray = [['Age', 'Male', 'Female'],['0-18 years',a[5],a[0]],['19-35 years',a[6],a[1]],['36-55 years',a[7],a[2]],['56-65 years',a[8],a[3]],['66+ years',a[9],a[4]]];
 		return popPyramidArray;
 	}
+	reportStrata(s){
+		var stratumreport = this.popsInhabiting;
+		var tally=0;
+		for (var v =0;v<stratumreport.length;v++){
+			if(stratumreport[v][0].socialStratum==s){
+				tally++;
+			}
+		}
+		switch(s){
+			case 0: return tally + " Upper-class ";
+			case 1: return tally + " Middle-class ";
+			case 2: return tally + " Working-class ";
+		}
+	}
 }
 class Party{
 	constructor(partyID){
@@ -148,6 +166,7 @@ var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
 var playerCurrentParty = "noparty";
 var partyMenuSelected = false;
+var popMenuSelected = false;
 //This has to be here
 var startingParties = [new Party("Democratic"),new Party("Republican")];
 //DEMOGRAPHICS
@@ -175,7 +194,7 @@ var globalDistrictContainer = new Array();
 //ages are 0-18, 19-35, 36-55, 56-66, 67+
 var ageranges=["0-18", "19-35", "36-55", "56-66", "67+"];
 var demographics = [0.15,0.25,0.30,0.20,0.10];
-var sexRatio = [0.49,0.51]; //female 49%, male 51%
+var sexRatio = [0.50,0.50]; //female 49%, male 51%
 var sexes=["female","male"];
 
 //POLITICAL STUFF
@@ -348,7 +367,7 @@ function popupwindow(n){
 
 	makeMyPopup.className = "popupwindow";
 	makeMyPopup.setAttribute("id","dist"+n);
-	makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png' class='pop'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png' class='pop'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png' class='pop'/>" + "Working-class pops: " + dist[n-1][2] ;
+	makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png' class='pop' onclick='individualPopInfo(districtclicked-1,0)'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png' class='pop' onclick='individualPopInfo(districtclicked-1,1)'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png' class='pop'onclick='individualPopInfo(districtclicked-1,2)'/>" + "Working-class pops: " + dist[n-1][2] ;
 	document.getElementById("main").appendChild(makeMyPopup);
 	var subElement = document.createElement("div");
 	subElement.setAttribute("id","piechart");
@@ -375,15 +394,6 @@ function popupwindow(n){
 	popPyramid(globalDistrictContainer[n-1].reportPopPyramid());
 }
 
-function closeanypopupwindow(){
-	document.querySelectorAll(".popupwindow").forEach(e => e.parentNode.removeChild(e));
-}
-
-function closepartywindow(){
-	var e = document.getElementById("screen_partycontrol");
-	e.parentNode.removeChild(e);
-	partyMenuSelected=false;
-}
 //PARTY CONTROL MENU
 function openPartyMenu(){
 	if(partyMenuSelected==false){
@@ -424,6 +434,45 @@ function openPartyMenu(){
 	}
 }
 
+//Menu that pops up when you click the pop icon
+function individualPopInfo(n,s){
+	if(popMenuSelected==false){
+		var makePopMenu = document.createElement("div");
+		makePopMenu.setAttribute("id","indiv_popinfo");
+		makePopMenu.innerHTML = "<b>Pop info</b><br>There are " + globalDistrictContainer[n].reportStrata(s) + "pops living here.";
+		var makeMyPopupHeader = document.createElement("div");
+		var makeCloseBox = document.createElement("div");
+		makeCloseBox.setAttribute("id","xbutton");
+		makeCloseBox.innerHTML = "X";
+		makeCloseBox.onclick = closepopmenu;		
+		
+		document.getElementById("main").appendChild(makePopMenu);
+		makeMyPopupHeader.setAttribute("id","header");		
+		document.getElementById("indiv_popinfo").appendChild(makeMyPopupHeader);
+		makeMyPopupHeader.onclick = dragElement(document.getElementById("indiv_popinfo"));
+		document.getElementById("indiv_popinfo").appendChild(makeCloseBox);
+		popMenuSelected = true;
+	}
+}
+//Popup window and menu control
+
+function closeanypopupwindow(){
+	document.querySelectorAll(".popupwindow").forEach(e => e.parentNode.removeChild(e));
+}
+
+function closepartywindow(){
+	var e = document.getElementById("screen_partycontrol");
+	e.parentNode.removeChild(e);
+	partyMenuSelected=false;
+}
+
+function closepopmenu(){
+	var e = document.getElementById("indiv_popinfo");
+	e.parentNode.removeChild(e);
+	popMenuSelected=false;
+}
+
+
 //DATA AND FORMATTING
 
 function dataLoader(labels,n,x){
@@ -443,12 +492,11 @@ function dataLoader(labels,n,x){
 function drawChart(pushedArray) {
 	var data = google.visualization.arrayToDataTable(pushedArray);
 	var options = {
+		height:220,
+		pieSliceTextStyle:{fontSize:9,color:'black'},
 	  pieHole: 0.4,
-	  fontsize:6,
-	   pieSliceTextStyle: {
-            color: 'black'
-        },
-	  legend:{position:'bottom',
+	   
+	  legend:{position:'none',
 		textstyle:{ color: '#000000',
 		  fontSize: 8,
 		  bold: true,
