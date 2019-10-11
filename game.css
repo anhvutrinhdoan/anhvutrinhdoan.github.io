@@ -61,7 +61,7 @@ body{
 #popupwindow_actions{
 	position:absolute;
 	background-color:#c4c4c4;
-	width: 480px;
+	width: 220px;
 	height: 100px;
 	bottom: 10px;
 	left: 10px;
@@ -88,25 +88,21 @@ body{
 	text-align:right;
 	font-size:9px;
 }
-
 #piechart {
-    	position: absolute;
-    	top: 15px;
-   	right: 0px;
-    	width:290px;
-  	height:200px;
-			border:2px solid gray;
+	position: absolute;
+	top: 15px;
+	right: 0px;
+	width:290px;
+	height:200px;
 }
 #popchart {
-    	position: absolute;
-			z-index: 1;
-    	top: 210px;
-   		right: 0px;
-    	width:290px;
-			border:2px solid gray;
-  	height:100px;
+	position: absolute;
+	z-index: 1;
+	top: 210px;
+	right: 0px;
+	width:290px;
+	height:100px;
 }
-
 #resources{
 	position:absolute;
 	z-index:0;
@@ -116,7 +112,6 @@ body{
 	width:90%;
 	left:24px;
 }
-
 #partyflag{
 	position:absolute;
 	z-index:0;
@@ -147,7 +142,6 @@ body{
 	height:70%;
 	padding:20px;
 }
-
 #screen_partycontrol_party_desc{
 	position:absolute;
 	background-color:gray;
@@ -168,7 +162,6 @@ body{
 	padding:5px;
 	font:9px  Helvetica;
 }
-
 #screen_partycontrol_party_leaders{
 	position:absolute;
 	background-color:gray;
@@ -189,10 +182,8 @@ body{
 	padding:5px;
 	font:9px  Helvetica;
 }
-
 #main{
 	position:absolute;
 	z-index:-1;
 }
-
 #mydiv {}

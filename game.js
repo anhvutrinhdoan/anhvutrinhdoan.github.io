@@ -1,61 +1,5 @@
-//DEFINES
-
-var startingpoliticalpower = 100;
-var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
-var playerCurrentParty = "noparty";
-var partyMenuSelected = false;
-
-//DEMOGRAPHICS
-var districtclicked = 0;
-
-//slot 1: upper class, slot 2: middle class, slot 3: lower-class
-var pops = [25,45,15,24,38,36,77];
-var dist = [[2,10,13],
-			[4,14,27],
-			[0,2,13],
-			[1,13,10],
-			[9,9,20],
-			[6,21,9],
-			[12,29,36]];
-//arrays that contain the pops and districts
-var globalPopulation = new Array();
-var globalDistrictContainer = new Array();
-//ages are 0-18, 19-35, 36-55, 56-66, 67+
-var ageranges=["0-18", "19-35", "36-55", "56-66", "67+"];
-var demographics = [0.15,0.25,0.30,0.20,0.10];
-var sexRatio = [0.49,0.51]; //female 49%, male 51%
-var sexes=["female","male"];
-
-//POLITICAL STUFF
-var partyAffiliation = ["Democratic","Republican"];
-var partyColor = ['#1e60c9','#c91e1e'];
-var partyWeightsForUpperClass = [0.3,0.7];
-var partyWeightsForMiddleClass = [0.51,0.49];
-var partyWeightsForLowerClass = [0.65,0.35];
-
-//ECONOMIC STUFF
-var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
-var basePopDemand =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-var baseJobIndustryProportionOfProfitsToStratum = [[0.85, 0.1, 0.05],
-							[0.7, 0.2, 0.1],
-							[0.8, 0.15, 0.05],
-							[0.8, 0.15, 0.05],
-							[0.7, 0.15, 0.15],
-							[0.6, 0.1, 0.3],
-							[0.65, 0.15, 0.2],
-							[0.55, 0.35, 0.1],
-							[0.6, 0.2, 0.2],
-							[0.5, 0.25, 0.25],
-							[0.65, 0.05, 0.3],
-							[0.55, 0.35, 0.1],
-							[0.7, 0.15, 0.15],
-							[0.8, 0.19, 0.01],
-							[0.7, 0.29, 0.01],
-							[0.6, 0.35, 0.15],
-							[0.4, 0.3, 0.3,],
-							[0.15, 0.55, 0.3]];
-
-//GAME CODE
+//DEFINES: CLASSES
+//GAME OBJECTS
 class Pop{
 	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,myAnger,myDemands,myModifiers,myIncome,myCash,mySpendings,myHomeDist,myTendencyToVote,mySex){
 		this.popID = myPopID;
@@ -105,7 +49,6 @@ class Pop{
 
 	}
 }
-
 class District{
 	constructor(myDistID,myPops){
 		this.districtID = myDistID;
@@ -194,12 +137,79 @@ class District{
 		return popPyramidArray;
 	}
 }
-
 class Party{
 	constructor(partyID){
 		this.ID = partyID;
 	}
 }
+
+//DEFINES: GLOBAL VARIABLES
+var startingpoliticalpower = 100;
+var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
+var playerCurrentParty = "noparty";
+var partyMenuSelected = false;
+//This has to be here
+var startingParties = [new Party("Democratic"),new Party("Republican")];
+//DEMOGRAPHICS
+var districtclicked = 0;
+
+//slot 1: upper class, slot 2: middle class, slot 3: lower-class
+var pops = [25,45,15,24,38,36,77];
+					//District 1
+var dist = [[2,10,13],
+			//District 2
+			[4,14,27],
+			//District 3
+			[0,2,13],
+			//District 4
+			[1,13,10],
+			//District 5
+			[9,9,20],
+			//District 6
+			[6,21,9],
+			//District 7
+			[12,29,36]];
+//arrays that contain the pops and districts
+var globalPopulation = new Array();
+var globalDistrictContainer = new Array();
+//ages are 0-18, 19-35, 36-55, 56-66, 67+
+var ageranges=["0-18", "19-35", "36-55", "56-66", "67+"];
+var demographics = [0.15,0.25,0.30,0.20,0.10];
+var sexRatio = [0.49,0.51]; //female 49%, male 51%
+var sexes=["female","male"];
+
+//POLITICAL STUFF
+var partyAffiliation = ["Democratic","Republican"];
+var partyColor = ['#1e60c9','#c91e1e'];
+var partyWeightsForUpperClass = [0.3,0.7];
+var partyWeightsForMiddleClass = [0.51,0.49];
+var partyWeightsForLowerClass = [0.65,0.35];
+
+
+//ECONOMIC STUFF
+var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
+var basePopDemand =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+var baseJobIndustryProportionOfProfitsToStratum = [[0.85, 0.1, 0.05],
+							[0.7, 0.2, 0.1],
+							[0.8, 0.15, 0.05],
+							[0.8, 0.15, 0.05],
+							[0.7, 0.15, 0.15],
+							[0.6, 0.1, 0.3],
+							[0.65, 0.15, 0.2],
+							[0.55, 0.35, 0.1],
+							[0.6, 0.2, 0.2],
+							[0.5, 0.25, 0.25],
+							[0.65, 0.05, 0.3],
+							[0.55, 0.35, 0.1],
+							[0.7, 0.15, 0.15],
+							[0.8, 0.19, 0.01],
+							[0.7, 0.29, 0.01],
+							[0.6, 0.35, 0.15],
+							[0.4, 0.3, 0.3,],
+							[0.15, 0.55, 0.3]];
+
+//GAME CODE
+//INITIALIZATION
 //Look through all districts. For each district, generate a new pop object for each social stratum
 function generateInitialPops(){
 	//Iterate through every district
@@ -227,6 +237,8 @@ function generateInitialPops(){
 	}
 	populateDistricts();
 }
+
+
 //Initialize game state with all districts assigned pops
 function populateDistricts(){
 	for (var n=0;n<dist.length;n++){
