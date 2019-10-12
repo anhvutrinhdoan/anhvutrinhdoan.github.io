@@ -19,7 +19,8 @@ class Pop{
 		this.spending=mySpendings;
 		this.homeDist = myHomeDist;
 		this.tendencyToVote = myTendencyToVote;
-		this.sex = mySex
+		this.sex = mySex;
+		this.issues = issues;
 	}
 	reportID(){
 		var id = this.popID;
@@ -48,9 +49,25 @@ class Pop{
 	addCash(money){
 		this.cash += money;
 	}
-	howToVote(){
-		var modifierList = modifiers;
+	//How this works:
+	//Each party has a list of platforms it can add. Each platform adds a certain +% attraction to pops that fall on a certain range of
+	//the issues of concern. For example, "Build the Wall" platform will add, say, +20% attraction to pops that have +2 (far right) on Immigration.
+	//While "Instantiate Full Communism" will give +50% attraction to pops that have -2 (far left) on inequality.
 
+	//This function will roll up some issues for the pop to care about and is run on game initialization. The issues the pop cares about
+	//is weighted partially by its social stratum.
+	issuesMaker(){
+		var array = [];
+		var choiceofissues = issuesOfConcern.length();
+		var numberofissues = Math.floor(Math.random()*5); //how many issues the pop should be concerned about
+		for(var n = 0; n < numberofissues; n++){
+			var intensity = Math.floor(Math.random()*4);//how intensely they feel about the issue
+		}
+		this.issues = array;
+	}
+	//This function is how each pop decides on which party to vote for.
+	howToVote(){
+		var a = 0;
 	}
 }
 class District{
@@ -150,7 +167,7 @@ class District{
 		}
 		switch(s){
 			case 0: return tally + " Upper-class ";
-			case 1: return tally + " Middle-class ";
+			case 1: return tally + " White-collar ";
 			case 2: return tally + " Working-class ";
 		}
 	}
@@ -167,6 +184,41 @@ var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9e
 var playerCurrentParty = "noparty";
 var partyMenuSelected = false;
 var popMenuSelected = false;
+//political issue arrays
+//Economic issues
+var inequality=[-2,-1,0,1,2];
+var inflation=[-2,-1,0,1,2];
+var globaltrade=[-2,-1,0,1,2];
+var jobs=[-2,-1,0,1,2];
+var nationaldebt=[-2,-1,0,1,2];
+//Social issues
+var welfare=[-2,-1,0,1,2];
+var pensions=[-2,-1,0,1,2];
+var healthcare=[-2,-1,0,1,2];
+var education=[-2,-1,0,1,2];
+var genderrelations=[-2,-1,0,1,2];
+var racerelations=[-2,-1,0,1,2];
+var immigration=[-2,-1,0,1,2];
+//Crime and Punishment
+var crime=[-2,-1,0,1,2];
+var terrorism=[-2,-1,0,1,2];
+var foreignrelations=[-2,-1,0,1,2];
+var military=[-2,-1,0,1,2];
+//Environment
+var environment=[-2,-1,0,1,2];
+var climatechange=[-2,-1,0,1,2];
+var transportation=[-2,-1,0,1,2];
+//Misc Political
+var votereform=[-2,-1,0,1,2];
+var freedomofspeech=[-2,-1,0,1,2];
+//Big list of them all
+var issuesOfConcern = [inequality, healthcare, education,
+												terrorism,pensions,foreignrelations,
+												environment,immigration,jobs,
+												crime,nationalbudget,racerelations,
+												military,transportation,costofliving,
+											climatechange,globaltrade,genderrelations,
+											votereform,freedomofspeech,welfare];
 //This has to be here
 var startingParties = [new Party("Democratic"),new Party("Republican")];
 //DEMOGRAPHICS
@@ -200,10 +252,14 @@ var sexes=["female","male"];
 //POLITICAL STUFF
 var partyAffiliation = ["Democratic","Republican"];
 var partyColor = ['#1e60c9','#c91e1e'];
+//soon to be deprecated
 var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.51,0.49];
 var partyWeightsForLowerClass = [0.65,0.35];
-
+//issue weights for the classes. Each stratum has slightly different chances of weighting different issues
+var issueWeightsForUpperClass = [];
+var issueWeightsForMiddleClass = [];
+var issueWeightsForLowerClass = [];
 
 //ECONOMIC STUFF
 var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
@@ -256,8 +312,6 @@ function generateInitialPops(){
 	}
 	populateDistricts();
 }
-
-
 //Initialize game state with all districts assigned pops
 function populateDistricts(){
 	for (var n=0;n<dist.length;n++){
@@ -274,9 +328,7 @@ function populateDistricts(){
 	//clear it out now that the districts are populated
 	globalPopulation = [];
 }
-
 //Looping through a weighted random array. Given weights returns the i'th entry of the array
-
 function loopArray(anArray){
 	var i=0, breakout=false, n=0, r=Math.random();
 	while (breakout==false){

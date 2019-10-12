@@ -25,10 +25,10 @@ body{
 	background-image: url(oligarchpop_hi.png);
 }
 .pop1:hover{
-		background-image: url(whitecollarpop_hi.png);
+	background-image: url(whitecollarpop_hi.png);
 }
 .pop2:hover{
-		background-image: url(workingclasspop_hi.png);
+	background-image: url(workingclasspop_hi.png);
 }
 .party{
 	width: 55px;
