@@ -218,8 +218,8 @@ var issuesOfConcern = [inequality,inflation,globaltrade,jobs,costofliving,welfar
 						environment,climatechange,transportation,votereform,freedomofspeech];
 
 //issue weights for the classes. Each stratum has slightly different chances of weighting different issues
-var issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.01,0.05,0.05,0.05,0.04,0.05,0.06,0.10,0.10,0.10,0.05];
-var issueWeightsForMiddleClass = [0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.0,0.05,];
+var issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.04,0.04,0.05,0.06,0.10,0.10,0.10,0.05];
+var issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09,0.08,0.01,0.01,0.05,0.01,0.01,0.02,0.05,0.06,0.08,0.05];
 var issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
 var startingParties = [new Party("Democratic"),new Party("Republican")];
