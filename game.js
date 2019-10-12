@@ -1,7 +1,7 @@
 //DEFINES: CLASSES
 //GAME OBJECTS
 class Pop{
-	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,myAnger,myDemands,myModifiers,myIncome,myCash,mySpendings,myHomeDist,myTendencyToVote,mySex){
+	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,myAnger,myDemands,myModifiers,myIncome,myCash,mySpendings,myHomeDist,myTendencyToVote,mySex,myIssues){
 		this.popID = myPopID;
 		this.socialStratum = mySocialStratum;
 		this.partyAffiliation = myPartyAffiliation;
@@ -20,7 +20,7 @@ class Pop{
 		this.homeDist = myHomeDist;
 		this.tendencyToVote = myTendencyToVote;
 		this.sex = mySex;
-		this.issues = issues;
+		this.issues = myIssues;
 	}
 	reportID(){
 		var id = this.popID;
