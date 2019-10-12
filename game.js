@@ -215,7 +215,7 @@ var freedomofspeech=[-2,-1,0,1,2];
 var issuesOfConcern = [inequality, healthcare, education,
 												terrorism,pensions,foreignrelations,
 												environment,immigration,jobs,
-												crime,nationalbudget,racerelations,
+												crime,nationaldebt,racerelations,
 												military,transportation,costofliving,
 											climatechange,globaltrade,genderrelations,
 											votereform,freedomofspeech,welfare];
@@ -419,7 +419,11 @@ function popupwindow(n){
 
 	makeMyPopup.className = "popupwindow";
 	makeMyPopup.setAttribute("id","dist"+n);
-	makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] + "<br/>" + "<img src='oligarchpop.png' class='pop0' onclick='individualPopInfo(districtclicked-1,0)'/>" + "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png' class='pop1' onclick='individualPopInfo(districtclicked-1,1)'/>" + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png' class='pop2'onclick='individualPopInfo(districtclicked-1,2)'/>" + "Working-class pops: " + dist[n-1][2] ;
+	makeMyPopup.innerHTML = "District " + n + "<br/>" + "Pops living here: " + pops[n-1] +
+						"<br/>" + "<img src='oligarchpop.png' class='pop0' onclick='individualPopInfo(districtclicked-1,0)'/>" +
+						 "Upper-class pops: " + dist[n-1][0] + "<br/>" + "<img src='whitecollarpop.png' class='pop1' onclick='individualPopInfo(districtclicked-1,1)'/>"
+						 + "White collar pops: " + dist[n-1][1]  + "<br/>" + "<img src='workingclasspop.png' class='pop2'onclick='individualPopInfo(districtclicked-1,2)'/>"
+						  + "Working class pops: " + dist[n-1][2];
 	document.getElementById("main").appendChild(makeMyPopup);
 	var subElement = document.createElement("div");
 	subElement.setAttribute("id","piechart");
