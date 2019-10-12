@@ -216,7 +216,7 @@ var issuesOfConcern = [inequality, healthcare, education,
 												terrorism,pensions,foreignrelations,
 												environment,immigration,jobs,
 												crime,nationaldebt,racerelations,
-												military,transportation,costofliving,
+												military,transportation,inflation,
 											climatechange,globaltrade,genderrelations,
 											votereform,freedomofspeech,welfare];
 //This has to be here
