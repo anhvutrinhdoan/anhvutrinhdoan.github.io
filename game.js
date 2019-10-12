@@ -190,7 +190,7 @@ var inequality=[-2,-1,0,1,2];
 var inflation=[-2,-1,0,1,2];
 var globaltrade=[-2,-1,0,1,2];
 var jobs=[-2,-1,0,1,2];
-var nationaldebt=[-2,-1,0,1,2];
+var costofliving=[-2,-1,0,1,2];
 //Social issues
 var welfare=[-2,-1,0,1,2];
 var pensions=[-2,-1,0,1,2];
@@ -199,7 +199,7 @@ var education=[-2,-1,0,1,2];
 var genderrelations=[-2,-1,0,1,2];
 var racerelations=[-2,-1,0,1,2];
 var immigration=[-2,-1,0,1,2];
-//Crime and Punishment
+//National Security
 var crime=[-2,-1,0,1,2];
 var terrorism=[-2,-1,0,1,2];
 var foreignrelations=[-2,-1,0,1,2];
@@ -212,13 +212,15 @@ var transportation=[-2,-1,0,1,2];
 var votereform=[-2,-1,0,1,2];
 var freedomofspeech=[-2,-1,0,1,2];
 //Big list of them all
-var issuesOfConcern = [inequality, healthcare, education,
-												terrorism,pensions,foreignrelations,
-												environment,immigration,jobs,
-												crime,nationaldebt,racerelations,
-												military,transportation,inflation,
-											climatechange,globaltrade,genderrelations,
-											votereform,freedomofspeech,welfare];
+var issuesOfConcern = [inequality,inflation,globaltrade,jobs,costofliving,welfare,
+						pensions,healthcare,education,genderrelations,racerelations,
+						immigration,crime,terrorism,foreignrelations,military,
+						environment,climatechange,transportation,votereform,freedomofspeech];
+
+//issue weights for the classes. Each stratum has slightly different chances of weighting different issues
+var issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.01,0.05,0.05,0.05,0.04,0.05,0.06,0.10,0.10,0.10,0.05];
+var issueWeightsForMiddleClass = [0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.0,0.05,];
+var issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
 var startingParties = [new Party("Democratic"),new Party("Republican")];
 //DEMOGRAPHICS
@@ -256,10 +258,6 @@ var partyColor = ['#1e60c9','#c91e1e'];
 var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.51,0.49];
 var partyWeightsForLowerClass = [0.65,0.35];
-//issue weights for the classes. Each stratum has slightly different chances of weighting different issues
-var issueWeightsForUpperClass = [];
-var issueWeightsForMiddleClass = [];
-var issueWeightsForLowerClass = [];
 
 //ECONOMIC STUFF
 var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
