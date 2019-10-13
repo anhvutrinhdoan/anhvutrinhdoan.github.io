@@ -58,12 +58,31 @@ class Pop{
 	//is weighted partially by its social stratum.
 	issuesMaker(){
 		var array = [];
-		var choiceofissues = issuesOfConcern.length();
 		var numberofissues = Math.floor(Math.random()*5); //how many issues the pop should be concerned about
-		for(var n = 0; n < numberofissues; n++){
-			var intensity = Math.floor(Math.random()*4);//how intensely they feel about the issue
+		for(var n = 0; n < numberofissues; n++){						
+			var issue;
+			switch(this.socialStratum){
+				case 0:
+					//how concerned is the pop about the issue, where on the scale do they stand
+					var m = loopArray(leftRightWeightForUpperClass);
+					//what issues is the pop concerned about
+					var p = loopArray(issueWeightsForUpperClass);
+					issue = [p,m];
+					break;
+				case 1:
+					var m = loopArray(leftRightWeightForMiddleClass);
+					var p = loopArray(issueWeightsForMiddleClass);
+					issue = [p,m];
+					break;
+				case 2:
+					var m = loopArray(leftRightWeightForLowerClass);
+					var p = loopArray(issueWeightsForLowerClass);
+					issue = [p,m];
+					break;
+			}
+			array.push(issue);			
 		}
-		this.issues = array;
+		this.issues = array;//the finished array will have between 0 to 5 issues/intensities, arranged in 1x2 arays. The first element is the issue, the second is the concern level.
 	}
 	//This function is how each pop decides on which party to vote for.
 	howToVote(){
@@ -258,6 +277,10 @@ var partyColor = ['#1e60c9','#c91e1e'];
 var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.51,0.49];
 var partyWeightsForLowerClass = [0.65,0.35];
+//new system: leftwing or rightwing weights - 1st value: most left, last value:most right
+var leftRightWeightForUpperClass = [0.05,0.15,0.25,0.40,0.15]; //rich tend to be right
+var leftRightWeightForMiddleClass = [0.10,0.20,0.40,0.20,0.10]; //middle class tend towards center
+var leftRightWeightForLowerClass = [0.15,0.25,0.50,0.05,0.05]; //poor tend to be undecided or left
 
 //ECONOMIC STUFF
 var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
@@ -325,7 +348,17 @@ function populateDistricts(){
 	}
 	//clear it out now that the districts are populated
 	globalPopulation = [];
+	assignIssues();
 }
+//Assigning issues to every pop
+function assignIssues(){
+	for (var n=0;n<dist.length;n++){
+		for (var m=0;m<globalDistrictContainer[n].popsInhabiting.length;m++){
+			globalDistrictContainer[n].popsInhabiting[m][0].issuesMaker();
+		}
+	}
+}
+
 //Looping through a weighted random array. Given weights returns the i'th entry of the array
 function loopArray(anArray){
 	var i=0, breakout=false, n=0, r=Math.random();
