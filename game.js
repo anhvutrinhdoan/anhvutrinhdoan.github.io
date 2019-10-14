@@ -313,7 +313,7 @@ class PartyPlatform{
 }
 //Predefined platforms
 const CentristAffordableHealthcare = new PartyPlatform("Centrist Affordable Healthcare",0,7,0.02,"The government should provide affordable, market-based options for healthcare.");
-const StrongLaissezFaire = new PartyPlatform("StrongLaissezFaire",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.");
+const StrongLaissezFaire = new PartyPlatform("Strong Laissez Faire",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.");
 //DEFINES: GLOBAL VARIABLES
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
