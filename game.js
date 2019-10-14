@@ -1,7 +1,10 @@
 //DEFINES: CLASSES
 //GAME OBJECTS
 class Pop{
-	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,myAnger,myDemands,myModifiers,myIncome,myCash,mySpendings,myHomeDist,myTendencyToVote,mySex,myIssues){
+	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,
+				myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,
+				myAnger,myDemands,myModifiers,myIncome,myCash,mySpendings,myHomeDist,
+				myTendencyToVote,mySex,myIssues){
 		this.popID = myPopID;
 		this.socialStratum = mySocialStratum;
 		this.partyAffiliation = myPartyAffiliation;
@@ -21,6 +24,7 @@ class Pop{
 		this.tendencyToVote = myTendencyToVote;
 		this.sex = mySex;
 		this.issues = myIssues;
+		
 	}
 	reportID(){
 		var id = this.popID;
@@ -56,8 +60,11 @@ class Pop{
 
 	//This function will roll up some issues for the pop to care about and is run on game initialization. The issues the pop cares about
 	//is weighted partially by its social stratum.
+	
+	//Redo this. All that I need is a size-20 array that stores a value from 0-4, or null, in every container. As long as I have
+	//a key that shows me which issues correspond to which slot in the array, I'm good. 
 	issuesMaker(){
-		var array = [];
+		var array = new Array(20);
 		var numberofissues = Math.floor(Math.random()*5); //how many issues the pop should be concerned about
 		for(var n = 0; n < numberofissues; n++){						
 			var issue;
@@ -67,26 +74,84 @@ class Pop{
 					var m = loopArray(leftRightWeightForUpperClass);
 					//what issues is the pop concerned about
 					var p = loopArray(issueWeightsForUpperClass);
-					issue = [p,m];
-					break;
+					array[p] = m; //set the p'th box in the array with value m
+				break;
 				case 1:
 					var m = loopArray(leftRightWeightForMiddleClass);
 					var p = loopArray(issueWeightsForMiddleClass);
-					issue = [p,m];
-					break;
+					array[p] = m; //set the p'th box in the array with value m
+				break;
 				case 2:
 					var m = loopArray(leftRightWeightForLowerClass);
 					var p = loopArray(issueWeightsForLowerClass);
-					issue = [p,m];
-					break;
-			}
-			array.push(issue);			
+					array[p] = m; //set the p'th box in the array with value m
+				break;
+			}			
 		}
-		this.issues = array;//the finished array will have between 0 to 5 issues/intensities, arranged in 1x2 arays. The first element is the issue, the second is the concern level.
+		this.issues = [...array];//the finished array will have between 0 to 5 issues/intensities, arranged in 1x2 arays. The first element is the issue, the second is the concern level.
 	}
-	//This function is how each pop decides on which party to vote for.
+	/*This function is how each pop decides on which party to vote for.
+	How does this work?
+	A pop cares about between 0-5 issues. If it cares about 0 issues, it won't vote. Parties only get influence from voting pops. 
+	If a pop cares about an issue, it will score parties against that issue on a 100 base-point scale. How it does this depends on the
+	party's alignment and whether it aligns with the pop's. The pop lowers the bar by 25 points for every stepwise increase in its 
+	concern ranking, and adds 50 for every opposite alignment. For example, if the pop has -2 left on the scale of concern about an issue, 
+	and the party has a +10% attraction to left-aligned voters, two things will happen.
+	First, the pop's appeal meter is lowered from 100 to 50 for parties that have a left stance. Second, a modifier of +5 is applied to
+	die rolls made by parties rolling on appeal to the voter. 
+	When deciding who to vote for, the pop rolls d100, or Math.floor(Math.random*100). Thus, in a contest between two parties, one that has
+	a +10% modifier for left-aligned pops for that issue and a party that has no stance, the party that has the modifier should win the 
+	contest for most rolls. In this example, say the pop rolls 48 for the left party, and 80 for the center party. Then their final scores
+	will be 48+5 = 53, and 80. Because the pop is strongly left on the issue, the pop compares the score of 58 to 50 for the left party, and 
+	80 to 100 for the center party. The difference of 53-50 = 3, vs 80-100 = -20, means that this pop will vote for the party with the +10% modifier.
+	Example 2: Say a pop cares about 3 issues, but has an alignment of 0 for each issue (a centrist voter). The total score to beat is 300. 
+	Say there are three parties, all with no stance on all three issues. The pop rolls 3 times for each party, and gets:
+	Party 1	
+		Issue 1: 51
+		Issue 2: 12
+		Issue 3: 96
+			Total: 159
+	Party 2:
+		Issue 1: 53
+		Issue 2: 3
+		Issue 3: 16
+			Total: 72
+	Party 3:
+		Issue 1: 70 
+		Issue 2: 79
+		Issue 3: 93 
+			Total: 242
+	Then all else being equal, the pop should choose Party 3. 
+	In the case of opposite ideologies, a pop adds 50 for each step up from center. Say there is an election with two parties, with a stance on 
+	the same issue, one with +10% appeal to left aligned pops and one with +10% appeal to right aligned pops. For a pop that is moderately left-aligned,
+	the appeal scores to beat are:
+	Party 1 (left): 75; Party 2 (right): 150. 
+	The pop rolls: 
+		Party 1: 17
+		Party 2: 88 
+	It compares: 17 - 75 = -58 + 0.10*75 = -50.5
+				 88 - 150 =-62 
+	Since -62 is a smaller number than -50.5, it votes for the left party.*/
 	howToVote(){
-		var a = 0;
+		//first, find the index of nonempty issues 
+		var indices = [];
+		for(var x=0;x<this.issues.length;x++){
+			if(typeof(this.issues[x]) != 'undefined'){
+				indices.push(x);
+			}
+		}
+		//now it knows which issues the pop has stances on. Generate the score to beat. 
+		//How to do this? Pop looks at each party. Party returns an issue alignment of 0...4 (0, most left; 1, left-center; 2, center; 3, right-center; 4, most right)
+		//or nothing. So parties need to have a method that returns values. Pop compares if the values returned match its values. 
+		//table:		 party values
+	    /*					0		|		1		|		2		|		3		|		4		|
+		/* pop align |-------------------------------------------------------------------------------
+		      0      |     	50		|		75		|		100		|		150		|		200		|
+			  1		 |		75		|		50		|		100		|		125		|		150		|
+			  2		 |		125		|		100		|		50		|		100		|		125		|
+			  3		 |		150		|		125		|		100		|		50		|		75		|
+			  4		 |		200		|		150		|		100		|		75		|		50		|
+		*/
 	}
 }
 class District{
@@ -192,56 +257,69 @@ class District{
 	}
 }
 class Party{
-	constructor(partyID){
+	constructor(partyID,partyPlatforms,partyExperience,partyOrganization,partyLeaders,partyUnity,partyModifiers){
 		this.ID = partyID;
+		this.platforms = [partyPlatforms];
+		this.experience = partyExperience;
+		this.organization = partyOrganization;
+		this.leaders = partyLeaders;
+		this.unity = partyUnity;
+		this.modifiers = partyModifiers;
+	}
+	addPlatform(newPlatform){
+		this.platforms.push(newPlatform);
+	}
+	removePlatform(platformName){
+		var todelete;
+		for(var x=0;x<this.platforms.length;x++){
+			if(this.platforms[x]==platformName){
+				todelete = x;
+			}
+		}
+		this.platforms.splice(todelete,1);
 	}
 }
 
+class PartyPlatform{
+	constructor(platform_alignment,platform_amount,platform_desc){
+		this.alignment = platform_alignment;
+		this.amount =platform_amount;
+		this.desc = platform_desc;
+	}
+	reportAlignment(){
+		var align = this.alignment;
+		return align;
+	}
+	reportAmount(){
+		var amt = this.amount;
+		return amt;
+	}
+	reportDesc(){
+		var dsc = this.desc;
+		return desc;
+	}
+}
+//Predefined platforms
+const CentristAffordableHealthcare = new PartyPlatform(0,0.02,"The government should provide affordable, market-based options for healthcare.");
+const StrongLaissezFaire = new PartyPlatform(3,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.");
 //DEFINES: GLOBAL VARIABLES
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
 var playerCurrentParty = "noparty";
 var partyMenuSelected = false;
 var popMenuSelected = false;
-//political issue arrays
-//Economic issues
-var inequality=[-2,-1,0,1,2];
-var inflation=[-2,-1,0,1,2];
-var globaltrade=[-2,-1,0,1,2];
-var jobs=[-2,-1,0,1,2];
-var costofliving=[-2,-1,0,1,2];
-//Social issues
-var welfare=[-2,-1,0,1,2];
-var pensions=[-2,-1,0,1,2];
-var healthcare=[-2,-1,0,1,2];
-var education=[-2,-1,0,1,2];
-var genderrelations=[-2,-1,0,1,2];
-var racerelations=[-2,-1,0,1,2];
-var immigration=[-2,-1,0,1,2];
-//National Security
-var crime=[-2,-1,0,1,2];
-var terrorism=[-2,-1,0,1,2];
-var foreignrelations=[-2,-1,0,1,2];
-var military=[-2,-1,0,1,2];
-//Environment
-var environment=[-2,-1,0,1,2];
-var climatechange=[-2,-1,0,1,2];
-var transportation=[-2,-1,0,1,2];
-//Misc Political
-var votereform=[-2,-1,0,1,2];
-var freedomofspeech=[-2,-1,0,1,2];
-//Big list of them all
-var issuesOfConcern = [inequality,inflation,globaltrade,jobs,costofliving,welfare,
-						pensions,healthcare,education,genderrelations,racerelations,
-						immigration,crime,terrorism,foreignrelations,military,
-						environment,climatechange,transportation,votereform,freedomofspeech];
+//political issues
+const issuesOfConcern = ["inequality" /*0*/,"inflation" /*1*/,"globaltrade" /*2*/,"jobs" /*3*/,"costofliving" /*4*/,"welfare" /*5*/,
+						"pensions" /*6*/,"healthcare" /*7*/,"education" /*8*/,"genderrelations" /*9*/,"racerelations" /*10*/,
+						"immigration" /*11*/,"crime" /*12*/,"terrorism" /*13*/,"foreignrelations" /*14*/,"military" /*15*/,
+						"environment" /*16*/,"climatechange" /*17*/,"transportation" /*18*/,"freedomofspeech" /*19*/];
 
 //issue weights for the classes. Each stratum has slightly different chances of weighting different issues
-var issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.04,0.04,0.05,0.06,0.10,0.10,0.10,0.05];
-var issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09,0.08,0.01,0.01,0.05,0.01,0.01,0.02,0.05,0.06,0.08,0.05];
-var issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
+const issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.02,0.02,0.02,0.02,0.04,0.04,0.05,0.06,0.10,0.10,0.10,0.05];
+const issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09,0.08,0.01,0.01,0.05,0.01,0.01,0.02,0.05,0.06,0.08,0.05];
+const issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
-var startingParties = [new Party("Democratic"),new Party("Republican")];
+var startingParties = [new Party("Democratic",),new Party("Republican")];
 //DEMOGRAPHICS
 var districtclicked = 0;
 
@@ -265,10 +343,10 @@ var dist = [[2,10,13],
 var globalPopulation = new Array();
 var globalDistrictContainer = new Array();
 //ages are 0-18, 19-35, 36-55, 56-66, 67+
-var ageranges=["0-18", "19-35", "36-55", "56-66", "67+"];
-var demographics = [0.15,0.25,0.30,0.20,0.10];
-var sexRatio = [0.50,0.50]; //female 49%, male 51%
-var sexes=["female","male"];
+const ageranges=["0-18", "19-35", "36-55", "56-66", "67+"];
+const demographics = [0.15,0.25,0.30,0.20,0.10];
+const sexRatio = [0.50,0.50]; //female 49%, male 51%
+const sexes=["female","male"];
 
 //POLITICAL STUFF
 var partyAffiliation = ["Democratic","Republican"];
@@ -278,14 +356,14 @@ var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.51,0.49];
 var partyWeightsForLowerClass = [0.65,0.35];
 //new system: leftwing or rightwing weights - 1st value: most left, last value:most right
-var leftRightWeightForUpperClass = [0.05,0.15,0.25,0.40,0.15]; //rich tend to be right
-var leftRightWeightForMiddleClass = [0.10,0.20,0.40,0.20,0.10]; //middle class tend towards center
-var leftRightWeightForLowerClass = [0.15,0.25,0.50,0.05,0.05]; //poor tend to be undecided or left
+const leftRightWeightForUpperClass = [0.05,0.15,0.25,0.40,0.15]; //rich tend to be right
+const leftRightWeightForMiddleClass = [0.10,0.20,0.40,0.20,0.10]; //middle class tend towards center
+const leftRightWeightForLowerClass = [0.15,0.25,0.50,0.05,0.05]; //poor tend to be undecided or left
 
 //ECONOMIC STUFF
-var jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
+const jobIndustry = ["Agriculture", "Forestry", "Fishing", "Mining", "Construction", "Manufacturing", "Transportation", "Communications", "Electric", "Gas", "Sanitary" , "Wholesale Trade", "Retail Trade", "Finance", "Insurance", "Real Estate", "Services", "Public Administration"];
 var basePopDemand =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-var baseJobIndustryProportionOfProfitsToStratum = [[0.85, 0.1, 0.05],
+const baseJobIndustryProportionOfProfitsToStratum = [[0.85, 0.1, 0.05],
 							[0.7, 0.2, 0.1],
 							[0.8, 0.15, 0.05],
 							[0.8, 0.15, 0.05],
@@ -701,6 +779,9 @@ function normalMapMode(){
 
 function sum(a,b){
 	return a+b;
+}
+function findwords(words,testword){
+	return words == testword;
 }
 
 //DEBUG FUNCTIONS
