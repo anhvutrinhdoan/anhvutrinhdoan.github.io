@@ -24,7 +24,7 @@ class Pop{
 		this.tendencyToVote = myTendencyToVote;
 		this.sex = mySex;
 		this.issues = myIssues;
-		
+
 	}
 	reportID(){
 		var id = this.popID;
@@ -60,13 +60,13 @@ class Pop{
 
 	//This function will roll up some issues for the pop to care about and is run on game initialization. The issues the pop cares about
 	//is weighted partially by its social stratum.
-	
+
 	//Redo this. All that I need is a size-20 array that stores a value from 0-4, or null, in every container. As long as I have
-	//a key that shows me which issues correspond to which slot in the array, I'm good. 
+	//a key that shows me which issues correspond to which slot in the array, I'm good.
 	issuesMaker(){
 		var array = new Array(20);
 		var numberofissues = Math.floor(Math.random()*5); //how many issues the pop should be concerned about
-		for(var n = 0; n < numberofissues; n++){						
+		for(var n = 0; n < numberofissues; n++){
 			var issue;
 			switch(this.socialStratum){
 				case 0:
@@ -86,27 +86,27 @@ class Pop{
 					var p = loopArray(issueWeightsForLowerClass);
 					array[p] = m; //set the p'th box in the array with value m
 				break;
-			}			
+			}
 		}
 		this.issues = [...array];//the finished array will have between 0 to 5 issues/intensities, arranged in 1x2 arays. The first element is the issue, the second is the concern level.
 	}
 	/*This function is how each pop decides on which party to vote for.
 	How does this work?
-	A pop cares about between 0-5 issues. If it cares about 0 issues, it won't vote. Parties only get influence from voting pops. 
+	A pop cares about between 0-5 issues. If it cares about 0 issues, it won't vote. Parties only get influence from voting pops.
 	If a pop cares about an issue, it will score parties against that issue on a 100 base-point scale. How it does this depends on the
-	party's alignment and whether it aligns with the pop's. The pop lowers the bar by 25 points for every stepwise increase in its 
-	concern ranking, and adds 50 for every opposite alignment. For example, if the pop has -2 left on the scale of concern about an issue, 
+	party's alignment and whether it aligns with the pop's. The pop lowers the bar by 25 points for every stepwise increase in its
+	concern ranking, and adds 50 for every opposite alignment. For example, if the pop has -2 left on the scale of concern about an issue,
 	and the party has a +10% attraction to left-aligned voters, two things will happen.
 	First, the pop's appeal meter is lowered from 100 to 50 for parties that have a left stance. Second, a modifier of +5 is applied to
-	die rolls made by parties rolling on appeal to the voter. 
+	die rolls made by parties rolling on appeal to the voter.
 	When deciding who to vote for, the pop rolls d100, or Math.floor(Math.random*100). Thus, in a contest between two parties, one that has
-	a +10% modifier for left-aligned pops for that issue and a party that has no stance, the party that has the modifier should win the 
+	a +10% modifier for left-aligned pops for that issue and a party that has no stance, the party that has the modifier should win the
 	contest for most rolls. In this example, say the pop rolls 48 for the left party, and 80 for the center party. Then their final scores
-	will be 48+5 = 53, and 80. Because the pop is strongly left on the issue, the pop compares the score of 58 to 50 for the left party, and 
+	will be 48+5 = 53, and 80. Because the pop is strongly left on the issue, the pop compares the score of 58 to 50 for the left party, and
 	80 to 100 for the center party. The difference of 53-50 = 3, vs 80-100 = -20, means that this pop will vote for the party with the +10% modifier.
-	Example 2: Say a pop cares about 3 issues, but has an alignment of 0 for each issue (a centrist voter). The total score to beat is 300. 
+	Example 2: Say a pop cares about 3 issues, but has an alignment of 0 for each issue (a centrist voter). The total score to beat is 300.
 	Say there are three parties, all with no stance on all three issues. The pop rolls 3 times for each party, and gets:
-	Party 1	
+	Party 1
 		Issue 1: 51
 		Issue 2: 12
 		Issue 3: 96
@@ -117,41 +117,172 @@ class Pop{
 		Issue 3: 16
 			Total: 72
 	Party 3:
-		Issue 1: 70 
+		Issue 1: 70
 		Issue 2: 79
-		Issue 3: 93 
+		Issue 3: 93
 			Total: 242
-	Then all else being equal, the pop should choose Party 3. 
-	In the case of opposite ideologies, a pop adds 50 for each step up from center. Say there is an election with two parties, with a stance on 
+	Then all else being equal, the pop should choose Party 3.
+	In the case of opposite ideologies, a pop adds 50 for each step up from center. Say there is an election with two parties, with a stance on
 	the same issue, one with +10% appeal to left aligned pops and one with +10% appeal to right aligned pops. For a pop that is moderately left-aligned,
 	the appeal scores to beat are:
-	Party 1 (left): 75; Party 2 (right): 150. 
-	The pop rolls: 
+	Party 1 (left): 75; Party 2 (right): 150.
+	The pop rolls:
 		Party 1: 17
-		Party 2: 88 
+		Party 2: 88
 	It compares: 17 - 75 = -58 + 0.10*75 = -50.5
-				 88 - 150 =-62 
+				 88 - 150 =-62
 	Since -62 is a smaller number than -50.5, it votes for the left party.*/
-	howToVote(){
-		//first, find the index of nonempty issues 
+howToVote(){
+		//first, find the index of nonempty issues
 		var indices = [];
+		var scorestobeat =[];
 		for(var x=0;x<this.issues.length;x++){
 			if(typeof(this.issues[x]) != 'undefined'){
 				indices.push(x);
 			}
 		}
-		//now it knows which issues the pop has stances on. Generate the score to beat. 
+
+		//now it knows which issues the pop has stances on. Generate the score to beat for each issue.
 		//How to do this? Pop looks at each party. Party returns an issue alignment of 0...4 (0, most left; 1, left-center; 2, center; 3, right-center; 4, most right)
-		//or nothing. So parties need to have a method that returns values. Pop compares if the values returned match its values. 
+		//or nothing. So parties need to have a method that returns values. Pop compares if the values returned match its values.
 		//table:		 party values
-	    /*					0		|		1		|		2		|		3		|		4		|
+	    	/*					0		|		1			|		2			|		3			|		4			|
 		/* pop align |-------------------------------------------------------------------------------
-		      0      |     	50		|		75		|		100		|		150		|		200		|
+		    0    |   	50		|		75		|		125		|		150		|		200		|
 			  1		 |		75		|		50		|		100		|		125		|		150		|
 			  2		 |		125		|		100		|		50		|		100		|		125		|
 			  3		 |		150		|		125		|		100		|		50		|		75		|
-			  4		 |		200		|		150		|		100		|		75		|		50		|
+			  4		 |		200		|		150		|		125		|		75		|		50		|
 		*/
+		var pform = new Array();
+		for(var z=0;z<startingParties.length;z++){ //iterate over every party present ... (In the district? In the country? How?)
+			 pform.push(startingParties[z].reportPlatforms()); //get party platforms exported
+		}
+
+		for(var y=0;y<indices.length;y++){ // for each issue the pop is concerned about
+			for (var a=0;a<pform.length;a++){//look through the whole platform array, for each platform
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1]== 0 && this.issues[indices[y]] ==0){//the logic here: if the issues match and the platform matches assign the lowest score to beat
+					scorestobeat.push(50);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 1){//if the party is very left on the issue and the pop is moderately left
+					scorestobeat.push(75);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 2){//if the party is very left on the issue and the pop is moderately left
+					scorestobeat.push(100);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 3){//if the party is very left on the issue and the pop is moderately left
+					scorestobeat.push(150);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 4){//if the party is very left on the issue and the pop is moderately left			
+
+					scorestobeat.push(200);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 0){
+
+
+					scorestobeat.push(75);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 1){
+
+
+					scorestobeat.push(50);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 2){
+
+
+					scorestobeat.push(100);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 3){
+
+
+					scorestobeat.push(125);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 4){
+
+
+					scorestobeat.push(150);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 0){
+
+
+					scorestobeat.push(125);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 1){
+
+
+					scorestobeat.push(100);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 2){
+
+
+					scorestobeat.push(50);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 3){
+
+
+					scorestobeat.push(100);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 4){
+
+
+					scorestobeat.push(125);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 0){
+
+
+					scorestobeat.push(150);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 1){
+
+
+					scorestobeat.push(125);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 2){
+
+
+					scorestobeat.push(100);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 3){
+
+
+					scorestobeat.push(50);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 4){
+
+
+					scorestobeat.push(75);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 0){
+
+
+					scorestobeat.push(200);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 1){
+
+
+					scorestobeat.push(150);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 2){
+
+
+					scorestobeat.push(100);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 3){
+
+
+					scorestobeat.push(75);
+				}
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 4){
+
+					scorestobeat.push(50);
+				}
+				//and if the party has no stance on the issue, pop is Centrist
+				else{
+					scorestobeat.push(100);
+				}
+			}
+		}
+		console.log(scorestobeat);
 	}
 }
 class District{
@@ -283,6 +414,7 @@ class Party{
 		for (var v=0;v<this.platforms.length;v++){
 			platformArray.push([this.platforms[v].reportIssue(),this.platforms[v].reportAlignment(),this.platforms[v].reportAmount()]);
 		}
+		return platformArray;
 	}
 }
 
@@ -300,7 +432,7 @@ class PartyPlatform{
 	}
 	reportIssue(){
 		var iss = this.issue;
-		return issue;
+		return iss;
 	}
 	reportAmount(){
 		var amt = this.amount;
@@ -447,8 +579,16 @@ function assignIssues(){
 			globalDistrictContainer[n].popsInhabiting[m][0].issuesMaker();
 		}
 	}
+	initialPartyPopAlignment();
 }
-
+//Each pop decides how to vote
+function initialPartyPopAlignment(){
+	for (var n=0;n<dist.length;n++){
+		for (var m=0;m<globalDistrictContainer[n].popsInhabiting.length;m++){
+			globalDistrictContainer[n].popsInhabiting[m][0].howToVote();
+		}
+	}
+}
 //Looping through a weighted random array. Given weights returns the i'th entry of the array
 function loopArray(anArray){
 	var i=0, breakout=false, n=0, r=Math.random();
