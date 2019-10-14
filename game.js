@@ -262,9 +262,9 @@ class Party{
 		this.platforms = [partyPlatforms];
 		this.experience = partyExperience;
 		this.organization = partyOrganization;
-		this.leaders = partyLeaders;
+		this.leaders = [partyLeaders];
 		this.unity = partyUnity;
-		this.modifiers = partyModifiers;
+		this.modifiers = [partyModifiers];
 	}
 	addPlatform(newPlatform){
 		this.platforms.push(newPlatform);
@@ -278,17 +278,29 @@ class Party{
 		}
 		this.platforms.splice(todelete,1);
 	}
+	reportPlatforms(){
+		var platformArray=new Array();
+		for (var v=0;v<this.platforms.length;v++){
+			platformArray.push([this.platforms[v].reportIssue(),this.platforms[v].reportAlignment(),this.platforms[v].reportAmount()]);
+		}
+	}
 }
 
 class PartyPlatform{
-	constructor(platform_alignment,platform_amount,platform_desc){
+	constructor(platform_name,platform_alignment,platform_issue,platform_amount,platform_desc){
+		this.name = platform_name;
 		this.alignment = platform_alignment;
+		this.issue = platform_issue;
 		this.amount =platform_amount;
 		this.desc = platform_desc;
 	}
 	reportAlignment(){
 		var align = this.alignment;
 		return align;
+	}
+	reportIssue(){
+		var iss = this.issue;
+		return issue;
 	}
 	reportAmount(){
 		var amt = this.amount;
@@ -300,8 +312,8 @@ class PartyPlatform{
 	}
 }
 //Predefined platforms
-const CentristAffordableHealthcare = new PartyPlatform(0,0.02,"The government should provide affordable, market-based options for healthcare.");
-const StrongLaissezFaire = new PartyPlatform(3,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.");
+const CentristAffordableHealthcare = new PartyPlatform("Centrist Affordable Healthcare",0,7,0.02,"The government should provide affordable, market-based options for healthcare.");
+const StrongLaissezFaire = new PartyPlatform("StrongLaissezFaire",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.");
 //DEFINES: GLOBAL VARIABLES
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
@@ -309,7 +321,7 @@ var playerCurrentParty = "noparty";
 var partyMenuSelected = false;
 var popMenuSelected = false;
 //political issues
-const issuesOfConcern = ["inequality" /*0*/,"inflation" /*1*/,"globaltrade" /*2*/,"jobs" /*3*/,"costofliving" /*4*/,"welfare" /*5*/,
+const issuesOfConcern = ["inequality" /*0*/,"inflation" /*1*/,"economy" /*2*/,"jobs" /*3*/,"costofliving" /*4*/,"welfare" /*5*/,
 						"pensions" /*6*/,"healthcare" /*7*/,"education" /*8*/,"genderrelations" /*9*/,"racerelations" /*10*/,
 						"immigration" /*11*/,"crime" /*12*/,"terrorism" /*13*/,"foreignrelations" /*14*/,"military" /*15*/,
 						"environment" /*16*/,"climatechange" /*17*/,"transportation" /*18*/,"freedomofspeech" /*19*/];
@@ -319,7 +331,7 @@ const issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.02,
 const issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09,0.08,0.01,0.01,0.05,0.01,0.01,0.02,0.05,0.06,0.08,0.05];
 const issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
-var startingParties = [new Party("Democratic",),new Party("Republican")];
+var startingParties = [new Party("Democratic",CentristAffordableHealthcare,100,100,["Tom Perez"],1,[]), new Party("Republican",StrongLaissezFaire,100,100,["Ronna McDaniel"],1,[])];
 //DEMOGRAPHICS
 var districtclicked = 0;
 
