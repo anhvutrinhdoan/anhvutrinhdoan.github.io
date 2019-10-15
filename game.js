@@ -158,131 +158,89 @@ howToVote(){
 		for(var z=0;z<startingParties.length;z++){ //iterate over every party present ... (In the district? In the country? How?)
 			 pform.push(startingParties[z].reportPlatforms()); //get party platforms exported
 		}
-
 		for(var y=0;y<indices.length;y++){ // for each issue the pop is concerned about
 			for (var a=0;a<pform.length;a++){//look through the whole platform array, for each platform
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1]== 0 && this.issues[indices[y]] ==0){//the logic here: if the issues match and the platform matches assign the lowest score to beat
-					scorestobeat.push(50);
+					scorestobeat.push([indices[y],50,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 1){//if the party is very left on the issue and the pop is moderately left
-					scorestobeat.push(75);
+					scorestobeat.push([indices[y],75,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 2){//if the party is very left on the issue and the pop is moderately left
-					scorestobeat.push(100);
+					scorestobeat.push([indices[y],100,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 3){//if the party is very left on the issue and the pop is moderately left
-					scorestobeat.push(150);
+					scorestobeat.push([indices[y],150,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 4){//if the party is very left on the issue and the pop is moderately left			
-
-					scorestobeat.push(200);
+					scorestobeat.push([indices[y],200,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 0){
-
-
-					scorestobeat.push(75);
+					scorestobeat.push([indices[y],75,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 1){
-
-
-					scorestobeat.push(50);
+					scorestobeat.push([indices[y],50,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 2){
-
-
-					scorestobeat.push(100);
+					scorestobeat.push([indices[y],100,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 3){
-
-
-					scorestobeat.push(125);
+					scorestobeat.push([indices[y],125,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 4){
-
-
-					scorestobeat.push(150);
+					scorestobeat.push([indices[y],150,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 0){
-
-
-					scorestobeat.push(125);
+					scorestobeat.push([indices[y],125,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 1){
-
-
-					scorestobeat.push(100);
+					scorestobeat.push([indices[y],100,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 2){
-
-
-					scorestobeat.push(50);
+					scorestobeat.push([indices[y],50,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 3){
-
-
-					scorestobeat.push(100);
+					scorestobeat.push([indices[y],100,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 4){
-
-
-					scorestobeat.push(125);
+					scorestobeat.push([indices[y],125,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 0){
-
-
-					scorestobeat.push(150);
+					scorestobeat.push([indices[y],150,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 1){
-
-
-					scorestobeat.push(125);
+					scorestobeat.push([indices[y],125]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 2){
-
-
-					scorestobeat.push(100);
+					scorestobeat.push([indices[y],100,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 3){
-
-
-					scorestobeat.push(50);
+					scorestobeat.push([indices[y],50,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 4){
-
-
-					scorestobeat.push(75);
+					scorestobeat.push([indices[y],75,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 0){
-
-
-					scorestobeat.push(200);
+					scorestobeat.push([indices[y],200,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 1){
-
-
-					scorestobeat.push(150);
+					scorestobeat.push([indices[y],150,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 2){
-
-
-					scorestobeat.push(100);
+					scorestobeat.push([indices[y],100,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 3){
-
-
-					scorestobeat.push(75);
+					scorestobeat.push([indices[y],75,pform[a][0][3]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 4){
-
-					scorestobeat.push(50);
+					scorestobeat.push([indices[y],50,pform[a][0][3]]);
 				}
-				//and if the party has no stance on the issue, pop is Centrist
-				else{
-					scorestobeat.push(100);
-				}
+				//and if the party has no stance on the issue, pop is Centrist				
 			}
 		}
 		console.log(scorestobeat);
+		console.log(this.issues);
+		//After the pop has gotten the scores to beat, test each party against each score
 	}
 }
 class District{
@@ -412,7 +370,7 @@ class Party{
 	reportPlatforms(){
 		var platformArray=new Array();
 		for (var v=0;v<this.platforms.length;v++){
-			platformArray.push([this.platforms[v].reportIssue(),this.platforms[v].reportAlignment(),this.platforms[v].reportAmount()]);
+			platformArray.push([this.platforms[v].reportIssue(),this.platforms[v].reportAlignment(),this.platforms[v].reportAmount(),this.ID]);
 		}
 		return platformArray;
 	}
