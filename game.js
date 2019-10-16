@@ -132,7 +132,7 @@ class Pop{
 	It compares: 17 - 75 = -58 + 0.10*75 = -50.5
 				 88 - 150 =-62
 	Since -62 is a smaller number than -50.5, it votes for the left party.*/
-howToVote(){
+	howToVote(){
 		//first, find the index of nonempty issues
 		var indices = [];
 		var scorestobeat =[];
@@ -140,7 +140,7 @@ howToVote(){
 			if(typeof(this.issues[x]) != 'undefined'){
 				indices.push(x);
 			}
-		}
+		}//after this, indices will have the index of every issue the pop is concerned about
 
 		//now it knows which issues the pop has stances on. Generate the score to beat for each issue.
 		//How to do this? Pop looks at each party. Party returns an issue alignment of 0...4 (0, most left; 1, left-center; 2, center; 3, right-center; 4, most right)
@@ -157,92 +157,108 @@ howToVote(){
 		var pform = new Array();
 		for(var z=0;z<startingParties.length;z++){ //iterate over every party present ... (In the district? In the country? How?)
 			 pform.push(startingParties[z].reportPlatforms()); //get party platforms exported
-		}
+		}//this does in sequential order, so 0 = democratic, 1= republican, etc.
+		//console.log(pform);
 		for(var y=0;y<indices.length;y++){ // for each issue the pop is concerned about
 			for (var a=0;a<pform.length;a++){//look through the whole platform array, for each platform
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1]== 0 && this.issues[indices[y]] ==0){//the logic here: if the issues match and the platform matches assign the lowest score to beat
-					scorestobeat.push([indices[y],50,pform[a][0][3]]);
+					scorestobeat.push([a,50,pform[a][0][2]]);//I realized that you just need the index of the for loop since each party is just an entry from 0...n
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 1){//if the party is very left on the issue and the pop is moderately left
-					scorestobeat.push([indices[y],75,pform[a][0][3]]);
+					scorestobeat.push([a,75,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 2){//if the party is very left on the issue and the pop is moderately left
-					scorestobeat.push([indices[y],100,pform[a][0][3]]);
+					scorestobeat.push([a,100,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 3){//if the party is very left on the issue and the pop is moderately left
-					scorestobeat.push([indices[y],150,pform[a][0][3]]);
+					scorestobeat.push([a,150,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 4){//if the party is very left on the issue and the pop is moderately left			
-					scorestobeat.push([indices[y],200,pform[a][0][3]]);
+					scorestobeat.push([a,200,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 0){
-					scorestobeat.push([indices[y],75,pform[a][0][3]]);
+					scorestobeat.push([a,75,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 1){
-					scorestobeat.push([indices[y],50,pform[a][0][3]]);
+					scorestobeat.push([a,50,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 2){
-					scorestobeat.push([indices[y],100,pform[a][0][3]]);
+					scorestobeat.push([a,100,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 3){
-					scorestobeat.push([indices[y],125,pform[a][0][3]]);
+					scorestobeat.push([a,125,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 4){
-					scorestobeat.push([indices[y],150,pform[a][0][3]]);
+					scorestobeat.push([a,150,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 0){
-					scorestobeat.push([indices[y],125,pform[a][0][3]]);
+					scorestobeat.push([a,125,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 1){
-					scorestobeat.push([indices[y],100,pform[a][0][3]]);
+					scorestobeat.push([a,100,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 2){
-					scorestobeat.push([indices[y],50,pform[a][0][3]]);
+					scorestobeat.push([a,50,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 3){
-					scorestobeat.push([indices[y],100,pform[a][0][3]]);
+					scorestobeat.push([a,100,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 2 && this.issues[indices[y]] == 4){
-					scorestobeat.push([indices[y],125,pform[a][0][3]]);
+					scorestobeat.push([a,125,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 0){
-					scorestobeat.push([indices[y],150,pform[a][0][3]]);
+					scorestobeat.push([a,150,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 1){
-					scorestobeat.push([indices[y],125]);
+					scorestobeat.push([a,125,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 2){
-					scorestobeat.push([indices[y],100,pform[a][0][3]]);
+					scorestobeat.push([a,100,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 3){
-					scorestobeat.push([indices[y],50,pform[a][0][3]]);
+					scorestobeat.push([a,50,pform[a][0][2]]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 4){
-					scorestobeat.push([indices[y],75,pform[a][0][3]]);
+					scorestobeat.push([a,75,pform[a][0][2]]);
 				}
-				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 0){
-					scorestobeat.push([indices[y],200,pform[a][0][3]]);
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 4 && this.issues[indices[y]] == 0){
+					scorestobeat.push([a,200,0]);
 				}
-				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 1){
-					scorestobeat.push([indices[y],150,pform[a][0][3]]);
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 4 && this.issues[indices[y]] == 1){
+					scorestobeat.push([a,150,0]);
 				}
-				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 2){
-					scorestobeat.push([indices[y],100,pform[a][0][3]]);
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 4 && this.issues[indices[y]] == 2){
+					scorestobeat.push([a,100,pform[a][0][2]]);
 				}
-				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 3){
-					scorestobeat.push([indices[y],75,pform[a][0][3]]);
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 4 && this.issues[indices[y]] == 3){
+					scorestobeat.push([a,75,pform[a][0][2]]);
 				}
-				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 3 && this.issues[indices[y]] == 4){
-					scorestobeat.push([indices[y],50,pform[a][0][3]]);
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 4 && this.issues[indices[y]] == 4){
+					scorestobeat.push([a,50,pform[a][0][2]]);
 				}
-				//and if the party has no stance on the issue, pop is Centrist				
+				//and if the party has no stance on the issue, pop is Centrist		
+				else{
+					if(indices[y] != pform[a][0][0]) {
+						scorestobeat.push([a,100,0])
+					}
+				}
 			}
 		}
-		console.log(scorestobeat);
-		console.log(this.issues);
 		//After the pop has gotten the scores to beat, test each party against each score
+		console.log(scorestobeat);
+		//How to do this? 
+		/* scorestobeat has the data in this format [#party,scoretobeat,attraction modifier]
+		 So loop should iterate over every entry in the array
+		 * 	Look at each party identifier -- scorestobeat[n][0] -- note it down in an array: [#party, #wins]
+		 * 	Roll Math.floor(Math.random()*100) + Math.ceil(modifier*scoretobeat) vs scoretobeat 
+		 * 		If this roll > scoretobeat, add roll to "#wins"
+		 * 	Finally, look through each [#party,#wins] array. Which one has partywins[1] max? Then return #party for that array.
+		 *	Use this: output = arr.map(function(e){ return Math.max(e[1])})
+		 * 				output.indexOf(Math.max(...output))
+			*/
 	}
 }
+
 class District{
 	constructor(myDistID,myPops){
 		this.districtID = myDistID;
@@ -369,20 +385,21 @@ class Party{
 	}
 	reportPlatforms(){
 		var platformArray=new Array();
-		for (var v=0;v<this.platforms.length;v++){
-			platformArray.push([this.platforms[v].reportIssue(),this.platforms[v].reportAlignment(),this.platforms[v].reportAmount(),this.ID]);
+		for (var v=0;v<this.platforms[0].length;v++){
+			platformArray.push([this.platforms[0][v].reportIssue(),this.platforms[0][v].reportAlignment(),this.platforms[0][v].reportAmount()]);
 		}
 		return platformArray;
 	}
 }
 
 class PartyPlatform{
-	constructor(platform_name,platform_alignment,platform_issue,platform_amount,platform_desc){
+	constructor(platform_name,platform_alignment,platform_issue,platform_amount,platform_desc,platform_bonus_desc){
 		this.name = platform_name;
 		this.alignment = platform_alignment;
 		this.issue = platform_issue;
 		this.amount =platform_amount;
 		this.desc = platform_desc;
+		this.bonus_desc = platform_bonus_desc;
 	}
 	reportAlignment(){
 		var align = this.alignment;
@@ -400,10 +417,16 @@ class PartyPlatform{
 		var dsc = this.desc;
 		return desc;
 	}
+	reportBonusDesc(){
+		var bdsc = this.bonus_desc;
+		return bdsc;
+	}
 }
 //Predefined platforms
-const CentristAffordableHealthcare = new PartyPlatform("Centrist Affordable Healthcare",0,7,0.02,"The government should provide affordable, market-based options for healthcare.");
-const StrongLaissezFaire = new PartyPlatform("Strong Laissez Faire",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.");
+const CentristAffordableHealthcare = new PartyPlatform("Centrist Affordable Healthcare",0,7,0.02,"The government should provide affordable, market-based options for healthcare.","<b>Centrist</b>. <font color='green'>+2%</font> attraction to Centrist aligned pops.");
+const StrongLaissezFaire = new PartyPlatform("Strong Laissez Faire",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.","<b>Moderate Right</b>. <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
+const ProSkilledImmigration = new PartyPlatform("Pro Skilled Immigration",0,11,0.02,"We should encourage skilled immigrants to come here.","<b>Centrist</b>. <font color='green'>+2%</font> attraction to Centrist aligned pops.");
+const StrictImmigrationQuotas = new PartyPlatform("Strict Immigration Quotas",3,11,0.05,"There are too many immigrants coming into our country; we should greatly cut down who we allow in.","<b>Moderate Right</b>. <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
 //DEFINES: GLOBAL VARIABLES
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
@@ -421,7 +444,7 @@ const issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.02,
 const issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09,0.08,0.01,0.01,0.05,0.01,0.01,0.02,0.05,0.06,0.08,0.05];
 const issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
-var startingParties = [new Party("Democratic",CentristAffordableHealthcare,100,100,["Tom Perez"],1,[]), new Party("Republican",StrongLaissezFaire,100,100,["Ronna McDaniel"],1,[])];
+var startingParties = [new Party("Democratic",[CentristAffordableHealthcare,ProSkilledImmigration],100,100,["Tom Perez"],1,[]), new Party("Republican",[StrongLaissezFaire,StrictImmigrationQuotas],100,100,["Ronna McDaniel"],1,[])];
 //DEMOGRAPHICS
 var districtclicked = 0;
 
