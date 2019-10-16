@@ -245,7 +245,7 @@ class Pop{
 			}
 		}
 		//After the pop has gotten the scores to beat, test each party against each score
-		console.log(scorestobeat);
+		//console.log(scorestobeat);
 		//How to do this? 
 		/* scorestobeat has the data in this format [#party,scoretobeat,attraction modifier]
 		 So loop should iterate over every entry in the array
@@ -256,7 +256,24 @@ class Pop{
 		 *	Use this: output = arr.map(function(e){ return Math.max(e[1])})
 		 * 				output.indexOf(Math.max(...output))
 			*/
-		
+		var partytally = new Array();
+		for(var e=0;e<scorestobeat.length;e++){			
+			var rollscore = Math.floor(Math.random()*100) + Math.ceil(scorestobeat[e][2]*scorestobeat[e][1]);
+			var diff = rollscore - scorestobeat[e][1];
+			partytally.push([scorestobeat[e][0], diff]);
+		}
+		var finalscore = new Array();
+		for(var f=0;f<startingParties.length;f++){
+			var manipulatethis = partytally.filter(x=>x[0]==f);
+			var y=0;
+			for(var v=0;v<manipulatethis.length;v++){
+				y += manipulatethis[v][1];
+			}
+			finalscore.push([f,y]);			
+		}					
+		var output = finalscore.map(function(e){ return Math.max(e[1])})
+		this.partyAffiliation = partyAffiliation[output.indexOf(Math.max(...output))];
+		console.log(this.partyAffiliation);
 	}
 }
 
@@ -519,19 +536,20 @@ function generateInitialPops(){
 		for (var k=0;k<dist[i][0];k++){
 			var stratum = 0;
 			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 0 + "" + k;
-			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral(),randomizeSexes());
+			//randomizePartyAffiliation is deprecated now, changing to 'null'
+			var popObject = new Pop(uniqueid,stratum,null,randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral(),randomizeSexes());
 			globalPopulation.push(popObject);
 		}
 		for (var k=0;k<dist[i][1];k++){
 			var stratum = 1;
 			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 1 + "" + k;
-			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral(),randomizeSexes());
+			var popObject = new Pop(uniqueid,stratum,null,randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral(),randomizeSexes());
 			globalPopulation.push(popObject);
 		}
 		for (var k=0;k<dist[i][2];k++){
 			var stratum = 2;
 			var uniqueid = Math.floor(Math.random()*100000)+""+(i+1) + "" + 2 + "" + k;
-			var popObject = new Pop(uniqueid,stratum,randomizePartyAffiliation(stratum),randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral(),randomizeSexes());
+			var popObject = new Pop(uniqueid,stratum,null,randomizeAge(),randomizeJobIndustry(),randomizeGeneral(),randomizeGeneral(),randomizeGeneral(),0.01,1,1,0,0, randomizeStartingCash(stratum),0,i,randomizeGeneral(),randomizeSexes());
 			globalPopulation.push(popObject);
 		}
 	}
@@ -570,6 +588,7 @@ function initialPartyPopAlignment(){
 			globalDistrictContainer[n].popsInhabiting[m][0].howToVote();
 		}
 	}
+	cleanuploadingicon();
 }
 //Looping through a weighted random array. Given weights returns the i'th entry of the array
 function loopArray(anArray){
@@ -593,6 +612,8 @@ function randomizeSexes(){
 }
 
 //Randomly generate party affiliations for an individual pop
+//DEPRECATED
+/*
 function randomizePartyAffiliation(stratum){
 	if(stratum ==0){
 		var gen = loopArray(partyWeightsForUpperClass);
@@ -606,7 +627,7 @@ function randomizePartyAffiliation(stratum){
 		var gen = loopArray(partyWeightsForLowerClass);
 		return partyAffiliation[gen];
 	}
-}
+}*/
 
 //Randomly generate ages for an individual pop
 function randomizeAge(){
@@ -771,6 +792,10 @@ function closepopmenu(){
 	popMenuSelected=false;
 }
 
+function cleanuploadingicon(){
+	var e = document.getElementById("removewhendone");
+	e.parentNode.removeChild(e);
+}
 
 //DATA AND FORMATTING
 
