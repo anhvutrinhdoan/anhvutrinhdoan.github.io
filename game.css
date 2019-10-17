@@ -63,6 +63,7 @@ body{
 	text-align: left;
 	padding-top: 20px;
 	padding-left: 10px;
+	cursor:default;
 }
 #popupwindow_actions{
 	position:absolute;
@@ -128,6 +129,9 @@ body{
 	height:75px;
 	top:31px;
 	left:18px;
+}
+#partyflag:hover{
+	outline: 2px solid yellow;
 }
 #partyflag_below{
 	position:absolute;
@@ -204,7 +208,7 @@ body{
 }
 #screen_partycontrol_addnewplatform{
 	top: 10px;
-	position:relative;		
+	position:relative;
 	padding-left:17px;
 	margin:3px;
 	height: 10px;
@@ -217,13 +221,16 @@ body{
 #screen_partycontrol_addnewplatform:hover{
 	background-color:gray;
 }
+#screen_partycontrol_addnewplatform:active{
+	background-color:yellow;
+}
 #screen_partycontrol_plussign{
 	position:absolute;
 	top: 0px;
 	left:3px;
 	height: 10px;
 	width: 10px;
-	cursor:default;	
+	cursor:default;
 }
 #screen_partycontrol_modplatform{
 	position: absolute;
@@ -243,6 +250,68 @@ body{
 	height:400px;
 	padding:15px;
 	font:10px Helvetica;
+}
+#indiv_popinfo_inner_wrapper{
+	position:relative;
+	z-index:0;
+	top:25px;
+	left:0px;
+	width:400px;
+	height:360px;
+	overflow: scroll;
+}
+#indiv_popinfo_innerbox{
+	position:relative;
+	z-index:2;
+
+	top: 5px;
+	padding: 2px;
+	left: 0px;
+	height: 46px;
+	width: 340px;
+	margin: 2px;
+}
+#indiv_popinfo_innerbox_text{
+	position:absolute;
+	background-color:#c9c9c9 ;
+	z-index:3;
+	top: 0px;
+	left: 24px;
+
+	height: 40px;
+	width: 325px
+}
+#indiv_popinfo_innerbox_popicon{
+	position:absolute;
+	z-index:3;
+	top:0px;
+	padding: 0px;
+	text-align: center;
+	vertical-align:middle;
+	left: 0px;
+	height: 40px;
+	width: 22px;
+	background-color: gray;
+}
+
+/* width */
+::-webkit-scrollbar {
+ width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+ background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+ background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+ background: #555;
 }
 #main{
 	position:absolute;

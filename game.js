@@ -50,6 +50,10 @@ class Pop{
 		var popage = this.age;
 		return popage;
 	}
+	reportOverall(){
+		var reportedStats ="Age: " + this.age + "     " +  "Sex: " + this.sex + "    " + "Party Affiliation: " + this.partyAffiliation + "<br/>" + "Industry: " + this.jobIndustry + "<br/>" + "Income: " + this.income + " " + "Spending: " + this.spending + " " + "Cash: " + this.cash;
+		return reportedStats;
+	}
 	addCash(money){
 		this.cash += money;
 	}
@@ -173,7 +177,7 @@ class Pop{
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 3){//if the party is very left on the issue and the pop is moderately left
 					scorestobeat.push([a,150,0]);
 				}
-				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 4){//if the party is very left on the issue and the pop is moderately left			
+				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 0 && this.issues[indices[y]] == 4){//if the party is very left on the issue and the pop is moderately left
 					scorestobeat.push([a,200,0]);
 				}
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 1 && this.issues[indices[y]] == 0){
@@ -236,7 +240,7 @@ class Pop{
 				if(indices[y] == pform[a][0][0] &&pform[a][0][1] == 4 && this.issues[indices[y]] == 4){
 					scorestobeat.push([a,50,pform[a][0][2]]);
 				}
-				//and if the party has no stance on the issue, pop is Centrist		
+				//and if the party has no stance on the issue, pop is Centrist
 				else{
 					if(indices[y] != pform[a][0][0]) {
 						scorestobeat.push([a,100,0])
@@ -246,18 +250,18 @@ class Pop{
 		}
 		//After the pop has gotten the scores to beat, test each party against each score
 		//console.log(scorestobeat);
-		//How to do this? 
+		//How to do this?
 		/* scorestobeat has the data in this format [#party,scoretobeat,attraction modifier]
 		 So loop should iterate over every entry in the array
 		 * 	Look at each party identifier -- scorestobeat[n][0] -- note it down in an array: [#party, #wins]
-		 * 	Roll Math.floor(Math.random()*100) + Math.ceil(modifier*scoretobeat) vs scoretobeat 
+		 * 	Roll Math.floor(Math.random()*100) + Math.ceil(modifier*scoretobeat) vs scoretobeat
 		 * 		If this roll > scoretobeat, add roll to "#wins"
 		 * 	Finally, look through each [#party,#wins] array. Which one has partywins[1] max? Then return #party for that array.
 		 *	Use this: output = arr.map(function(e){ return Math.max(e[1])})
 		 * 				output.indexOf(Math.max(...output))
 			*/
 		var partytally = new Array();
-		for(var e=0;e<scorestobeat.length;e++){			
+		for(var e=0;e<scorestobeat.length;e++){
 			var rollscore = Math.floor(Math.random()*100) + Math.ceil(scorestobeat[e][2]*scorestobeat[e][1]);
 			var diff = rollscore - scorestobeat[e][1];
 			partytally.push([scorestobeat[e][0], diff]);
@@ -269,10 +273,10 @@ class Pop{
 			for(var v=0;v<manipulatethis.length;v++){
 				y += manipulatethis[v][1];
 			}
-			finalscore.push([f,y]);			
-		}					
+			finalscore.push([f,y]);
+		}
 		var output = finalscore.map(function(e){ return Math.max(e[1])})
-		this.partyAffiliation = partyAffiliation[output.indexOf(Math.max(...output))];		
+		this.partyAffiliation = partyAffiliation[output.indexOf(Math.max(...output))];
 	}
 }
 
@@ -371,11 +375,7 @@ class District{
 				tally++;
 			}
 		}
-		switch(s){
-			case 0: return tally + " Upper-class ";
-			case 1: return tally + " White-collar ";
-			case 2: return tally + " Working-class ";
-		}
+		return tally;
 	}
 }
 class Party{
@@ -439,6 +439,7 @@ class PartyPlatform{
 		return bdsc;
 	}
 }
+
 //Predefined platforms
 const CentristAffordableHealthcare = new PartyPlatform("<b>Centrist Affordable Healthcare</b>",0,7,0.02,"The government should provide affordable, market-based options for healthcare.","(<i>Centrist</i>): <font color='green'>+2%</font> attraction to Centrist aligned pops.");
 const StrongLaissezFaire = new PartyPlatform("<b>Strong Laissez Faire</b>",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.","(<i>Moderate Right</i>): <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
@@ -723,7 +724,7 @@ function openPartyMenu(playerCurrentParty){
 		var makePartyMenuLeaders = document.createElement("div");
 		var makePartyMenuPlatforms = document.createElement("div");
 		var makePartyMenuModifiers = document.createElement("div");
-		var voterCount = nationalVoterTally(playerCurrentParty);		
+		var voterCount = nationalVoterTally(playerCurrentParty);
 
 		makePartyMenu.setAttribute("id","screen_partycontrol");
 		makeMyPopupHeader.setAttribute("id","header");
@@ -750,10 +751,10 @@ function openPartyMenu(playerCurrentParty){
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuLeaders);
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuModifiers);
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuPlatforms);
-		
+
 		for(var x=0;x<startingParties[playerCurrentParty].platforms[0].length;x++){
 			var makeSpecPlatform = document.createElement("div");
-			makeSpecPlatform.setAttribute("id","screen_partycontrol_specific_platform");			
+			makeSpecPlatform.setAttribute("id","screen_partycontrol_specific_platform");
 			makeSpecPlatform.innerHTML = startingParties[playerCurrentParty].platforms[0][x].name + " " + startingParties[playerCurrentParty].platforms[0][x].bonus_desc;
 			document.getElementById("screen_partycontrol_party_platforms").appendChild(makeSpecPlatform);
 		}
@@ -779,7 +780,7 @@ function nationalVoterTally(pcp){
 		var globalvotecount = globalDistrictContainer[q].reportVotes();
 		for(var v=0;v<globalvotecount.length;v++){
 			y += globalvotecount[pcp];
-		}		
+		}
 	}
 	return y;
 }
@@ -787,11 +788,27 @@ function nationalVoterTally(pcp){
 //Menu that pops up when you click the pop icon
 function individualPopInfo(n,s){
 	if(popMenuSelected==false){
+		var popCall = globalDistrictContainer[n].popsInhabiting;
+		var howmanypops = globalDistrictContainer[n].reportStrata(s);
 		var makePopMenu = document.createElement("div");
+		var word = "";
+		switch(s){
+			case 0:
+				word = " Upper-class ";
+				break;
+			case 1:
+				word = " Middle-class ";
+				break;
+			case 2:
+				word = " Working-class ";
+				break;
+		}
 		makePopMenu.setAttribute("id","indiv_popinfo");
-		makePopMenu.innerHTML = "<b>Pop info</b><br>There are " + globalDistrictContainer[n].reportStrata(s) + "pops living here.";
+		makePopMenu.innerHTML = "<b>Pop info</b><br>There are " + howmanypops + word + "pops living here.";
 		var makeMyPopupHeader = document.createElement("div");
 		var makeCloseBox = document.createElement("div");
+		var makeInnerWrapper = document.createElement("div");
+		makeInnerWrapper.setAttribute("id","indiv_popinfo_inner_wrapper");
 		makeCloseBox.setAttribute("id","xbutton");
 		makeCloseBox.innerHTML = "X";
 		makeCloseBox.onclick = closepopmenu;
@@ -801,9 +818,48 @@ function individualPopInfo(n,s){
 		document.getElementById("indiv_popinfo").appendChild(makeMyPopupHeader);
 		makeMyPopupHeader.onclick = dragElement(document.getElementById("indiv_popinfo"));
 		document.getElementById("indiv_popinfo").appendChild(makeCloseBox);
-		popMenuSelected = true;
+		document.getElementById("indiv_popinfo").appendChild(makeInnerWrapper);
+		var outputPopIndivInfo = new Array();
+		for(var b=0;b<popCall.length;b++){
+			if(popCall[b][0].socialStratum==s){
+				outputPopIndivInfo.push(popCall[b][0]);
+			}
+		}
+		for(var a=0;a<outputPopIndivInfo.length;a++){
+			var individualpopcontainer = document.createElement("div");
+			var individualpopcontainerText = document.createElement("div");
+			var individualpopcontainerPopicon = document.createElement("div");
+			individualpopcontainer.setAttribute("id","indiv_popinfo_innerbox");
+			individualpopcontainerText.setAttribute("id","indiv_popinfo_innerbox_text");
+			individualpopcontainerPopicon.setAttribute("id","indiv_popinfo_innerbox_popicon");
+			if(outputPopIndivInfo[a].reportSex()=="female" && s==0){
+				individualpopcontainerPopicon.innerHTML = "<img src='oligarchpop_f.png'/>";
+			}
+			if(outputPopIndivInfo[a].reportSex()=="male" && s==0){
+				individualpopcontainerPopicon.innerHTML = "<img src='oligarchpop_m.png'/>";
+			}
+			if(outputPopIndivInfo[a].reportSex()=="female" && s==1){
+				individualpopcontainerPopicon.innerHTML = "<img src='whitecollarpop_f.png'/>";
+			}
+			if(outputPopIndivInfo[a].reportSex()=="male" && s==1){
+				individualpopcontainerPopicon.innerHTML = "<img src='whitecollarpop_m.png'/>";
+			}
+			if(outputPopIndivInfo[a].reportSex()=="female" && s==2){
+				individualpopcontainerPopicon.innerHTML = "<img src='workingclasspop_f.png'/>";
+			}
+			if(outputPopIndivInfo[a].reportSex()=="male" && s==2){
+				individualpopcontainerPopicon.innerHTML = "<img src='workingclasspop_m.png'/>";
+			}
+			individualpopcontainerText.innerHTML = outputPopIndivInfo[a].reportOverall();
+			individualpopcontainer.appendChild(individualpopcontainerPopicon);
+			individualpopcontainer.appendChild(individualpopcontainerText);
+			document.getElementById("indiv_popinfo_inner_wrapper").appendChild(individualpopcontainer);
+		}
 	}
+	popMenuSelected = true;
 }
+
+
 //Popup window and menu control
 
 function closeanypopupwindow(){
@@ -979,5 +1035,5 @@ function setDefaultParty(n){
 	playerCurrentParty = n;
 	console.log("Player current party set to " + partyAffiliation[n]);
 	var string = "party_"+partyAffiliation[n]+".png";
-	document.getElementById("partyflag").style.backgroundImage='url('+string+')';	
+	document.getElementById("partyflag").style.backgroundImage='url('+string+')';
 }
