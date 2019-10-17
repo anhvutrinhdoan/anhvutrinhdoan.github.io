@@ -203,17 +203,27 @@ body{
 	background-color:yellow;
 }
 #screen_partycontrol_addnewplatform{
-	position:relative;
 	top: 10px;
+	position:relative;		
+	padding-left:17px;
 	margin:3px;
-	padding:3px;
-	vertical-align:middle;
 	height: 10px;
+	padding:3px;
+	padding-left:17px;
+	width: 370px;
 	cursor:default;
 	background-color:#dbdbdb;
 }
 #screen_partycontrol_addnewplatform:hover{
 	background-color:gray;
+}
+#screen_partycontrol_plussign{
+	position:absolute;
+	top: 0px;
+	left:3px;
+	height: 10px;
+	width: 10px;
+	cursor:default;	
 }
 #indiv_popinfo{
 	position:absolute;

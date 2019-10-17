@@ -758,9 +758,13 @@ function openPartyMenu(playerCurrentParty){
 			document.getElementById("screen_partycontrol_party_platforms").appendChild(makeSpecPlatform);
 		}
 		var addNewPlatform = document.createElement("div");
+		var addPlusSign = document.createElement("div");
 		addNewPlatform.setAttribute("id","screen_partycontrol_addnewplatform");
-		addNewPlatform.innerHTML = "<font color=darkcyan size=3><b>+</b></font>";
+		addPlusSign.setAttribute("id","screen_partycontrol_plussign");
+		addNewPlatform.innerHTML = "Add new platform";
+		addPlusSign.innerHTML = "<font color=darkcyan size=3><b>+</b></font>";
 		document.getElementById("screen_partycontrol_party_platforms").appendChild(addNewPlatform);
+		document.getElementById("screen_partycontrol_addnewplatform").appendChild(addPlusSign);
 		partyMenuSelected = true;
 	}
 }
