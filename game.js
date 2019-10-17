@@ -768,6 +768,10 @@ function openPartyMenu(playerCurrentParty){
 		partyMenuSelected = true;
 	}
 }
+function modPlatform(){
+	var makeModPlatformBox = document.createElement("div");
+	document.getElementById("main").appendChild(makeModPlatformBox);
+}
 //counts all the party voters in the country
 function nationalVoterTally(pcp){
 	var y=0;
@@ -949,7 +953,7 @@ function politicalMapMode(){
 			container.push(poll[q]/addall);
 		}
 		document.getElementById(i).style.backgroundColor=partyColor[container.indexOf(Math.max(...container))];
-		if(partyAffiliation[container.indexOf(Math.max(...container))]==playerCurrentParty){
+		if(partyAffiliation[container.indexOf(Math.max(...container))]==partyAffiliation[playerCurrentParty]){
 				document.getElementById(i).style.outline="2px solid yellow";
 		}
 	}

@@ -225,6 +225,13 @@ body{
 	width: 10px;
 	cursor:default;	
 }
+#screen_partycontrol_modplatform{
+	position: absolute;
+	top: 250px;
+	left: 700px;
+	height: 300px;
+	width: 300px;
+}
 #indiv_popinfo{
 	position:absolute;
 	z-index:0;
