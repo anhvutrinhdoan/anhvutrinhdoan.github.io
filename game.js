@@ -272,8 +272,7 @@ class Pop{
 			finalscore.push([f,y]);			
 		}					
 		var output = finalscore.map(function(e){ return Math.max(e[1])})
-		this.partyAffiliation = partyAffiliation[output.indexOf(Math.max(...output))];
-		console.log(this.partyAffiliation);
+		this.partyAffiliation = partyAffiliation[output.indexOf(Math.max(...output))];		
 	}
 }
 
@@ -441,10 +440,10 @@ class PartyPlatform{
 	}
 }
 //Predefined platforms
-const CentristAffordableHealthcare = new PartyPlatform("Centrist Affordable Healthcare",0,7,0.02,"The government should provide affordable, market-based options for healthcare.","<b>Centrist</b>. <font color='green'>+2%</font> attraction to Centrist aligned pops.");
-const StrongLaissezFaire = new PartyPlatform("Strong Laissez Faire",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.","<b>Moderate Right</b>. <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
-const ProSkilledImmigration = new PartyPlatform("Pro Skilled Immigration",0,11,0.02,"We should encourage skilled immigrants to come here.","<b>Centrist</b>. <font color='green'>+2%</font> attraction to Centrist aligned pops.");
-const StrictImmigrationQuotas = new PartyPlatform("Strict Immigration Quotas",3,11,0.05,"There are too many immigrants coming into our country; we should greatly cut down who we allow in.","<b>Moderate Right</b>. <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
+const CentristAffordableHealthcare = new PartyPlatform("<b>Centrist Affordable Healthcare</b>",0,7,0.02,"The government should provide affordable, market-based options for healthcare.","(<i>Centrist</i>): <font color='green'>+2%</font> attraction to Centrist aligned pops.");
+const StrongLaissezFaire = new PartyPlatform("<b>Strong Laissez Faire</b>",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.","(<i>Moderate Right</i>): <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
+const ProSkilledImmigration = new PartyPlatform("<b>Pro Skilled Immigration</b>",0,11,0.02,"We should encourage skilled immigrants to come here.","(<i>Centrist</i>): <font color='green'>+2%</font> attraction to Centrist aligned pops.");
+const StrictImmigrationQuotas = new PartyPlatform("<b>Strict Immigration Quotas</b>",3,11,0.05,"There are too many immigrants coming into our country; we should greatly cut down who we allow in.","(<i>Moderate Right</i>): <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
 //DEFINES: GLOBAL VARIABLES
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
@@ -715,7 +714,7 @@ function popupwindow(n){
 }
 
 //PARTY CONTROL MENU
-function openPartyMenu(){
+function openPartyMenu(playerCurrentParty){
 	if(partyMenuSelected==false){
 		var makePartyMenu = document.createElement("div");
 		var makeMyPopupHeader = document.createElement("div");
@@ -724,13 +723,14 @@ function openPartyMenu(){
 		var makePartyMenuLeaders = document.createElement("div");
 		var makePartyMenuPlatforms = document.createElement("div");
 		var makePartyMenuModifiers = document.createElement("div");
+		var voterCount = nationalVoterTally(playerCurrentParty);		
 
 		makePartyMenu.setAttribute("id","screen_partycontrol");
 		makeMyPopupHeader.setAttribute("id","header");
 		makeCloseBox.setAttribute("id","xbutton");
 		makeCloseBox.innerHTML = "X";
 		makePartyMenuDesc.setAttribute("id","screen_partycontrol_party_desc");
-		makePartyMenuDesc.innerHTML = "Party Description";
+		makePartyMenuDesc.innerHTML = "Party Description" + "<br>" + "<b>Voters:</b> " + voterCount;
 		makePartyMenuLeaders.setAttribute("id","screen_partycontrol_party_leaders");
 		makePartyMenuLeaders.innerHTML = "Party Leaders";
 		makePartyMenuPlatforms.setAttribute("id","screen_partycontrol_party_platforms");
@@ -739,7 +739,7 @@ function openPartyMenu(){
 		makePartyMenuModifiers.setAttribute("id","screen_partycontrol_party_modifiers");
 
 		document.getElementById("main").appendChild(makePartyMenu);
-		document.getElementById("screen_partycontrol").innerHTML= playerCurrentParty + " Party" + "<br><br>" + "<img src=" + "party_" + playerCurrentParty + ".png>" + "<br>";
+		document.getElementById("screen_partycontrol").innerHTML= partyAffiliation[playerCurrentParty] + " Party" + "<br><br>" + "<img src=" + "party_" + partyAffiliation[playerCurrentParty] + ".png>" + "<br>";
 		document.getElementById("screen_partycontrol").appendChild(makeMyPopupHeader);
 
 		makeMyPopupHeader.onclick = dragElement(document.getElementById("screen_partycontrol"));
@@ -750,8 +750,30 @@ function openPartyMenu(){
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuLeaders);
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuModifiers);
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuPlatforms);
+		
+		for(var x=0;x<startingParties[playerCurrentParty].platforms[0].length;x++){
+			var makeSpecPlatform = document.createElement("div");
+			makeSpecPlatform.setAttribute("id","screen_partycontrol_specific_platform");			
+			makeSpecPlatform.innerHTML = startingParties[playerCurrentParty].platforms[0][x].name + " " + startingParties[playerCurrentParty].platforms[0][x].bonus_desc;
+			document.getElementById("screen_partycontrol_party_platforms").appendChild(makeSpecPlatform);
+		}
+		var addNewPlatform = document.createElement("div");
+		addNewPlatform.setAttribute("id","screen_partycontrol_addnewplatform");
+		addNewPlatform.innerHTML = "<font color=darkcyan size=3><b>+</b></font>";
+		document.getElementById("screen_partycontrol_party_platforms").appendChild(addNewPlatform);
 		partyMenuSelected = true;
 	}
+}
+//counts all the party voters in the country
+function nationalVoterTally(pcp){
+	var y=0;
+	for(var q=0;q<globalDistrictContainer.length;q++){
+		var globalvotecount = globalDistrictContainer[q].reportVotes();
+		for(var v=0;v<globalvotecount.length;v++){
+			y += globalvotecount[pcp];
+		}		
+	}
+	return y;
 }
 
 //Menu that pops up when you click the pop icon
@@ -946,8 +968,8 @@ function findwords(words,testword){
 //DEBUG FUNCTIONS
 
 function setDefaultParty(n){
-	playerCurrentParty = partyAffiliation[n];
+	playerCurrentParty = n;
+	console.log("Player current party set to " + partyAffiliation[n]);
 	var string = "party_"+partyAffiliation[n]+".png";
-	document.getElementById("partyflag").style.backgroundImage='url('+string+')';
-	console.log('party_'+partyAffiliation[n]+'.png');
+	document.getElementById("partyflag").style.backgroundImage='url('+string+')';	
 }
