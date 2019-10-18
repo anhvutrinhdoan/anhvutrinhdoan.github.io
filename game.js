@@ -140,6 +140,7 @@ class Pop{
 		//first, find the index of nonempty issues
 		var indices = [];
 		var scorestobeat =[];
+
 		for(var x=0;x<this.issues.length;x++){
 			if(typeof(this.issues[x]) != 'undefined'){
 				indices.push(x);
@@ -271,6 +272,7 @@ class Pop{
 			var manipulatethis = partytally.filter(x=>x[0]==f);
 			var y=0;
 			for(var v=0;v<manipulatethis.length;v++){
+				console.log(manipulatethis[v][1]);
 				y += manipulatethis[v][1];
 			}
 			finalscore.push([f,y]);
@@ -439,7 +441,11 @@ class PartyPlatform{
 		return bdsc;
 	}
 }
-
+/*
+Modifiers. How should these work?
+Modifier has a method that gets info from the pop. Every time a pop checks a modifier, it sends its entire info packet to that modifier.
+Then the modifier returns a value based on whatever information it gets from the pop.
+*/
 //Predefined platforms
 const CentristAffordableHealthcare = new PartyPlatform("<b>Centrist Affordable Healthcare</b>",0,7,0.02,"The government should provide affordable, market-based options for healthcare.","(<i>Centrist</i>): <font color='green'>+2%</font> attraction to Centrist aligned pops.");
 const StrongLaissezFaire = new PartyPlatform("<b>Strong Laissez Faire</b>",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.","(<i>Moderate Right</i>): <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
