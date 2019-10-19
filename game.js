@@ -54,6 +54,11 @@ class Pop{
 		var reportedStats ="Age: " + this.age + "     " +  "Sex: " + this.sex + "    " + "Party Affiliation: " + this.partyAffiliation + "<br/>" + "Industry: " + this.jobIndustry + "<br/>" + "Income: " + this.income + " " + "Spending: " + this.spending + " " + "Cash: " + this.cash;
 		return reportedStats;
 	}
+	reportArray(){
+		//checks= [socialStratum, partyAffiliation, age, jobIndustry, radicalism, resistanceToChange, individualism, politicalPower, anger, demands, cash, income, spending, homeDist, tendencyToVote, sex]
+		var reportedArray = [this.socialStratum,this.partyAffiliation,this.age,this.jobIndustry,this.radicalism,this.resistanceToChange,this.individualism,this.politicalPower,this.anger,this.demands,this.cash, this.Income,this.spending,this.homeDist,this.tendencyToVote,this.sex];
+		return reportedArray;
+	}
 	addCash(money){
 		this.cash += money;
 	}
@@ -263,7 +268,7 @@ class Pop{
 			*/
 		var partytally = new Array();
 		for(var e=0;e<scorestobeat.length;e++){
-			var rollscore = Math.floor(Math.random()*100) + Math.ceil(scorestobeat[e][2]*scorestobeat[e][1]);
+			var rollscore = Math.floor(Math.random()*100) + Math.ceil(scorestobeat[e][2]*scorestobeat[e][1]);// extra modifiers should go here -- TO DO: Pop looks at Party, gets modifiers from party
 			var diff = rollscore - scorestobeat[e][1];
 			partytally.push([scorestobeat[e][0], diff]);
 		}
@@ -281,7 +286,6 @@ class Pop{
 		this.partyAffiliation = partyAffiliation[output.indexOf(Math.max(...output))];
 	}
 }
-
 class District{
 	constructor(myDistID,myPops){
 		this.districtID = myDistID;
@@ -444,13 +448,77 @@ class PartyPlatform{
 /*
 Modifiers. How should these work?
 Modifier has a method that gets info from the pop. Every time a pop checks a modifier, it sends its entire info packet to that modifier.
-Then the modifier returns a value based on whatever information it gets from the pop.
+Then the modifier returns a value based on whatever information it gets from the pop. This means a party could have a modifier
+* that affects when a pop is female, for example,or if it's part of a certain strata, or if it's part of a certain industry, etc.
+* Define a modifier with the "checks" array, which flags whatever pop info it's supposed to be based on. For example
+* 		checks= [socialStratum, partyAffiliation, age, jobIndustry, radicalism, resistanceToChange, individualism, politicalPower, anger, demands, cash, income, spending, homeDist, tendencyToVote, sex]
 */
+class Modifier{
+	constructor(modifier_id,modifier_amount,modifier_desc,modifier_checks){
+		this.modid=modifier_id;
+		this.modiamt=modifier_amount;
+		this.moddesc=modifier_desc;
+		this.modchecks=modifier_checks;
+	}
+	//poparray is the info the pop sent to it
+	//checks if every item in modchecks is included in poparray
+	//modchecks is an array of values that indicate which part of the pop array it should check
+	//example: [[0,0],[16,'female']] this will affect pops of stratum 0, that are female
+	//take this, then check if the pop matches the criteria
+	getMod(poparray){
+    if(modchecks.every(x=> x[1]==poparray[x[0]])) {
+        return this.modiamt;
+    }
+  }
+}
+//ECONOMICS
+/*How does this work?
+Proposed economic model:
+Monthly Production = Base Industry Production * Number of Working Class Pops * (1+ Production Efficiency %)
+Profit = Production * (1 + Number of Middle Class Pops as %) * Price per unit of output
+Income to each pop = Profit * That Pop's Share
+
+For example:
+The retail industry has a base production of 1, production efficiency of 1, price of $1 per unit
+50 working class
+20 white collar
+5 upper class
+
+So production = 1 x 50 = 50
+Profit = 50 * (1.20) = 60 * $1 = $60 / month
+Income sharing: 50% to upper class, 25% to middle, 25% to working class
+$30 to upper class / 5 = $6 per upper class pop
+$15 to white collar / 20 = $0.75 per middle class pop
+$15 to working class / 50 = $0.30 per working class pop
+
+Upper class pops increase production efficiency by 1% for every $10 invested by upper class pops per year
+If upper class pops invest 50% of their income per year:
+$3 x 5 x 12 = $180 / 10 = 18 x 1% = 18% production efficiency growth
+
+Next year:
+
+Production = 1 x 50 x 1.18 = 59
+Profit = 59 x 1.20 = $71 / month
+Income sharing: 0.5,.25,.25
+$35.5 to upper class / 5 = $7.10 per upper class pop per month
+$17.75 to middle class / 20 = $0.89 per middle / mo
+$17.75 to working class / 50 = $0.35 per working class / mo 
+*/
+class Industry{
+
+}
+
 //Predefined platforms
 const CentristAffordableHealthcare = new PartyPlatform("<b>Centrist Affordable Healthcare</b>",0,7,0.02,"The government should provide affordable, market-based options for healthcare.","(<i>Centrist</i>): <font color='green'>+2%</font> attraction to Centrist aligned pops.");
 const StrongLaissezFaire = new PartyPlatform("<b>Strong Laissez Faire</b>",3,2,0.05,"We strongly believe that the government shouldn't meddle in the affairs of private business.","(<i>Moderate Right</i>): <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
 const ProSkilledImmigration = new PartyPlatform("<b>Pro Skilled Immigration</b>",0,11,0.02,"We should encourage skilled immigrants to come here.","(<i>Centrist</i>): <font color='green'>+2%</font> attraction to Centrist aligned pops.");
 const StrictImmigrationQuotas = new PartyPlatform("<b>Strict Immigration Quotas</b>",3,11,0.05,"There are too many immigrants coming into our country; we should greatly cut down who we allow in.","(<i>Moderate Right</i>): <font color='green'>+5%</font> attraction to Moderate Right aligned pops.");
+
+//Predefine Modifiers
+//checks= [socialStratum, partyAffiliation, age, jobIndustry, radicalism, resistanceToChange, individualism, politicalPower, anger, demands, cash, income, spending, homeDist, tendencyToVote, sex]
+const DemBonusForWomen = new Modifier("Favored by Women Voters",0.04,"This party tends to be favored by women voters. +4% attraction to Female pops.",[[16,'female']]);
+const BourgeoisParty = new Modifier("Appeal to Capital",0.15,"This party is a favorite of the wealthy. +15% attraction to Upper-Class pops.",[[0,0]]);
+
 //DEFINES: GLOBAL VARIABLES
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
@@ -643,7 +711,7 @@ function randomizeAge(){
 	  return thisPopsAge;
   }
   if (randomAge==1){
-	  return Math.floor(Math.random() * 16) + 19;
+	  return Math.floor(Math.random() * 17) + 18;
   }
   if (randomAge==2){
 	  return Math.floor(Math.random() * 19)+ 36;
@@ -652,7 +720,7 @@ function randomizeAge(){
 	  return Math.floor(Math.random() * 10) + 56;
   }
   if (randomAge==4){
-	  return Math.floor(Math.random() * 100) + 67;
+	  return Math.floor(Math.random() * 50) + 66;
   }
 }
 
