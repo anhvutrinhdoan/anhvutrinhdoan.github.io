@@ -470,6 +470,15 @@ class Modifier{
         return this.modiamt;
     }
   }
+	reportDesc(){
+		return this.moddesc;
+	}
+	reportID(){
+		return this.modid;
+	}
+	makeIcon(){
+		
+	}
 }
 //ECONOMICS
 /*How does this work?
@@ -502,7 +511,7 @@ Profit = 59 x 1.20 = $71 / month
 Income sharing: 0.5,.25,.25
 $35.5 to upper class / 5 = $7.10 per upper class pop per month
 $17.75 to middle class / 20 = $0.89 per middle / mo
-$17.75 to working class / 50 = $0.35 per working class / mo 
+$17.75 to working class / 50 = $0.35 per working class / mo
 */
 class Industry{
 
