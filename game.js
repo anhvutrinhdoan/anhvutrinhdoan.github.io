@@ -1,5 +1,7 @@
+
 //DEFINES: CLASSES
 //GAME OBJECTS
+
 class Pop{
 	constructor(myPopID, mySocialStratum,myPartyAffiliation,myAge,myJobIndustry,
 				myRadicalism,myResistanceToChange,myIndividualism,myPoliticalPower,
@@ -268,16 +270,26 @@ class Pop{
 			*/
 		var partytally = new Array();
 		for(var e=0;e<scorestobeat.length;e++){
-			var rollscore = Math.floor(Math.random()*100) + Math.ceil(scorestobeat[e][2]*scorestobeat[e][1]);// extra modifiers should go here -- TO DO: Pop looks at Party, gets modifiers from party
-			var diff = rollscore - scorestobeat[e][1];
+		//	console.log(startingParties[scorestobeat[e][0]].modifiers.length);
+			var modifiersbonus=0;
+			for(var f=0;f<startingParties[scorestobeat[e][0]].modifiers.length;f++){
+				//bonus from all applicable modifiers
+				modifiersbonus+= startingParties[scorestobeat[e][0]].modifiers[0][0].getMod(this.reportArray());
+				console.log(modifiersbonus);
+			}
+
+			var rollscore = Math.floor(Math.random()*100) + Math.ceil(scorestobeat[e][2]*scorestobeat[e][1]); //  + startingParties[e].modifiers[0][0].getMod(this.reportArray());// extra modifiers should go here -- TO DO: Pop looks at Party, gets modifiers from party
+			var diff = rollscore - (scorestobeat[e][1] - Math.ceil(modifiersbonus*100));
 			partytally.push([scorestobeat[e][0], diff]);
 		}
+		//check if the party has a modifier attached to it. If it does, call the modifiers from the party,apply them
+
 		var finalscore = new Array();
 		for(var f=0;f<startingParties.length;f++){
 			var manipulatethis = partytally.filter(x=>x[0]==f);
 			var y=0;
 			for(var v=0;v<manipulatethis.length;v++){
-				console.log(manipulatethis[v][1]);
+			//	console.log(manipulatethis[v][1]);
 				y += manipulatethis[v][1];
 			}
 			finalscore.push([f,y]);
@@ -286,6 +298,8 @@ class Pop{
 		this.partyAffiliation = partyAffiliation[output.indexOf(Math.max(...output))];
 	}
 }
+//END OF POP CLASS
+
 class District{
 	constructor(myDistID,myPops){
 		this.districtID = myDistID;
@@ -466,9 +480,12 @@ class Modifier{
 	//example: [[0,0],[16,'female']] this will affect pops of stratum 0, that are female
 	//take this, then check if the pop matches the criteria
 	getMod(poparray){
-    if(modchecks.every(x=> x[1]==poparray[x[0]])) {
+    if(this.modchecks.every(x=> x[1]==poparray[x[0]])) {
         return this.modiamt;
     }
+		else{
+			return 0;
+		}
   }
 	reportDesc(){
 		return this.moddesc;
@@ -477,7 +494,7 @@ class Modifier{
 		return this.modid;
 	}
 	makeIcon(){
-		
+
 	}
 }
 //ECONOMICS
@@ -525,8 +542,8 @@ const StrictImmigrationQuotas = new PartyPlatform("<b>Strict Immigration Quotas<
 
 //Predefine Modifiers
 //checks= [socialStratum, partyAffiliation, age, jobIndustry, radicalism, resistanceToChange, individualism, politicalPower, anger, demands, cash, income, spending, homeDist, tendencyToVote, sex]
-const DemBonusForWomen = new Modifier("Favored by Women Voters",0.04,"This party tends to be favored by women voters. +4% attraction to Female pops.",[[16,'female']]);
-const BourgeoisParty = new Modifier("Appeal to Capital",0.15,"This party is a favorite of the wealthy. +15% attraction to Upper-Class pops.",[[0,0]]);
+const DemBonusForWomen = new Modifier("Favored by Women Voters",0.04,"This party tends to be favored by women voters. +4% attraction to Female pops.",[[15,'female']]);
+const BourgeoisParty = new Modifier("Appeal to Capital",0.15,"This party is a favorite of the moneyed classes. +15% attraction to Upper-Class and White-Collar pops.",[[0,0]]);
 
 //DEFINES: GLOBAL VARIABLES
 var startingpoliticalpower = 100;
@@ -545,7 +562,7 @@ const issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.02,
 const issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09,0.08,0.01,0.01,0.05,0.01,0.01,0.02,0.05,0.06,0.08,0.05];
 const issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
-var startingParties = [new Party("Democratic",[CentristAffordableHealthcare,ProSkilledImmigration],100,100,["Tom Perez"],1,[]), new Party("Republican",[StrongLaissezFaire,StrictImmigrationQuotas],100,100,["Ronna McDaniel"],1,[])];
+var startingParties = [new Party("Democratic",[CentristAffordableHealthcare,ProSkilledImmigration],100,100,["Tom Perez"],1,[DemBonusForWomen]), new Party("Republican",[StrongLaissezFaire,StrictImmigrationQuotas],100,100,["Ronna McDaniel"],1,[BourgeoisParty])];
 //DEMOGRAPHICS
 var districtclicked = 0;
 
