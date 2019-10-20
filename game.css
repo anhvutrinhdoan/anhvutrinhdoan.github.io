@@ -1,18 +1,7 @@
 body{
 	font: 14px Helvetica;
 }
-.frame{
-	outline: 16px solid gray;
-    	outline-offset: -16px;
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	z-index:1;
-	left:0px;
-	top:0px;
-	background-color: #b3ecff;
-	margin:0px;
-}
+
 .nation{
 	width: 55px;
 	height: 16px;
@@ -116,18 +105,18 @@ body{
 	height: 16px;
 	background-color: #e0e0e0;
 	top:16px;
-	width:100%;
-	left:124px;
+	width:700px;
+	left:136px;
 }
 #partyflag{
 	position:absolute;
-	z-index:0;
+	z-index:1;
 	background-color:gray;
 	background-image: url("party_none.png");
 	border:8px solid gray;
 	width:100px;
 	height:75px;
-	top:31px;
+	top:18px;
 	left:18px;
 }
 #partyflag:hover{
@@ -135,10 +124,10 @@ body{
 }
 #partyflag_below{
 	position:absolute;
-	z-index:-1;
+	z-index:0;
 	background-color:gray;
 	width:120px;
-	height:106px;
+	height:93px;
 	top:16px;
 	left:16px;
 }
@@ -363,9 +352,30 @@ body{
 }
 #main{
 	position:absolute;
-	z-index:-1;
+	z-index:0;
+	overflow:hidden;
+}
+.frame{
+	outline: 16px solid gray;
+    	outline-offset: -16px;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	z-index:0;
+	left:0px;
+	top:0px;
+	background-color: #b3ecff;
+	margin:0px;
 }
 #mydiv {}
+
+#gamemap{
+	position: absolute;
+	z-index:-1;
+	width:1980px;
+	top:16px;
+	height: 1080px;
+}
 
 .lds-ring {
   display: inline-block;
