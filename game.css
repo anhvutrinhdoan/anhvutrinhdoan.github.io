@@ -211,9 +211,10 @@ body{
 	position:relative;
 	padding-left:17px;
 	margin:3px;
-	height: 10px;
-	padding:3px;
+	height: 15px;
+	padding:0px;
 	padding-left:17px;
+	padding-top:2px;
 	width: 370px;
 	cursor:default;
 	background-color:#dbdbdb;
@@ -228,8 +229,11 @@ body{
 	position:absolute;
 	top: 0px;
 	left:3px;
+	padding:1px;
 	height: 10px;
 	width: 10px;
+	font: bold 12px Helvetica,  sans-serif;
+	color:#00b85f;
 	cursor:default;
 }
 #screen_partycontrol_modplatform{
@@ -239,6 +243,50 @@ body{
 	height: 300px;
 	width: 300px;
 }
+#screen_partycontrol_modifier{
+	position:relative;
+	text-align:center;
+	top:15px;
+	left:0px;
+	font-size:12px;
+	height:15px;
+	width:15px;
+	cursor:default;
+	 display: inline-block;
+}
+#screen_partycontrol_modifier:hover{
+	outline:1px solid yellow;
+}
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+	font-size: 9px;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+	top: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 #indiv_popinfo{
 	position:absolute;
 	z-index:0;

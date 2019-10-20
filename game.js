@@ -272,15 +272,15 @@ class Pop{
 		for(var e=0;e<scorestobeat.length;e++){
 		//	console.log(startingParties[scorestobeat[e][0]].modifiers.length);
 			var modifiersbonus=0;
-			var lengthofmodifierslist = startingParties[scorestobeat[e][0]].modifiers.length;
-			for(var f=0;f<lengthofmodifierslist;f++){
+			for(var f=0;f<startingParties[scorestobeat[e][0]].modifiers[0].length;f++){
 				//bonus from all applicable modifiers
-				modifiersbonus+= startingParties[scorestobeat[e][0]].modifiers[f][0].getMod(this.reportArray());
-				console.log(modifiersbonus);
+				modifiersbonus+= startingParties[scorestobeat[e][0]].modifiers[0][f].getMod(this.reportArray());
+			//	console.log(modifiersbonus);
 			}
-
-			var rollscore = Math.floor(Math.random()*100) + Math.ceil(scorestobeat[e][2]*scorestobeat[e][1]); //  + startingParties[e].modifiers[0][0].getMod(this.reportArray());// extra modifiers should go here -- TO DO: Pop looks at Party, gets modifiers from party
-			var diff = rollscore - (scorestobeat[e][1] - Math.ceil(modifiersbonus*100));
+			//formula is: random score from 0-100 + 100*% bonus from attraction by political leanings + 100*%bonus from other modifiers
+			//ex: roll is 45 + 2 (party attraction to centrist aligned pops) + 4 (attraction to female pops) = 46  vs score to beat: 50 (pop and party are perfectly aligned )
+			var rollscore = Math.floor(Math.random()*100) + Math.ceil(scorestobeat[e][2]*100) + Math.ceil(modifiersbonus*100);
+			var diff = rollscore - scorestobeat[e][1];
 			partytally.push([scorestobeat[e][0], diff]);
 		}
 		//check if the party has a modifier attached to it. If it does, call the modifiers from the party,apply them
@@ -469,11 +469,12 @@ Then the modifier returns a value based on whatever information it gets from the
 * 		checks= [socialStratum, partyAffiliation, age, jobIndustry, radicalism, resistanceToChange, individualism, politicalPower, anger, demands, cash, income, spending, homeDist, tendencyToVote, sex]
 */
 class Modifier{
-	constructor(modifier_id,modifier_amount,modifier_desc,modifier_checks){
+	constructor(modifier_id,modifier_amount,modifier_desc,modifier_checks,modifier_symbol){
 		this.modid=modifier_id;
 		this.modiamt=modifier_amount;
 		this.moddesc=modifier_desc;
 		this.modchecks=modifier_checks;
+		this.modsymbol=modifier_symbol;
 	}
 	//poparray is the info the pop sent to it
 	//checks if every item in modchecks is included in poparray
@@ -481,13 +482,13 @@ class Modifier{
 	//example: [[0,0],[16,'female']] this will affect pops of stratum 0, that are female
 	//take this, then check if the pop matches the criteria
 	getMod(poparray){
-    		if(this.modchecks.every(x=> x[1]==poparray[x[0]])) {
-       			 return this.modiamt;
-    		}
+    if(this.modchecks.every(x=> x[1]==poparray[x[0]])) {
+        return this.modiamt;
+    }
 		else{
 			return 0;
 		}
-  	}
+  }
 	reportDesc(){
 		return this.moddesc;
 	}
@@ -495,7 +496,7 @@ class Modifier{
 		return this.modid;
 	}
 	makeIcon(){
-
+		return this.modsymbol;
 	}
 }
 //ECONOMICS
@@ -543,10 +544,12 @@ const StrictImmigrationQuotas = new PartyPlatform("<b>Strict Immigration Quotas<
 
 //Predefine Modifiers
 //checks= [socialStratum, partyAffiliation, age, jobIndustry, radicalism, resistanceToChange, individualism, politicalPower, anger, demands, cash, income, spending, homeDist, tendencyToVote, sex]
-const DemBonusForWomen = new Modifier("Favored by Women Voters",0.04,"This party tends to be favored by women voters. +4% attraction to Female pops.",[[15,'female']]);
-const BourgeoisParty = new Modifier("Appeal to Upper Class",0.25,"This party is a favorite of the moneyed classes. +25% Upper Class attraction.",[[0,0]]);
-const PetitBourgeoisAppeal = new Modifier("Appeal to Middle Class",0.15,"This party is attractive to the middle class. +15% White-Collar attraction.",[[0,1]]);
+const DemBonusForWomen = new Modifier("Favored by Women Voters",0.04,"This party tends to be favored by women voters. +4% attraction to Female pops.",[[15,'female']],"♀");
+const BourgeoisParty = new Modifier("Cozy to Big Capital",0.25,"This party is a favorite of the moneyed classes. +25% attraction to Upper-Class pops.",[[0,0]],"🍸");
+const PetitBourgeoisAppeal = new Modifier("Attraction to Middle Class",0.15,"This party appeals to the middle class. +15% attraction to White-Collar pops.",[[0,1]],"🥑");
+
 //DEFINES: GLOBAL VARIABLES
+var districtclicked = 0;
 var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
 var playerCurrentParty = "noparty";
@@ -564,8 +567,12 @@ const issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09
 const issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
 var startingParties = [new Party("Democratic",[CentristAffordableHealthcare,ProSkilledImmigration],100,100,["Tom Perez"],1,[DemBonusForWomen]), new Party("Republican",[StrongLaissezFaire,StrictImmigrationQuotas],100,100,["Ronna McDaniel"],1,[BourgeoisParty,PetitBourgeoisAppeal])];
+
+//POLITICAL STUFF
+var partyAffiliation = ["Democratic","Republican"];
+var partyColor = ['#1e60c9','#c91e1e'];
 //DEMOGRAPHICS
-var districtclicked = 0;
+
 
 //slot 1: upper class, slot 2: middle class, slot 3: lower-class
 var pops = [25,45,15,24,38,36,77];
@@ -592,13 +599,12 @@ const demographics = [0.15,0.25,0.30,0.20,0.10];
 const sexRatio = [0.50,0.50]; //female 49%, male 51%
 const sexes=["female","male"];
 
-//POLITICAL STUFF
-var partyAffiliation = ["Democratic","Republican"];
-var partyColor = ['#1e60c9','#c91e1e'];
 //soon to be deprecated
+/*
 var partyWeightsForUpperClass = [0.3,0.7];
 var partyWeightsForMiddleClass = [0.51,0.49];
-var partyWeightsForLowerClass = [0.65,0.35];
+var partyWeightsForLowerClass = [0.65,0.35];*/
+
 //new system: leftwing or rightwing weights - 1st value: most left, last value:most right
 const leftRightWeightForUpperClass = [0.05,0.15,0.25,0.40,0.15]; //rich tend to be right
 const leftRightWeightForMiddleClass = [0.10,0.20,0.40,0.20,0.10]; //middle class tend towards center
@@ -825,6 +831,8 @@ function openPartyMenu(playerCurrentParty){
 		var makePartyMenuLeaders = document.createElement("div");
 		var makePartyMenuPlatforms = document.createElement("div");
 		var makePartyMenuModifiers = document.createElement("div");
+
+
 		var voterCount = nationalVoterTally(playerCurrentParty);
 
 		makePartyMenu.setAttribute("id","screen_partycontrol");
@@ -837,7 +845,7 @@ function openPartyMenu(playerCurrentParty){
 		makePartyMenuLeaders.innerHTML = "Party Leaders";
 		makePartyMenuPlatforms.setAttribute("id","screen_partycontrol_party_platforms");
 		makePartyMenuPlatforms.innerHTML = "Party Platforms";
-		makePartyMenuModifiers.innerHTML = "Active Modifiers";
+		makePartyMenuModifiers.innerHTML = "Party Modifiers<br/>";
 		makePartyMenuModifiers.setAttribute("id","screen_partycontrol_party_modifiers");
 
 		document.getElementById("main").appendChild(makePartyMenu);
@@ -852,7 +860,12 @@ function openPartyMenu(playerCurrentParty){
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuLeaders);
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuModifiers);
 		document.getElementById("screen_partycontrol").appendChild(makePartyMenuPlatforms);
-
+		for(var v=0;v<startingParties[playerCurrentParty].modifiers[0].length;v++){
+			var makeModifier = document.createElement("div");
+			makeModifier.setAttribute("id","screen_partycontrol_modifier");
+			makeModifier.innerHTML = "<div class = 'tooltip'>" + startingParties[playerCurrentParty].modifiers[0][v].makeIcon() + "<span class='tooltiptext'>" + startingParties[playerCurrentParty].modifiers[0][v].reportDesc() + "</span>" +"</div>";
+			document.getElementById("screen_partycontrol_party_modifiers").appendChild(makeModifier);
+		}
 		for(var x=0;x<startingParties[playerCurrentParty].platforms[0].length;x++){
 			var makeSpecPlatform = document.createElement("div");
 			makeSpecPlatform.setAttribute("id","screen_partycontrol_specific_platform");
@@ -864,7 +877,7 @@ function openPartyMenu(playerCurrentParty){
 		addNewPlatform.setAttribute("id","screen_partycontrol_addnewplatform");
 		addPlusSign.setAttribute("id","screen_partycontrol_plussign");
 		addNewPlatform.innerHTML = "Add new platform";
-		addPlusSign.innerHTML = "<font color=darkcyan size=3><b>+</b></font>";
+		addPlusSign.innerHTML = "+";
 		document.getElementById("screen_partycontrol_party_platforms").appendChild(addNewPlatform);
 		document.getElementById("screen_partycontrol_addnewplatform").appendChild(addPlusSign);
 		partyMenuSelected = true;
