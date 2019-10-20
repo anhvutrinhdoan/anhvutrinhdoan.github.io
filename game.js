@@ -272,9 +272,10 @@ class Pop{
 		for(var e=0;e<scorestobeat.length;e++){
 		//	console.log(startingParties[scorestobeat[e][0]].modifiers.length);
 			var modifiersbonus=0;
-			for(var f=0;f<startingParties[scorestobeat[e][0]].modifiers.length;f++){
+			var lengthofmodifierslist = startingParties[scorestobeat[e][0]].modifiers.length;
+			for(var f=0;f<lengthofmodifierslist;f++){
 				//bonus from all applicable modifiers
-				modifiersbonus+= startingParties[scorestobeat[e][0]].modifiers[0][0].getMod(this.reportArray());
+				modifiersbonus+= startingParties[scorestobeat[e][0]].modifiers[f][0].getMod(this.reportArray());
 				console.log(modifiersbonus);
 			}
 
