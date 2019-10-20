@@ -482,13 +482,13 @@ class Modifier{
 	//example: [[0,0],[16,'female']] this will affect pops of stratum 0, that are female
 	//take this, then check if the pop matches the criteria
 	getMod(poparray){
-    if(this.modchecks.every(x=> x[1]==poparray[x[0]])) {
-        return this.modiamt;
-    }
+   		if(this.modchecks.every(x=> x[1]==poparray[x[0]])) {
+        		return this.modiamt;
+		}
 		else{
 			return 0;
 		}
-  }
+	}
 	reportDesc(){
 		return this.moddesc;
 	}
@@ -590,6 +590,21 @@ var dist = [[2,10,13],
 			[6,21,9],
 			//District 7
 			[12,29,36]];
+//Adjacencies grant a bonus to controlling parties 
+var distadjacencies = [	//District 1
+			[1,2],
+			//District 2
+			[0,2,5],
+			//District 3
+			[0,1,3,4,5],
+			//District 4
+			[2,4,6],
+			//District 5
+			[2,3,5,6],
+			//District 6
+			[1,2,4],
+			//District 7
+			[3,4]];
 //arrays that contain the pops and districts
 var globalPopulation = new Array();
 var globalDistrictContainer = new Array();
