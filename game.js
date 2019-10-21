@@ -590,7 +590,7 @@ var dist = [[2,10,13],
 			[6,21,9],
 			//District 7
 			[12,29,36]];
-//Adjacencies grant a bonus to controlling parties 
+//Adjacencies grant a bonus to controlling parties
 var distadjacencies = [	//District 1
 			[1,2],
 			//District 2
@@ -823,12 +823,16 @@ function popupwindow(n){
 	makeCloseBox.innerHTML = "X";
 
 	makeActionMenu.setAttribute("id","popupwindow_actions");
-
+	var actionbuttonCampaignHere =  document.createElement("div");
+	actionbuttonCampaignHere.setAttribute("id","actionbutton_campaign");
+	actionbuttonCampaignHere.innerHTML =  "<div class = 'tooltip'>" + "<img src='littlehat.png' onmouseover='this.src=\"littlehat_mouseover.png\"' onmouseout='this.src=\"littlehat.png\"'/>" + "<span class='tooltiptext'>Actively campaign for your party here.</span></div>";
+	makeActionMenu.appendChild(actionbuttonCampaignHere);
 	document.getElementById("dist"+n).appendChild(makeMyPopupHeader);
 	document.getElementById("dist"+n).appendChild(subElement);
 	document.getElementById("dist"+n).appendChild(subElement2);
 	document.getElementById("dist"+n).appendChild(makeCloseBox);
 	document.getElementById("dist"+n).appendChild(makeActionMenu);
+
 
 	districtclicked = n;
 	var datalabels = ['Party','Percentage of Vote'];
@@ -864,7 +868,7 @@ function openPartyMenu(playerCurrentParty){
 		makePartyMenuModifiers.setAttribute("id","screen_partycontrol_party_modifiers");
 
 		document.getElementById("main").appendChild(makePartyMenu);
-		document.getElementById("screen_partycontrol").innerHTML= partyAffiliation[playerCurrentParty] + " Party" + "<br><br>" + "<img src=" + "party_" + partyAffiliation[playerCurrentParty] + ".png>" + "<br>";
+		document.getElementById("screen_partycontrol").innerHTML= partyAffiliation[playerCurrentParty] + " Party" + "<br/>" + "<img src=" + "party_" + partyAffiliation[playerCurrentParty] + ".png>" + "<br>";
 		document.getElementById("screen_partycontrol").appendChild(makeMyPopupHeader);
 
 		makeMyPopupHeader.onclick = dragElement(document.getElementById("screen_partycontrol"));
