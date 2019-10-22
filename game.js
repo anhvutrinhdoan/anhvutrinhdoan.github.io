@@ -1195,6 +1195,8 @@ function setDefaultParty(n){
 	console.log("Player current party set to " + partyAffiliation[n]);
 	var string = "party_"+partyAffiliation[n]+".png";
 	document.getElementById("partyflag").style.backgroundImage='url('+string+')';
+	var e = document.getElementById("screen_mainmenu");
+	e.parentNode.removeChild(e);
 }
 
 /*tooltips

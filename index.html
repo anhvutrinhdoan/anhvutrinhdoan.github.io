@@ -12,9 +12,13 @@
 	<link rel="stylesheet" type="text/css" href="game.css">
 	<link rel="stylesheet" type="text/css" href="districts.css">
   </head>
-  <body onload="generateInitialPops()">
+  <body>
     <!-- Loading thingy -->
   	<div class="lds-ring" id="removewhendone"><div></div><div></div><div></div><div></div></div>
+    <div id="screen_mainmenu">
+      <div id="screen_mainmenu_partyselect0" onclick="setDefaultParty(0); generateInitialPops();">Democratic Party</div>
+      <div id="screen_mainmenu_partyselect1" onclick="setDefaultParty(1); generateInitialPops();">Republican Party</div>
+    </div>
       <!-- Main game map area -->
   	<div id="main" class="frame" >
   		<div id="gamemap" onclick = "dragElement(document.getElementById('gamemap'))">
@@ -30,9 +34,7 @@
   	</div>
   	<div class="menuItem nation" onclick="normalMapMode()">NATION</div>
   	<div class="menuItem party" onclick="politicalMapMode()">PARTY</div>
-  	<div class="menuItem" id="partyflag" onclick="openPartyMenu(playerCurrentParty)"></div>
-  	<div class="menuItem" id="partyflag_below"></div>
-  	<div class="menuItem" id="resources">
+    <div class="menuItem" id="resources">
       <div class="resources_boxes" id="resources_politicalpower"></div>
       <div class="resources_boxes" id="resources_cash"></div>
       <div class="resources_boxes" id="resources_orgeffic"></div>
@@ -40,5 +42,8 @@
       <div class="resources_boxes" id="resources_unity"></div>
       <div class="resources_boxes" id="resources_voters"></div>
     </div>
+  	<div class="menuItem" id="partyflag" onclick="openPartyMenu(playerCurrentParty)"></div>
+  	<div class="menuItem" id="partyflag_below"></div>
+
   </body>
 </html>

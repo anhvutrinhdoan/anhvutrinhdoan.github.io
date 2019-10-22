@@ -123,15 +123,15 @@ body{
 	left: 10px;
 }
 #resources_cash{
-	background-color: green ;
+	background-color: #32a852 ;
 	left: 55px;
 }
 #resources_orgeffic{
-	background-color: red ;
+	background-color: #fcdb60 ;
 	left: 100px;
 }
 #resources_experience{
-		background-color: yellow ;
+		background-color: #f2ff63 ;
 	left: 145px;
 	width:50px;
 }
@@ -140,7 +140,7 @@ body{
 	left: 200px;
 }
 #resources_voters{
-		background-color: cyan ;
+		background-color: #69f09f ;
 	left: 245px;
 }
 #partyflag{
@@ -165,6 +165,37 @@ body{
 	height:93px;
 	top:16px;
 	left:16px;
+}
+#screen_mainmenu{
+	position:absolute;
+	z-index:999;
+	background-color: lightblue;
+	width:100%;
+	height:100%;
+	top:0px;
+	left:0px;
+}
+#screen_mainmenu_partyselect0{
+	position:relative;
+	z-index:998;
+	background-color: white;
+	width: 200px;
+	height: 25px;
+	top: 200px;
+	left: 50%;
+	cursor:default;
+	text-align:center;
+}
+#screen_mainmenu_partyselect1{
+	position:relative;
+	z-index:998;
+	background-color: white;
+	width: 200px;
+	height: 25px;
+	top: 230px;
+	left: 50%;
+	cursor:default;
+	text-align:center;
 }
 #screen_partycontrol{
 	position:absolute;
@@ -284,13 +315,14 @@ body{
 /* Tooltip container */
 .tooltip {
   position: relative;
+	  z-index: 999;
   display: inline-block;
 }
 
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 100px;
   background-color: black;
   color: #fff;
 	font-size: 9px;
@@ -300,9 +332,9 @@ body{
 
   /* Position the tooltip text - see examples below! */
   position: absolute;
-  z-index: 1;
+  z-index: 999;
 	top: 100%;
-  left: 50%;
+  left: 100%;
   margin-left: -60px;
 }
 
