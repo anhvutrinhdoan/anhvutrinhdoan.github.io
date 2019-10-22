@@ -13,50 +13,32 @@
 	<link rel="stylesheet" type="text/css" href="districts.css">
   </head>
   <body onload="generateInitialPops()">
-	<div class="lds-ring" id="removewhendone"><div></div><div></div><div></div><div></div></div>
-	<div id="main" class="frame" >
-		<div id="gamemap" onclick = "dragElement(document.getElementById('gamemap'))">
-			<div class="district1 districts" id="0" onclick="popupwindow(1);"></div>
-			<div class="district2 districts" id="1" onclick="popupwindow(2);"></div>
-			<div class="district3 districts" id="2" onclick="popupwindow(3);"></div>
-			<div class="district4 districts" id="3" onclick="popupwindow(4);"></div>
-			<div class="district5 districts" id="4" onclick="popupwindow(5);"></div>
-			<div class="district6 districts" id="5" onclick="popupwindow(6);"></div>
-			<div class="district7 districts" id="6" onclick="popupwindow(7);"></div>
-		</div>
-
-	</div>
-	<div class="menuItem nation" onclick="normalMapMode()">NATION</div>
-	<div class="menuItem party" onclick="politicalMapMode()">PARTY</div>
-	<div class="menuItem" id="partyflag" onclick="openPartyMenu(playerCurrentParty)"></div>
-	<div class="menuItem" id="partyflag_below"></div>
-	<div class="menuItem" id="resources">
-    <div class="resources_boxes" id="resources_politicalpower">
-		<div class="tooltip">
-			<span class="tooltiptext">Political Power enables your party to launch campaigns, modify its platforms, promote leaders, and perform other political actions.</span>
-		</div>
-	</div>
-    <div class="resources_boxes" id="resources_cash">
-		<div class="tooltip">
-			<span class="tooltiptext">Cash is a measure of your party's financial reserves and is essential for paying staff and maintaining campaigns.</span>
-		</div>
-	</div>
-    <div class="resources_boxes" id="resources_orgeffic">
-		<div class="tooltip">
-			<span class="tooltiptext">Organizational efficiency is a measure of how organized your party is and how effective it will be at carrying out its actions.</span>
-		</div>
-	</div>
-    <div class="resources_boxes" id="resources_experience">
-		<div class="tooltip">
-			<span class="tooltiptext">Experience is a measure of how much institutional knowledge and political savvy your leaders possess. It makes your leaders more effective.</span>
-		</div>
-	</div>
-	 <div class="resources_boxes" id="resources_unity">
-		<div class="tooltip">
-			<span class="tooltiptext">Unity is a measure of how loyal your party's leaders and constituents are. More loyal constituents will vote more reliably, and more loyal leaders will pass on a larger percentage of political power.</span>
-		</div>
-	</div>
-  </div>
-
+    <!-- Loading thingy -->
+  	<div class="lds-ring" id="removewhendone"><div></div><div></div><div></div><div></div></div>
+      <!-- Main game map area -->
+  	<div id="main" class="frame" >
+  		<div id="gamemap" onclick = "dragElement(document.getElementById('gamemap'))">
+  			<div class="district1 districts" id="0" onclick="popupwindow(1);"></div>
+  			<div class="district2 districts" id="1" onclick="popupwindow(2);"></div>
+  			<div class="district3 districts" id="2" onclick="popupwindow(3);"></div>
+  			<div class="district4 districts" id="3" onclick="popupwindow(4);"></div>
+  			<div class="district5 districts" id="4" onclick="popupwindow(5);"></div>
+  			<div class="district6 districts" id="5" onclick="popupwindow(6);"></div>
+  			<div class="district7 districts" id="6" onclick="popupwindow(7);"></div>
+  		</div>
+    <!-- Mapmodes and other controls area -->
+  	</div>
+  	<div class="menuItem nation" onclick="normalMapMode()">NATION</div>
+  	<div class="menuItem party" onclick="politicalMapMode()">PARTY</div>
+  	<div class="menuItem" id="partyflag" onclick="openPartyMenu(playerCurrentParty)"></div>
+  	<div class="menuItem" id="partyflag_below"></div>
+  	<div class="menuItem" id="resources">
+      <div class="resources_boxes" id="resources_politicalpower"></div>
+      <div class="resources_boxes" id="resources_cash"></div>
+      <div class="resources_boxes" id="resources_orgeffic"></div>
+      <div class="resources_boxes" id="resources_experience"></div>
+      <div class="resources_boxes" id="resources_unity"></div>
+      <div class="resources_boxes" id="resources_voters"></div>
+    </div>
   </body>
 </html>

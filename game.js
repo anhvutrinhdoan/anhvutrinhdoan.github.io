@@ -567,7 +567,7 @@ const issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.02,
 const issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09,0.08,0.01,0.01,0.05,0.01,0.01,0.02,0.05,0.06,0.08,0.05];
 const issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
-var startingParties = [new Party("Democratic",[CentristAffordableHealthcare,ProSkilledImmigration],100,100,["Tom Perez"],1,[DemBonusForWomen],100,100000), new Party("Republican",[StrongLaissezFaire,StrictImmigrationQuotas],100,100,["Ronna McDaniel"],1,[BourgeoisParty,PetitBourgeoisAppeal],100,100000)];
+var startingParties = [new Party("Democratic",[CentristAffordableHealthcare,ProSkilledImmigration],100,100,["Tom Perez"],60,[DemBonusForWomen],100,100000), new Party("Republican",[StrongLaissezFaire,StrictImmigrationQuotas],100,100,["Ronna McDaniel"],80,[BourgeoisParty,PetitBourgeoisAppeal],100,100000)];
 
 //POLITICAL STUFF
 var partyAffiliation = ["Democratic","Republican"];
@@ -712,7 +712,7 @@ function initialPartyPopAlignment(){
 		}
 	}
 	cleanuploadingicon();
-	showResources();
+  showResources();
 }
 //Looping through a weighted random array. Given weights returns the i'th entry of the array
 function loopArray(anArray){
@@ -1166,7 +1166,10 @@ function showResources(){
 	document.getElementById("resources_cash").innerHTML ="$" + abbreviateNumber(startingParties[playerCurrentParty].pcash);
 	document.getElementById("resources_orgeffic").innerHTML = startingParties[playerCurrentParty].organization + "%";
 	document.getElementById("resources_experience").innerHTML =startingParties[playerCurrentParty].experience + "/100";
-	document.getElementById("resources_unity").innerHTML =startingParties[playerCurrentParty].unity + "%";
+	document.getElementById("resources_unity").innerHTML = startingParties[playerCurrentParty].unity + "%";
+	document.getElementById("resources_voters").innerHTML = nationalVoterTally(playerCurrentParty);
+	var string = "party_"+partyAffiliation[playerCurrentParty]+".png";
+	document.getElementById("partyflag").style.backgroundImage='url('+string+')';
 }
 
 //abbreviate numbers
@@ -1193,3 +1196,22 @@ function setDefaultParty(n){
 	var string = "party_"+partyAffiliation[n]+".png";
 	document.getElementById("partyflag").style.backgroundImage='url('+string+')';
 }
+
+/*tooltips
+<div class="tooltip">
+  <span class="tooltiptext">Political Power enables your party to launch campaigns, modify its platforms, promote leaders, and perform other political actions.</span>
+</div>
+<div class="tooltip">
+  <span class="tooltiptext">Cash is a measure of your party's financial reserves and is essential for paying staff and maintaining campaigns.</span>
+</div>
+<div class="tooltip">
+  <span class="tooltiptext">Organizational efficiency is a measure of how organized your party is and how effective it will be at carrying out its actions.</span>
+</div>
+<div class="tooltip">
+  <span class="tooltiptext">Experience is a measure of how much institutional knowledge and political savvy your leaders possess. It makes your leaders more effective.</span>
+</div>
+<div class="tooltip">
+  <span class="tooltiptext">Unity is a measure of how loyal your party's leaders and constituents are. More loyal constituents will vote more reliably, and more loyal leaders will pass on a larger percentage of political power.</span>
+</div>
+
+*/

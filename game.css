@@ -117,25 +117,32 @@ body{
 	font-size: 12px;
 	text-align: center;
 	line-height: 26px;
-	background-color: #b0b0b0 ;
 }
 #resources_politicalpower{
+	background-color: white ;
 	left: 10px;
 }
 #resources_cash{
+	background-color: green ;
 	left: 55px;
 }
 #resources_orgeffic{
+	background-color: red ;
 	left: 100px;
 }
 #resources_experience{
+		background-color: yellow ;
 	left: 145px;
 	width:50px;
 }
 #resources_unity{
+		background-color: #b0b0b0 ;
 	left: 200px;
 }
-
+#resources_voters{
+		background-color: cyan ;
+	left: 245px;
+}
 #partyflag{
 	position:absolute;
 	z-index:1;
