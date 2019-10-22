@@ -130,6 +130,10 @@ body{
 }
 #resources_experience{
 	left: 145px;
+	width:50px;
+}
+#resources_unity{
+	left: 200px;
 }
 
 #partyflag{

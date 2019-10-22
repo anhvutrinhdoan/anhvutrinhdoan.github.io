@@ -1164,8 +1164,9 @@ function findwords(words,testword){
 function showResources(){
 	document.getElementById("resources_politicalpower").innerHTML = startingParties[playerCurrentParty].politicalPower;
 	document.getElementById("resources_cash").innerHTML ="$" + abbreviateNumber(startingParties[playerCurrentParty].pcash);
-	document.getElementById("resources_orgeffic").innerHTML = startingParties[playerCurrentParty].organization;
-	document.getElementById("resources_experience").innerHTML =startingParties[playerCurrentParty].experience;
+	document.getElementById("resources_orgeffic").innerHTML = startingParties[playerCurrentParty].organization + "%";
+	document.getElementById("resources_experience").innerHTML =startingParties[playerCurrentParty].experience + "/100";
+	document.getElementById("resources_unity").innerHTML =startingParties[playerCurrentParty].unity + "%";
 }
 
 //abbreviate numbers
