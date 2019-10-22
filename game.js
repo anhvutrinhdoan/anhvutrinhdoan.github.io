@@ -1162,12 +1162,12 @@ function findwords(words,testword){
 
 //Show the starting resources
 function showResources(){
-	document.getElementById("resources_politicalpower").innerHTML = startingParties[playerCurrentParty].politicalPower;
-	document.getElementById("resources_cash").innerHTML ="$" + abbreviateNumber(startingParties[playerCurrentParty].pcash);
-	document.getElementById("resources_orgeffic").innerHTML = startingParties[playerCurrentParty].organization + "%";
-	document.getElementById("resources_experience").innerHTML =startingParties[playerCurrentParty].experience + "/100";
-	document.getElementById("resources_unity").innerHTML = startingParties[playerCurrentParty].unity + "%";
-	document.getElementById("resources_voters").innerHTML = nationalVoterTally(playerCurrentParty);
+	document.getElementById("resources_politicalpower").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Political Power</span>" + startingParties[playerCurrentParty].politicalPower + "</div>";
+	document.getElementById("resources_cash").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Cash Reserves</span>" + "$" + abbreviateNumber(startingParties[playerCurrentParty].pcash) + "</div>";
+	document.getElementById("resources_orgeffic").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Org Efficiency</span>" + startingParties[playerCurrentParty].organization + "%" + "</div>";
+	document.getElementById("resources_experience").innerHTML ="<div class='tooltip'><span class='tooltiptext'>Org Experience</span>" + startingParties[playerCurrentParty].experience + "/100" + "</div>";
+	document.getElementById("resources_unity").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Party Unity</span>" + startingParties[playerCurrentParty].unity + "%" + "</div>";
+	document.getElementById("resources_voters").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Number of Voters</span>" + abbreviateNumber(nationalVoterTally(playerCurrentParty))+ "</div>";
 	var string = "party_"+partyAffiliation[playerCurrentParty]+".png";
 	document.getElementById("partyflag").style.backgroundImage='url('+string+')';
 }
