@@ -62,13 +62,6 @@ body{
 	bottom: 10px;
 	left: 10px;
 }
-#actionbutton_campaign{
-	position:absolute;
-	top:10px;
-	left:10px;
-	width:30px;
-	height:15px;
-}
 #header {
 	position:absolute;
 	background-color:#d4d4d4;
@@ -108,13 +101,37 @@ body{
 }
 #resources{
 	position:absolute;
+	display: inline-block;
 	z-index:0;
-	height: 16px;
+	height: 30px;
 	background-color: #e0e0e0;
 	top:16px;
 	width:700px;
 	left:136px;
 }
+.resources_boxes{
+	position:absolute;
+	top:2px;
+	height:26px;
+	width: 40px;
+	font-size: 12px;
+	text-align: center;
+	line-height: 26px;
+	background-color: #b0b0b0 ;
+}
+#resources_politicalpower{
+	left: 10px;
+}
+#resources_cash{
+	left: 55px;
+}
+#resources_orgeffic{
+	left: 100px;
+}
+#resources_experience{
+	left: 145px;
+}
+
 #partyflag{
 	position:absolute;
 	z-index:1;
@@ -244,7 +261,7 @@ body{
 	text-align:center;
 	top:15px;
 	left:0px;
-	font-size:12px;
+	font-size:17px;
 	height:15px;
 	width:15px;
 	cursor:default;
@@ -267,7 +284,7 @@ body{
   color: #fff;
 	font-size: 9px;
   text-align: center;
-  padding: 2px ;
+  padding: 5px 0;
   border-radius: 6px;
 
   /* Position the tooltip text - see examples below! */

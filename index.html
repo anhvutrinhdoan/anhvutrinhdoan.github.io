@@ -14,7 +14,7 @@
   </head>
   <body onload="generateInitialPops()">
 	<div class="lds-ring" id="removewhendone"><div></div><div></div><div></div><div></div></div>
-	<div id="main" class="frame" >	
+	<div id="main" class="frame" >
 		<div id="gamemap" onclick = "dragElement(document.getElementById('gamemap'))">
 			<div class="district1 districts" id="0" onclick="popupwindow(1);"></div>
 			<div class="district2 districts" id="1" onclick="popupwindow(2);"></div>
@@ -23,14 +23,19 @@
 			<div class="district5 districts" id="4" onclick="popupwindow(5);"></div>
 			<div class="district6 districts" id="5" onclick="popupwindow(6);"></div>
 			<div class="district7 districts" id="6" onclick="popupwindow(7);"></div>
-		</div>	
-		
+		</div>
+
 	</div>
 	<div class="menuItem nation" onclick="normalMapMode()">NATION</div>
 	<div class="menuItem party" onclick="politicalMapMode()">PARTY</div>
 	<div class="menuItem" id="partyflag" onclick="openPartyMenu(playerCurrentParty)"></div>
 	<div class="menuItem" id="partyflag_below"></div>
-	<div class="menuItem" id="resources"></div>
+	<div class="menuItem" id="resources">
+    <div class="resources_boxes" id="resources_politicalpower"></div>
+    <div class="resources_boxes" id="resources_cash"></div>
+    <div class="resources_boxes" id="resources_orgeffic"></div>
+    <div class="resources_boxes" id="resources_experience"></div>
+  </div>
 
   </body>
 </html>

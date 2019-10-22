@@ -400,7 +400,7 @@ class District{
 	}
 }
 class Party{
-	constructor(partyID,partyPlatforms,partyExperience,partyOrganization,partyLeaders,partyUnity,partyModifiers){
+	constructor(partyID,partyPlatforms,partyExperience,partyOrganization,partyLeaders,partyUnity,partyModifiers,partyPoliticalPower,partyCash){
 		this.ID = partyID;
 		this.platforms = [partyPlatforms];
 		this.experience = partyExperience;
@@ -408,6 +408,8 @@ class Party{
 		this.leaders = [partyLeaders];
 		this.unity = partyUnity;
 		this.modifiers = [partyModifiers];
+		this.politicalPower = partyPoliticalPower;
+		this.pcash = partyCash;
 	}
 	addPlatform(newPlatform){
 		this.platforms.push(newPlatform);
@@ -544,15 +546,14 @@ const StrictImmigrationQuotas = new PartyPlatform("<b>Strict Immigration Quotas<
 
 //Predefine Modifiers
 //checks= [socialStratum, partyAffiliation, age, jobIndustry, radicalism, resistanceToChange, individualism, politicalPower, anger, demands, cash, income, spending, homeDist, tendencyToVote, sex]
-const DemBonusForWomen = new Modifier("Favored by Women Voters",0.04,"This party tends to be favored by women voters. +4% attraction to Female pops.",[[15,'female']],"♀");
+const DemBonusForWomen = new Modifier("Favored by Women Voters",0.04,"This party tends to be favored by women voters. +4% attraction to Female pops.",[[15,'female']],"👩🏽");
 const BourgeoisParty = new Modifier("Cozy to Big Capital",0.25,"This party is a favorite of the moneyed classes. +25% attraction to Upper-Class pops.",[[0,0]],"🍸");
 const PetitBourgeoisAppeal = new Modifier("Attraction to Middle Class",0.15,"This party appeals to the middle class. +15% attraction to White-Collar pops.",[[0,1]],"🥑");
 
 //DEFINES: GLOBAL VARIABLES
 var districtclicked = 0;
-var startingpoliticalpower = 100;
 var distsDefaultColors = ["#eeccff","#8080ff","#80ffcc","#55a896","#6348f3","#9eb62c","#f7e02f"];
-var playerCurrentParty = "noparty";
+var playerCurrentParty = 0;
 var partyMenuSelected = false;
 var popMenuSelected = false;
 //political issues
@@ -566,7 +567,7 @@ const issueWeightsForUpperClass = [0.05,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.02,
 const issueWeightsForMiddleClass = [0.08,0.08,0.08,0.07,0.05,0.02,0.02,0.08,0.09,0.08,0.01,0.01,0.05,0.01,0.01,0.02,0.05,0.06,0.08,0.05];
 const issueWeightsForLowerClass = [0.10,0.01,0.05,0.20,0.10,0.10,0.10,0.10,0.05,0.05,0.01,0.01,0.01,0.01,0.05,0.01,0.01,0.01,0.01,0.01];
 //This has to be here
-var startingParties = [new Party("Democratic",[CentristAffordableHealthcare,ProSkilledImmigration],100,100,["Tom Perez"],1,[DemBonusForWomen]), new Party("Republican",[StrongLaissezFaire,StrictImmigrationQuotas],100,100,["Ronna McDaniel"],1,[BourgeoisParty,PetitBourgeoisAppeal])];
+var startingParties = [new Party("Democratic",[CentristAffordableHealthcare,ProSkilledImmigration],100,100,["Tom Perez"],1,[DemBonusForWomen],100,100000), new Party("Republican",[StrongLaissezFaire,StrictImmigrationQuotas],100,100,["Ronna McDaniel"],1,[BourgeoisParty,PetitBourgeoisAppeal],100,100000)];
 
 //POLITICAL STUFF
 var partyAffiliation = ["Democratic","Republican"];
@@ -711,6 +712,7 @@ function initialPartyPopAlignment(){
 		}
 	}
 	cleanuploadingicon();
+	showResources();
 }
 //Looping through a weighted random array. Given weights returns the i'th entry of the array
 function loopArray(anArray){
@@ -823,16 +825,12 @@ function popupwindow(n){
 	makeCloseBox.innerHTML = "X";
 
 	makeActionMenu.setAttribute("id","popupwindow_actions");
-	var actionbuttonCampaignHere =  document.createElement("div");
-	actionbuttonCampaignHere.setAttribute("id","actionbutton_campaign");
-	actionbuttonCampaignHere.innerHTML =  "<div class = 'tooltip'>" + "<img src='littlehat.png' onmouseover='this.src=\"littlehat_mouseover.png\"' onmouseout='this.src=\"littlehat.png\"'/>" + "<span class='tooltiptext'>Actively campaign for your party here.</span></div>";
-	makeActionMenu.appendChild(actionbuttonCampaignHere);
+
 	document.getElementById("dist"+n).appendChild(makeMyPopupHeader);
 	document.getElementById("dist"+n).appendChild(subElement);
 	document.getElementById("dist"+n).appendChild(subElement2);
 	document.getElementById("dist"+n).appendChild(makeCloseBox);
 	document.getElementById("dist"+n).appendChild(makeActionMenu);
-
 
 	districtclicked = n;
 	var datalabels = ['Party','Percentage of Vote'];
@@ -868,7 +866,7 @@ function openPartyMenu(playerCurrentParty){
 		makePartyMenuModifiers.setAttribute("id","screen_partycontrol_party_modifiers");
 
 		document.getElementById("main").appendChild(makePartyMenu);
-		document.getElementById("screen_partycontrol").innerHTML= partyAffiliation[playerCurrentParty] + " Party" + "<br/>" + "<img src=" + "party_" + partyAffiliation[playerCurrentParty] + ".png>" + "<br>";
+		document.getElementById("screen_partycontrol").innerHTML= partyAffiliation[playerCurrentParty] + " Party" + "<br><br>" + "<img src=" + "party_" + partyAffiliation[playerCurrentParty] + ".png>" + "<br>";
 		document.getElementById("screen_partycontrol").appendChild(makeMyPopupHeader);
 
 		makeMyPopupHeader.onclick = dragElement(document.getElementById("screen_partycontrol"));
@@ -1160,6 +1158,30 @@ function sum(a,b){
 }
 function findwords(words,testword){
 	return words == testword;
+}
+
+//Show the starting resources
+function showResources(){
+	document.getElementById("resources_politicalpower").innerHTML = startingParties[playerCurrentParty].politicalPower;
+	document.getElementById("resources_cash").innerHTML ="$" + abbreviateNumber(startingParties[playerCurrentParty].pcash);
+	document.getElementById("resources_orgeffic").innerHTML = startingParties[playerCurrentParty].organization;
+	document.getElementById("resources_experience").innerHTML =startingParties[playerCurrentParty].experience;
+}
+
+//abbreviate numbers
+function abbreviateNumber(value) {
+  let newValue = value;
+  const suffixes = ["", "K", "M", "B","T"];
+  let suffixNum = 0;
+  while (newValue >= 1000) {
+    newValue /= 1000;
+    suffixNum++;
+  }
+
+  newValue = newValue.toPrecision(3);
+
+  newValue += suffixes[suffixNum];
+  return newValue;
 }
 
 //DEBUG FUNCTIONS
