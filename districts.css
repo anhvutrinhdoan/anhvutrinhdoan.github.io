@@ -70,4 +70,9 @@
 }
 .districts:hover{
 	outline: 2px solid yellow;
+
+}
+.districts{
+	text-align: center;
+	vertical-align: middle;
 }

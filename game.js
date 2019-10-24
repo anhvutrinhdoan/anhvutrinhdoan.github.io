@@ -312,7 +312,7 @@ class District{
 	}
 	reportPops(){
 		var pops = this.popsInhabiting;
-		return pops;
+		return pops.length;
 	}
 	reportVotes(){
 		var localPartyRegistry=[];
@@ -401,7 +401,7 @@ class District{
 }
 class Party{
 	constructor(partyID,partyPlatforms,partyExperience,partyOrganization,partyLeaders,partyUnity,partyModifiers,partyPoliticalPower,partyCash){
-		this.ID = partyID;
+		this.pID = partyID;
 		this.platforms = [partyPlatforms];
 		this.experience = partyExperience;
 		this.organization = partyOrganization;
@@ -611,7 +611,7 @@ var globalPopulation = new Array();
 var globalDistrictContainer = new Array();
 //ages are 0-18, 19-35, 36-55, 56-66, 67+
 const ageranges=["0-18", "19-35", "36-55", "56-66", "67+"];
-const demographics = [0.15,0.25,0.30,0.20,0.10];
+const demographics = [0.15,0.30,0.25,0.20,0.10];
 const sexRatio = [0.50,0.50]; //female 49%, male 51%
 const sexes=["female","male"];
 
@@ -654,6 +654,7 @@ const baseJobIndustryProportionOfProfitsToStratum = [[0.85, 0.1, 0.05],
 function generateInitialPops(){
 	//Iterate through every district
 	for (var i=0; i < dist.length;i++){
+
 		//Iterate through each pop stratum in the n'th district
 		//Iterate through every pop in that stratum
 		for (var k=0;k<dist[i][0];k++){
@@ -676,6 +677,7 @@ function generateInitialPops(){
 			globalPopulation.push(popObject);
 		}
 	}
+
 	populateDistricts();
 }
 //Initialize game state with all districts assigned pops
@@ -698,6 +700,7 @@ function populateDistricts(){
 //Assigning issues to every pop
 function assignIssues(){
 	for (var n=0;n<dist.length;n++){
+		document.getElementById(n).innerHTML = globalDistrictContainer[n].reportPops();
 		for (var m=0;m<globalDistrictContainer[n].popsInhabiting.length;m++){
 			globalDistrictContainer[n].popsInhabiting[m][0].issuesMaker();
 		}
@@ -880,7 +883,7 @@ function openPartyMenu(playerCurrentParty){
 		for(var v=0;v<startingParties[playerCurrentParty].modifiers[0].length;v++){
 			var makeModifier = document.createElement("div");
 			makeModifier.setAttribute("id","screen_partycontrol_modifier");
-			makeModifier.innerHTML = "<div class = 'tooltip'>" + startingParties[playerCurrentParty].modifiers[0][v].makeIcon() + "<span class='tooltiptext'>" + startingParties[playerCurrentParty].modifiers[0][v].reportDesc() + "</span>" +"</div>";
+			makeModifier.innerHTML = "<div class = 'tooltip'>" + startingParties[playerCurrentParty].modifiers[0][v].makeIcon() + "<span class='tooltiptext'>" + "<b><i>" + startingParties[playerCurrentParty].modifiers[0][v].modid + "</i></b><br/>" + startingParties[playerCurrentParty].modifiers[0][v].reportDesc() + "</span>" +"</div>";
 			document.getElementById("screen_partycontrol_party_modifiers").appendChild(makeModifier);
 		}
 		for(var x=0;x<startingParties[playerCurrentParty].platforms[0].length;x++){
@@ -908,10 +911,7 @@ function modPlatform(){
 function nationalVoterTally(pcp){
 	var y=0;
 	for(var q=0;q<globalDistrictContainer.length;q++){
-		var globalvotecount = globalDistrictContainer[q].reportVotes();
-		for(var v=0;v<globalvotecount.length;v++){
-			y += globalvotecount[pcp];
-		}
+		y += globalDistrictContainer[q].reportVotes()[playerCurrentParty];
 	}
 	return y;
 }
@@ -1140,18 +1140,40 @@ function politicalMapMode(){
 			container.push(poll[q]/addall);
 		}
 		document.getElementById(i).style.backgroundColor=partyColor[container.indexOf(Math.max(...container))];
+		document.getElementById(i).innerHTML=globalDistrictContainer[i].reportVotes()[container.indexOf(Math.max(...container))];
 		if(partyAffiliation[container.indexOf(Math.max(...container))]==partyAffiliation[playerCurrentParty]){
 				document.getElementById(i).style.outline="2px solid yellow";
 		}
 	}
 }
-
+//Return map to normalmode
 function normalMapMode(){
 	for(var i = 0; i<dist.length;i++){
 		document.getElementById(i).style.backgroundColor=distsDefaultColors[i];
 		document.getElementById(i).style.outline="";
+		document.getElementById(i).innerHTML = globalDistrictContainer[i].reportPops();
 	}
 }
+//"COMBAT"
+/*
+The most basic action that a player can take is to try to campaign for their party in an uncontrolled district.
+Each district has a defense value, which is affected by adjacency to nearby controlled districts. When a player
+campaigns for an uncontrolled district, the attacking and defending parties roll a contest of the scores - the
+attacking power of the contesting party vs the defense power of the current district controller. The base attack Power
+of the contesting party is determined by the campaign intensity level. A light campaign is 1, a medium campaign is 3 and an intense campaign
+is 5. Campaigning costs political power: 100, 300, and 500 respectively. A defending party's district's defense is 1 + the number of adjacent districts.
+A defending party will be able to activate a defensive campaign in an owned district, which is symmetric with the attacker's.
+These numbers equal the number of dice rolls either side gets per combat. As long as the campaign is still active, it will
+engage a combat round every day, and cost an amount of political power every day to maintain.
+Each side rolls 3d6 * ATK or DEF. Relevant modifiers are Political Experience and Org Efficiency. Org Efficiency lowers or raises the cost of political campaigns,
+while Experience increases ATK or DEF + 1 per 10 points of Experience. If the attacker wins the contest, they force
+a percentage of the pops in that district equal to the difference of the rolled scores to recalculate their loyalties, adding an extra modifier of +25%
+attraction to the winning party. You win a campaign when your party has a higher percentage of votes than every other party, then the
+campaign action ends.
+
+*/
+
+//MISC GAME FUNCTIONS
 
 function sum(a,b){
 	return a+b;
@@ -1159,7 +1181,13 @@ function sum(a,b){
 function findwords(words,testword){
 	return words == testword;
 }
-
+function diceRoll(){
+	var rollresult=0;
+	for(var f=0;f<2;f++){
+		rollresult += Math.floor(Math.random()*6);
+	}
+	return rollresult;
+}
 //Show the starting resources
 function showResources(){
 	document.getElementById("resources_politicalpower").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Political Power</span>" + startingParties[playerCurrentParty].politicalPower + "</div>";
@@ -1167,9 +1195,19 @@ function showResources(){
 	document.getElementById("resources_orgeffic").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Org Efficiency</span>" + startingParties[playerCurrentParty].organization + "%" + "</div>";
 	document.getElementById("resources_experience").innerHTML ="<div class='tooltip'><span class='tooltiptext'>Org Experience</span>" + startingParties[playerCurrentParty].experience + "/100" + "</div>";
 	document.getElementById("resources_unity").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Party Unity</span>" + startingParties[playerCurrentParty].unity + "%" + "</div>";
-	document.getElementById("resources_voters").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Number of Voters</span>" + abbreviateNumber(nationalVoterTally(playerCurrentParty))+ "</div>";
+	document.getElementById("resources_voters").innerHTML = "<div class='tooltip'><span class='tooltiptext'>Number of Voters</span>" + nationalVoterTally(playerCurrentParty)+ "</div>";
 	var string = "party_"+partyAffiliation[playerCurrentParty]+".png";
 	document.getElementById("partyflag").style.backgroundImage='url('+string+')';
+}
+
+//Select which party to play as
+function partySelection(){
+	for(var p=0;p<startingParties.length;p++){
+		var makePartySelector = document.createElement("div");
+		makePartySelector.setAttribute("id","screen_mainmenu_party");
+		makePartySelector.innerHTML = "<div onclick='setDefaultParty(" + p + "); generateInitialPops();'>" + startingParties[p].pID + "</div>";
+		document.getElementById("screen_mainmenu_partyselect").appendChild(makePartySelector);
+	}
 }
 
 //abbreviate numbers
@@ -1181,9 +1219,7 @@ function abbreviateNumber(value) {
     newValue /= 1000;
     suffixNum++;
   }
-
   newValue = newValue.toPrecision(3);
-
   newValue += suffixes[suffixNum];
   return newValue;
 }

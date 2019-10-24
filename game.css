@@ -106,8 +106,8 @@ body{
 	height: 30px;
 	background-color: #e0e0e0;
 	top:16px;
-	width:700px;
-	left:136px;
+	width:400px;
+	left:140px;
 }
 .resources_boxes{
 	position:absolute;
@@ -168,34 +168,39 @@ body{
 }
 #screen_mainmenu{
 	position:absolute;
-	z-index:999;
+	z-index:998;
 	background-color: lightblue;
 	width:100%;
 	height:100%;
 	top:0px;
 	left:0px;
 }
-#screen_mainmenu_partyselect0{
+
+#screen_mainmenu_partyselect{
+	position:absolute;
+	background-color: #c4c4c4;
+	z-index:999;
+	width: 250px;
+	height: 200px;
+	top: 100px;
+	left:45%;
+	overflow:auto;
+}
+
+#screen_mainmenu_party{
 	position:relative;
-	z-index:998;
+	z-index:999;
 	background-color: white;
 	width: 200px;
 	height: 25px;
-	top: 200px;
-	left: 50%;
+	top: 10px;
+	left:8px;
+	margin:2px;
 	cursor:default;
 	text-align:center;
 }
-#screen_mainmenu_partyselect1{
-	position:relative;
-	z-index:998;
-	background-color: white;
-	width: 200px;
-	height: 25px;
-	top: 230px;
-	left: 50%;
-	cursor:default;
-	text-align:center;
+#screen_mainmenu_party:hover{
+	background-color:#dbdbdb;
 }
 #screen_partycontrol{
 	position:absolute;

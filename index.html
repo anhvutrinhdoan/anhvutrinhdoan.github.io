@@ -12,12 +12,11 @@
 	<link rel="stylesheet" type="text/css" href="game.css">
 	<link rel="stylesheet" type="text/css" href="districts.css">
   </head>
-  <body>
+  <body onload ="partySelection();">
     <!-- Loading thingy -->
   	<div class="lds-ring" id="removewhendone"><div></div><div></div><div></div><div></div></div>
     <div id="screen_mainmenu">
-      <div id="screen_mainmenu_partyselect0" onclick="setDefaultParty(0); generateInitialPops();">Democratic Party</div>
-      <div id="screen_mainmenu_partyselect1" onclick="setDefaultParty(1); generateInitialPops();">Republican Party</div>
+      <div id="screen_mainmenu_partyselect"></div>
     </div>
       <!-- Main game map area -->
   	<div id="main" class="frame" >
